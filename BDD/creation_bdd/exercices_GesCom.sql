@@ -1,6 +1,6 @@
--- Active: 1745306493697@@127.0.0.1@3306@GesCom
-DROP DATABASE GesCom;
-CREATE DATABASE GesCom;
+-- Active: 1745306493697@@127.0.0.1@3306@gescom
+DROP DATABASE gescom;
+CREATE DATABASE gescom;
 
 CREATE TABLE suppliers(
     sup_id INT NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY,
@@ -29,15 +29,21 @@ CREATE TABLE  orders (
     ord_bill_date DATE,
     ord_reception_date DATE,
     ord_status VARCHAR(25) NOT NULL,
-    cus_id INT,
+    cus_id INT NOT NULL,
     FOREIGN KEY (cus_id) REFERENCES customers(cus_id)
 
+);
+
+CREATE TABLE parent_categorie (
+    par_cat_id INT NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY,
+    par_cat_name VARCHAR(50)
 );
 
 CREATE TABLE categories (
     cat_id INT NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY,
     cat_name VARCHAR(200),
-    cat_parent_id INT
+    cat_parent_id INT NOT NULL,
+    FOREIGN KEY (cat_parent_id) REFERENCES parent_categorie(par_cat_id)
 );
 
 
@@ -53,8 +59,8 @@ CREATE TABLE products (
     pro_add_date DATE NOT NULL DEFAULT CURRENT_DATE,
     pro_update_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     pro_publish TINYINT(1) NOT NULL,
-    cat_id INT,
-    sup_id INT,
+    cat_id INT NOT NULL,
+    sup_id INT NOT NULL,
     FOREIGN KEY (cat_id) REFERENCES categories(cat_id),
     FOREIGN KEY (sup_id) REFERENCES suppliers(sup_id)
 
@@ -64,8 +70,8 @@ CREATE TABLE details (
     det_id INT NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY,
     det_price DECIMAL(6,2) NOT NULL,
     det_quantity INT(5) NOT NULL,
-    pro_id INT,
-    ord_id INT,
+    pro_id INT NOT NULL,
+    ord_id INT NOT NULL,
     FOREIGN KEY (pro_id) REFERENCES products(pro_id),
     FOREIGN KEY (ord_id) REFERENCES orders(ord_id)
     

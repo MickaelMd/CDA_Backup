@@ -13,6 +13,6 @@ GRANT SELECT ON gescom.* TO 'util2'@'%';
 
 DROP USER 'util3'@'%';
 CREATE USER 'util3'@'%' IDENTIFIED BY 'mot_de_passe';
-GRANT SELECT ON GesCom.customers TO 'util3'@'%';
+GRANT SELECT ON gescom.customers TO 'util3'@'%';
 
 -- FLUSH PRIVILEGES;

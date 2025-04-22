@@ -13,17 +13,17 @@ CREATE TABLE Hotel (
     categorie_hotel VARCHAR(50),
     nom_hotel VARCHAR(50),
     adresse_hotel VARCHAR(100),
-    num_station INT,
+    num_station INT NOT NULL,
     FOREIGN KEY (num_station) REFERENCES Station(num_station)
 );
 
 CREATE TABLE Chambre (
-    num_chambre INT NOT NULL UNIQUE PRIMARY KEY,
+    num_chambre INT NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY,
     capacite_chambre INT,
     degre_confort INT,
     exposition VARCHAR(2),
     type_chambre VARCHAR(50),
-    num_hotel INT,
+    num_hotel INT NOT NULL,
     FOREIGN KEY (num_hotel) REFERENCES Hotel(num_hotel)
 );
 
