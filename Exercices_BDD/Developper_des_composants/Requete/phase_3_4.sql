@@ -31,19 +31,26 @@
 
 -----------------------------------------------------------------------
 
+-- fournis -> fournisseur
+-- produit -> article en stock
+-- entcom -> en-tête commande 
+-- ligcom -> détail d’une commande
+-- vente -> tarifs par fournisseur
+
 -- LES BESOINS D’AFFICHAGE
 
 -- 1. Quelles sont les commandes du fournisseur 09120 ?
 
 SELECT * FROM entcom WHERE numfou = 9120;
 
-
 -- 2. Afficher le code des fournisseurs pour lesquels des commandes ont été
 -- passées.
 
+SELECT DISTINCT numfou FROM entcom; 
 
 -- 3. Afficher le nombre de commandes fournisseurs passées, et le nombre
 -- de fournisseur concernés.
+
 
 
 -- 4. Editer les produits ayant un stock inférieur ou égal au stock d'alerte et

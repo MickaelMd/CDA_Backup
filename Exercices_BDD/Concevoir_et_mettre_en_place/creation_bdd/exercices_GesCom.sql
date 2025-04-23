@@ -2,6 +2,8 @@
 DROP DATABASE gescom;
 CREATE DATABASE gescom;
 
+USE gescom;
+
 CREATE TABLE suppliers(
     sup_id INT NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY,
     sup_name VARCHAR(50) NOT NULL,

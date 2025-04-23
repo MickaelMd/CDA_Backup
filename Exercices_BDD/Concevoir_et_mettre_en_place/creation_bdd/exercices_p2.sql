@@ -2,6 +2,8 @@
 DROP DATABASE Exercice_2;
 CREATE DATABASE Exercice_2;
 
+USE Exercice_2;
+
 CREATE TABLE Station (
     num_station INT NOT NULL AUTO_INCREMENT UNIQUE,
     nom_station VARCHAR(50)

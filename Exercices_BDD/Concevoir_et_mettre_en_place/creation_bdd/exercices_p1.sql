@@ -3,6 +3,8 @@ DROP DATABASE Exercice_1;
 
 CREATE DATABASE Exercice_1;
 
+USE Exercice_1;
+
 CREATE TABLE Personne (
     per_num INT NOT NULL AUTO_INCREMENT UNIQUE PRIMARY KEY,
     per_nom VARCHAR(61),
