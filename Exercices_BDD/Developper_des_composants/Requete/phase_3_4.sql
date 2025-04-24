@@ -141,13 +141,23 @@ WHERE obscom IS NOT NULL AND TRIM(obscom) != '';
 -- 8. Lister le total de chaque commande par total décroissant
 -- (Affichage numéro de commande et total)
 
-
+SELECT numcom, SUM(qtecde * priuni) AS total
+FROM ligcom
+GROUP BY numcom
+ORDER BY total DESC;
 
 
 -- 9. Lister les commandes dont le total est supérieur à 10 000€ ; on exclura
 -- dans le calcul du total les articles commandés en quantité supérieure
 -- ou égale à 1000.
 -- (Affichage numéro de commande et total)
+
+SELECT numcom, SUM(qtecde * priuni) AS total
+FROM ligcom
+WHERE qtecde < 1000
+GROUP BY numcom
+HAVING SUM(qtecde * priuni) > 10000
+ORDER BY total DESC;
 
 
 -- 10. Lister les commandes par nom fournisseur
@@ -161,6 +171,13 @@ JOIN fournis ON fournis.numfou = entcom.numfou;
 -- observation?
 -- (Afficher le numéro de commande, le nom du fournisseur, le libellé du
 -- produit et le sous total = quantité commandée * Prix unitaire)
+
+SELECT entcom.numcom, fournis.nomfou, produit.libart, ligcom.qtecde * ligcom.priuni AS sous_total
+FROM entcom
+JOIN ligcom ON ligcom.numcom = entcom.numcom
+JOIN fournis ON entcom.numfou = fournis.numfou
+JOIN produit ON produit.codart = ligcom.codart
+WHERE entcom.obscom LIKE '%urgent%';
 
 
 -- 12. Coder de 2 manières différentes la requête suivante :
@@ -189,20 +206,45 @@ WHERE numfou = (SELECT numfou FROM entcom WHERE numcom = 70210);
 
 -------------------------------
 
-SELECT numcom, datcom
-FROM entcom
-JOIN entcom ON entcom.numfou = entcom.numfou
-WHERE entcom.numcom = 70210;
+SELECT e1.numcom, e1.datcom
+FROM entcom e1
+JOIN entcom e2 ON e1.numfou = e2.numfou
+WHERE e2.numcom = 70210;
+
 
 -- 14. Dans les articles susceptibles d’être vendus, lister les articles moins
 -- chers (basés sur Prix1) que le moins cher des rubans (article dont le
 -- premier caractère commence par R). On affichera le libellé de l’article
 -- et prix1
 
+SELECT libart, prix1
+FROM produit
+JOIN vente ON vente.codart = produit.codart
+WHERE libart LIKE 'R%'
+
+------------
+
+SELECT produit.libart, vente.prix1
+FROM produit
+JOIN vente ON produit.codart = vente.codart
+WHERE vente.prix1 < (
+    SELECT MIN(vente.prix1)
+    FROM produit
+    JOIN vente ON produit.codart = vente.codart
+    WHERE produit.libart LIKE 'R%'
+);
+
 
 -- 15. Editer la liste des fournisseurs susceptibles de livrer les produits
 -- dont le stock est inférieur ou égal à 150 % du stock d'alerte. La liste est
 -- triée par produit puis fournisseur
+
+SELECT produit.libart, fournis.nomfou
+FROM produit
+JOIN vente ON produit.codart = vente.codart
+JOIN fournis ON vente.numfou = fournis.numfou
+WHERE produit.stkphy <= produit.stkale * 1.5
+ORDER BY produit.libart, fournis.nomfou;
 
 
 -- 16. Éditer la liste des fournisseurs susceptibles de livrer les produit dont
@@ -210,17 +252,41 @@ WHERE entcom.numcom = 70210;
 -- livraison d'au plus 30 jours. La liste est triée par fournisseur puis
 -- produit
 
+SELECT produit.libart, fournis.nomfou
+FROM produit
+JOIN vente ON produit.codart = vente.codart
+JOIN fournis ON vente.numfou = fournis.numfou
+WHERE produit.stkphy <= produit.stkale * 1.5
+AND vente.delliv <= 30
+ORDER BY fournis.nomfou, produit.libart;
+
 
 -- 17. Avec le même type de sélection que ci-dessus, sortir un total des
 -- stocks par fournisseur trié par total décroissant
 
+SELECT fournis.nomfou, SUM(produit.stkphy) AS total_stk
+FROM produit
+JOIN vente ON produit.codart = vente.codart
+JOIN fournis ON vente.numfou = fournis.numfou
+WHERE produit.stkphy <= produit.stkale * 1.5
+AND vente.delliv <= 30
+GROUP BY fournis.nomfou
+ORDER BY total_stk DESC;
 
 -- 18. En fin d'année, sortir la liste des produits dont la quantité réellement
 -- commandée dépasse 90% de la quantité annuelle prévue.
 
+SELECT produit.libart, SUM(ligcom.qtecde) AS qte_commande, produit.qteann
+FROM produit
+JOIN ligcom ON produit.codart = ligcom.codart
+GROUP BY produit.libart, produit.qteann
+HAVING SUM(ligcom.qtecde) > produit.qteann * 0.9;
+
 
 -- 19. Calculer le chiffre d'affaire par fournisseur pour l'année 93 sachant
 -- que les prix indiqués sont hors taxes et que le taux de TVA est 20%.
+
+
 
 -----------------------------------------------------------------------
 
@@ -230,16 +296,43 @@ WHERE entcom.numcom = 70210;
 -- 1. Application d'une augmentation de tarif de 4% pour le prix 1 et de 2%
 -- pour le prix2 pour le fournisseur 9180
 
+UPDATE vente
+SET  prix1 = prix1 * 1.04, prix2 = prix2 * 1.02  
+WHERE numfou = 9180;
 
 -- 2. Dans la table vente, mettre à jour le prix2 des articles dont le prix2 est
 -- null, en affectant a prix2 la valeur de prix1.
 
+UPDATE vente
+SET prix2 = prix1
+WHERE prix2 < 1;
 
 -- 3. Mettre à jour le champ obscom en positionnant '*****' pour toutes les
 -- commandes dont le fournisseur a un indice de satisfaction <5
 
+UPDATE entcom
+SET entcom.obscom = "*****"
+WHERE numfou IN (
+   SELECT fournis.numfou
+   FROM entcom
+   JOIN fournis ON fournis.numfou = entcom.numfou
+   WHERE satisf < 5
+);
 
 -- 4. Suppression du produit I110
 
+DELETE FROM vente 
+WHERE codart = "I110";
+
+DELETE FROM produit 
+WHERE codart = "I110";
 
 -- 5. Suppression des entête de commande qui n'ont aucune ligne
+
+DELETE FROM entcom
+WHERE numcom IN (
+    SELECT entcom.numcom
+    FROM entcom
+    LEFT JOIN ligcom ON ligcom.numcom = entcom.numcom
+    WHERE ligcom.numcom IS NULL
+);
