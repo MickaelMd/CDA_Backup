@@ -1,5 +1,8 @@
 -- Active: 1745306493697@@127.0.0.1@3306@hotel
 
+-- Exercice réalisé sur la base "hotel"
+
+USE hotel;
 
 -- Ecrivez les requêtes suivantes:
 

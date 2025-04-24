@@ -1,5 +1,9 @@
 -- Active: 1745306493697@@127.0.0.1@3306@papyrus
 
+-- Exercice réalisé sur la base "papyrus"
+
+USE papyrus;
+
 -- Cas PAPYRUS : Manipuler les données
 
 -- LE TRAVAIL A FAIRE
@@ -37,6 +41,50 @@
 -- ligcom -> détail d’une commande
 -- vente -> tarifs par fournisseur
 
+/* 
+Tables et leurs attributs :
+
+PRODUIT (CODART, LIBART, STKLE, STKPHY, QTEANN, UNIMES)
+- CODART   : Code article
+- LIBART   : Libellé de l’article
+- STKLE    : Stock d’alerte
+- STKPHY   : Stock physique
+- QTEANN   : Quantité annuelle
+- UNIMES   : Unité de mesure
+
+ENTCOM (NUMCOM, OBSCOM, DATCOM, NUMFOU)
+- NUMCOM   : Numéro de commande
+- OBSCOM   : Observations
+- DATCOM   : Date de commande
+- NUMFOU   : Numéro du fournisseur
+
+LIGCOM (NUMCOM, NUMLIG, CODART, QTECDE, PRIUNI, QTELIV, DERLIV)
+- NUMCOM   : Numéro de commande
+- NUMLIG   : Numéro de ligne
+- CODART   : Code article
+- QTECDE   : Quantité commandée
+- PRIUNI   : Prix unitaire
+- QTELIV   : Quantité livrée
+- DERLIV   : Date de dernière livraison
+
+FOURNIS (NUMFOU, NOMFOU, RUEFOU, POSFOU, VILFOU, CONFOU, SATISF)
+- NUMFOU   : Numéro du fournisseur
+- NOMFOU   : Nom du fournisseur
+- RUEFOU   : Rue
+- POSFOU   : Code postal
+- VILFOU   : Ville
+- CONFOU   : Contact
+- SATISF   : Satisfaction (note)
+
+VENTE (CODART, NUMFOU, DELLIV, QTE1, PRIX1, QTE2, PRIX2, QTE3, PRIX3)
+- CODART   : Code article
+- NUMFOU   : Numéro du fournisseur
+- DELLIV   : Délai de livraison
+- QTE1/2/3 : Seuils de quantité
+- PRIX1/2/3: Prix unitaire par seuil
+*/
+
+
 -- LES BESOINS D’AFFICHAGE
 
 -- 1. Quelles sont les commandes du fournisseur 09120 ?
@@ -46,34 +94,54 @@ SELECT * FROM entcom WHERE numfou = 9120;
 -- 2. Afficher le code des fournisseurs pour lesquels des commandes ont été
 -- passées.
 
-SELECT DISTINCT numfou FROM entcom; 
+SELECT DISTINCT numfou 
+FROM entcom; 
 
 -- 3. Afficher le nombre de commandes fournisseurs passées, et le nombre
 -- de fournisseur concernés.
 
-
+SELECT COUNT(numcom) AS nb_commande, COUNT(DISTINCT numfou) AS nb_fournisseur
+FROM entcom;
 
 -- 4. Editer les produits ayant un stock inférieur ou égal au stock d'alerte et
 -- dont la quantité annuelle est inférieur est inférieure à 1000
 -- (informations à fournir : n° produit, libellé produit, stock, stock actuel
 -- d'alerte, quantité annuelle)
 
+SELECT codart, libart, stkphy, stkale, qteann
+FROM produit
+WHERE stkphy <= stkale
+AND qteann < 1000;
+
 
 -- 5. Quels sont les fournisseurs situés dans les départements 75 78 92 77 ?
 -- L’affichage (département, nom fournisseur) sera effectué par
 -- département décroissant, puis par ordre alphabétique
 
+SELECT nomfou, SUBSTRING(posfou, 1, 2) AS nodep
+FROM fournis
+WHERE SUBSTRING(posfou, 1, 2) IN ("75", "78", "92", "77")
+ORDER BY nodep DESC, nomfou ASC;
 
 -- 6. Quelles sont les commandes passées au mois de mars et avril ?
 
+SELECT numcom, datcom, numfou
+FROM entcom
+WHERE MONTH(datcom) IN (3, 4);
 
 -- 7. Quelles sont les commandes du jour qui ont des observations
 -- particulières ?
 -- (Affichage numéro de commande, date de commande)
 
+SELECT numcom, obscom
+FROM entcom
+WHERE obscom IS NOT NULL AND TRIM(obscom) != '';
+
 
 -- 8. Lister le total de chaque commande par total décroissant
 -- (Affichage numéro de commande et total)
+
+
 
 
 -- 9. Lister les commandes dont le total est supérieur à 10 000€ ; on exclura
@@ -85,6 +153,9 @@ SELECT DISTINCT numfou FROM entcom;
 -- 10. Lister les commandes par nom fournisseur
 -- (Afficher le nom du fournisseur, le numéro de commande et la date)
 
+SELECT nomfou, numcom, datcom
+FROM entcom
+JOIN fournis ON fournis.numfou = entcom.numfou;
 
 -- 11. Sortir les produits des commandes ayant le mot "urgent" en
 -- observation?
@@ -95,11 +166,33 @@ SELECT DISTINCT numfou FROM entcom;
 -- 12. Coder de 2 manières différentes la requête suivante :
 -- Lister le nom des fournisseurs susceptibles de livrer au moins un article
 
+SELECT DISTINCT nomfou
+FROM fournis
+JOIN vente ON vente.numfou = fournis.numfou
+
+---------------
+
+SELECT nomfou
+FROM fournis
+JOIN vente ON vente.numfou = fournis.numfou
+GROUP BY nomfou
+HAVING COUNT(*) >= 1;
+
 
 -- 13. Coder de 2 manières différentes la requête suivante
 -- Lister les commandes (Numéro et date) dont le fournisseur est celui de
 -- la commande 70210 :
 
+SELECT numcom, datcom
+FROM entcom
+WHERE numfou = (SELECT numfou FROM entcom WHERE numcom = 70210);
+
+-------------------------------
+
+SELECT numcom, datcom
+FROM entcom
+JOIN entcom ON entcom.numfou = entcom.numfou
+WHERE entcom.numcom = 70210;
 
 -- 14. Dans les articles susceptibles d’être vendus, lister les articles moins
 -- chers (basés sur Prix1) que le moins cher des rubans (article dont le
