@@ -1,4 +1,4 @@
--- Active: 1745306493697@@127.0.0.1@3306@papyrus
+-- Active: 1744794523467@@127.0.0.1@3306@papyrus
 
 -- Exercice réalisé sur la base "papyrus"
 
@@ -286,6 +286,14 @@ HAVING SUM(ligcom.qtecde) > produit.qteann * 0.9;
 -- 19. Calculer le chiffre d'affaire par fournisseur pour l'année 93 sachant
 -- que les prix indiqués sont hors taxes et que le taux de TVA est 20%.
 
+USE papyrus;
+
+SELECT f.numfou, f.nomfou, SUM(l.qtecde * l.priuni * 1.20) AS ChiffreAffaireTTC
+FROM ligcom l
+JOIN entcom e ON e.numcom = l.numcom
+JOIN fournis f ON f.numfou = e.numfou
+WHERE YEAR(e.datcom) = 2022
+GROUP BY f.numfou, f.nomfou;
 
 
 -----------------------------------------------------------------------

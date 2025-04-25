@@ -1,3 +1,5 @@
+-- Active: 1744794523467@@127.0.0.1@3306@papyrus
+
 DROP DATABASE papyrus;
 
 CREATE DATABASE papyrus;
