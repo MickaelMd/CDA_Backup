@@ -63,11 +63,24 @@ INSERT INTO `ligcom` (`numcom`, `numlig`, `codart`, `qtecde`, `priuni`, `qteliv`
 
 
 DELIMITER |
-CREATE TRIGGER nom [MOMENT] [EVENEMENT]  
-    ON [ARTICLES_A_COMMANDER] 
+CREATE TRIGGER update_stock
+AFTER UPDATE  
+    ON produit
     FOR EACH ROW 
     BEGIN
-       -- [requête] 
+        DECLARE deja_com INT;
+        SELECT SUM(qte) INTO deja_com
+        FROM `ARTICLE_A_COMMANDER`
+        WHERE codart = NEW.codart;
+
+
+
+        IF  NEW.stkphy <= NEW.stkale THEN 
+            INSERT INTO ARTICLE_A_COMMANDER (codart, qte)
+            VALUES (NEW.codart, NEW.stkale + 5 - deja_com);
+        END IF;
+
+
     END; 
 |
 DELIMITER;
