@@ -44,10 +44,10 @@ USE papyrus;
 /* 
 Tables et leurs attributs :
 
-PRODUIT (CODART, LIBART, STKLE, STKPHY, QTEANN, UNIMES)
+PRODUIT (CODART, LIBART, STKALE, STKPHY, QTEANN, UNIMES)
 - CODART   : Code article
 - LIBART   : Libellé de l’article
-- STKLE    : Stock d’alerte
+- STKALE    : Stock d’alerte
 - STKPHY   : Stock physique
 - QTEANN   : Quantité annuelle
 - UNIMES   : Unité de mesure

@@ -77,7 +77,7 @@ CREATE TABLE client(
 CREATE TABLE commande(
    id_commande INT AUTO_INCREMENT NOT NULL, 
    ref_commande VARCHAR(50) NOT NULL UNIQUE,  
-   date_commande DATETIME NOT NULL,
+   date_commande DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
    mode_paiement VARCHAR(50) NOT NULL,
    statut VARCHAR(50) NOT NULL,
    tva INT NOT NULL,
@@ -85,7 +85,7 @@ CREATE TABLE commande(
    total DECIMAL(15,2) NOT NULL,
    total_ht DECIMAL(15,2) NOT NULL,
    ref_facture VARCHAR(50) NOT NULL,
-   date_facture DATETIME NOT NULL,
+   date_facture DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
    ref_client VARCHAR(50) NOT NULL,
    PRIMARY KEY(id_commande), 
    UNIQUE(ref_facture),
