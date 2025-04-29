@@ -73,8 +73,6 @@ AFTER UPDATE
         FROM `ARTICLE_A_COMMANDER`
         WHERE codart = NEW.codart;
 
-
-
         IF  NEW.stkphy <= NEW.stkale THEN 
             INSERT INTO ARTICLE_A_COMMANDER (codart, qte)
             VALUES (NEW.codart, NEW.stkale + 5 - deja_com);

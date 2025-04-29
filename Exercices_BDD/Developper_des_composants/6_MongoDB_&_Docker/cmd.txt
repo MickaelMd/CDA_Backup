@@ -1,0 +1,39 @@
+Démarre MongoDB en arrière-plan :
+docker compose up -d
+
+-----------
+
+Vérifie si MongoDB fonctionne :
+docker compose ps
+
+-----------
+
+Accède au shell du conteneur MongoDB :
+docker compose exec mongo bash
+
+-----------
+
+Vérifie les logs pour tout problème :
+docker compose logs mongo
+
+-----------
+
+mongosh mongodb://root:example@127.0.0.1
+
+OU
+
+mongosh -u root -p example
+
+-----------
+
+restorez les base sampledata
+
+wget https://download.restheart.com/sampledata.archive
+
+
+mongorestore -u root -p example --archive=sampledata.archive
+
+docker compose exec mongo mongorestore -u root -p example --archive=/path/to/sampledata.archive
+
+
+docker compose down
