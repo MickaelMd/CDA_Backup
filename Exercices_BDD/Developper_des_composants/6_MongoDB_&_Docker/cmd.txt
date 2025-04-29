@@ -37,3 +37,16 @@ docker compose exec mongo mongorestore -u root -p example --archive=/path/to/sam
 
 
 docker compose down
+
+----------- !!! -----------
+
+
+Requête combinée
+Recherchez tous les utilisateurs dont le nom contient la lettre "a" et qui ont un rôle différent de "viewer". Piste : utilisez $regex et $ne.
+
+db.users.find({
+  name: { $regex: /a/i }, 
+  role: { $ne: "viewer" } 
+});
+
+

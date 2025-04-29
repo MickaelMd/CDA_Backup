@@ -20,7 +20,7 @@ const Movie = mongoose.model(
 
 app.get("/api/movies", async (req, res) => {
   try {
-    const movies = await Movie.find().limit(1000);
+    const movies = await Movie.find().limit(20);
     res.json(movies);
   } catch (err) {
     console.error("Erreur dans /api/movies :", err);
