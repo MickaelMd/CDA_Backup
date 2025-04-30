@@ -1,0 +1,16 @@
+
+---------------------------------------------------------------
+
+Assurer les sauvegardes-restaurations de la base de données :
+
+Sauvegarde : 
+
+mysqldump -u Afpa -p green_village > save_green_village.sql
+
+Restauration :
+
+mysql -u Afpa -p -e "CREATE DATABASE green_village;"
+mysql -u Afpa -p green_village < save_green_village.sql
+
+---------------------------------------------------------------
+
