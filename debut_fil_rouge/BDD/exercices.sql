@@ -41,7 +41,6 @@ GROUP BY produit.id_produit
 ORDER BY marge DESC
 LIMIT 10;
 
-
 -- 5. TOP 10 des clients en nombre de commandes
 
 SELECT client.nom, COUNT(ref_commande) AS nb_commande
@@ -131,3 +130,4 @@ JOIN sous_categorie ON sous_categorie.id_sous_categorie = produit.id_sous_catego
 JOIN categorie ON categorie.id_categorie = sous_categorie.id_categorie;
 
 CALL avg_delai_livraison();
+
