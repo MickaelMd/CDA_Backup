@@ -1,0 +1,43 @@
+@startuml mediatheque_v2
+
+actor Lecteur
+actor Employe
+participant "Base de données" as bdd
+
+Lecteur -> Employe: Demande d'emprunt
+
+Employe -> bdd: Vérifie l'existence du lecteur
+bdd --> Employe: Lecture des données du lecteur
+
+alt Si le lecteur a des cotisations en retard ou plus de 5 emprunts
+    Employe -> Lecteur: Refuse l'emprunt
+end
+
+alt Si le lecteur est enregistré dans la bdd
+    Employe -> bdd: Vérifie la disponibilité du document
+    bdd --> Employe: Lecture des données du document
+    alt Si le document est disponible
+        Employe -> bdd: Crée l'emprunt
+        bdd --> Employe: Confirmation de création
+        bdd -> bdd: Mise à jour de la disponibilité du document
+        Employe -> Lecteur: Donne le document
+    else Si le document n'est pas disponible
+        Employe -> Lecteur: Informe que le document n'est pas disponible
+    end
+else Si le lecteur n'est pas enregistré
+    Employe -> bdd: Enregistre le nouveau lecteur
+    bdd --> Employe: Confirmation de l'enregistrement
+end
+
+Lecteur -> Employe: Rend un document
+Employe -> bdd: Met à jour la base
+bdd --> Employe: Confirmation de mise à jour
+
+bdd -> bdd: Vérifie les cotisations
+
+alt Si le lecteur a une cotisation impayée
+    bdd -> Employe: Informe l'employé des cotisations non payées
+    Employe -> Lecteur: Demande la cotisation
+end
+
+@enduml

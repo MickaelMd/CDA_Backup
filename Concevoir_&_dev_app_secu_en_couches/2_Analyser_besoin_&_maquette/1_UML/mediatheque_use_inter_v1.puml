@@ -1,0 +1,46 @@
+@startuml Mediatheque
+
+actor Lecteur
+actor Employe
+actor "Base de Données" as Bdd
+
+usecase "Fait une demande d'emprunt" as UC_Demande
+usecase "Vérifier la disponibilité du document" as UC_Dispo
+usecase "Créer un emprunt" as UC_Create
+usecase "Mettre à jour la disponibilité" as UC_UpdateDoc
+usecase "Rend un document" as UC_Rend
+usecase "Paye sa cotisation" as UC_paye
+usecase "Créer une fiche lecteur" as US_addclient
+usecase "Vérifier la cotisation" as UC_VerifCotisation
+usecase "Demande d'inscription" as UC_demande_insc
+usecase "Relance de cotisation" as US_relance 
+
+Lecteur --> UC_Demande
+UC_Demande --> Employe
+
+Employe --> UC_Dispo
+Employe --> UC_Create
+Employe --> UC_UpdateDoc
+Employe --> UC_VerifCotisation
+
+UC_VerifCotisation --> Bdd
+UC_Dispo --> Bdd
+UC_Create --> Bdd
+UC_UpdateDoc --> Bdd
+
+Lecteur --> UC_Rend
+UC_Rend --> Employe
+
+Lecteur --> UC_paye
+UC_paye --> Employe
+
+Employe --> US_addclient
+US_addclient --> Bdd
+
+Lecteur --> UC_demande_insc
+UC_demande_insc --> Employe
+
+Employe --> US_relance
+US_relance --> Lecteur
+
+@enduml
