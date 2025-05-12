@@ -1,0 +1,71 @@
+Flux nominal Green Village : 
+
+Flux Nominal - Commande d’un produit par un client sur Green Village
+
+
+    1.  Le client accède à la page d’accueil du site.
+    2.  Il sélectionne une catégorie de produits (ex : guitares, claviers...).
+    3.  Il choisit une sous-catégorie (ex : guitares électriques, pianos numériques...).
+    4.  Il consulte la fiche produit d’un article qui l’intéresse.
+    5.  Il ajoute l’article au panier.
+    6.  Il accède à son panier d’achat.
+    7.  Il vérifie les articles et les quantités sélectionnées.
+    8.  Il se connecte à son compte client ou crée un compte si c'est un nouveau client.
+    9.  Il vérifie/modifie ses informations de livraison et de facturation.
+    10. Il choisit un mode de paiement (CB, PayPal, etc.).
+    11. La commande est enregistrée dans le système.
+    12. Une facture est automatiquement générée.
+    13. Un bon de livraison est également généré.
+    14. La commande est facturée.
+    15. La commande est expédiée au client.
+
+---
+
+Flux alternatifs :
+
+Cas 1 : Le client est un professionnel
+
+    1.  Le client se connecte à son compte professionnel.
+    2.  Le client choisit ses articles.
+    3.  Il accède à son panier d’achat.
+    4.  La commande est enregistrée dans le système.
+    5.  Un commercial applique le coefficient sur le total de la commande.
+    6.  Une facture est automatiquement générée.
+    7.  Un bon de livraison est également généré.
+    8.  La commande est facturée.
+    9.  La commande est expédiée au client.
+
+Cas 2 : Commande partiellement expédiée
+
+    1.  Le client commande plusieurs articles.
+    2.  La commande ne peut être envoyée en totalité.
+    3.  Une expédition partielle est effectuée.
+    4.  Plusieurs bons de livraison sont générés.
+    5.  Une seule facture est émise pour la commande entière.
+
+Cas 3 : Le client annule une commande (avant envoi)
+
+    1.  Le client consulte son historique de commande.
+    2.  Le client contacte un commercial avec sa référence commande.
+    3.  Le commercial vérifie et annule la commande.
+
+Cas 4 : Le client annule une commande (après envoi)
+
+    1.  Le client consulte son historique de commande.
+    2.  Le client contacte un commercial avec sa référence de commande.
+    3.  Le commercial vérifie et annule la commande et demande le renvoi des articles.
+    4.  Le commercial vérifie le renvoi des articles.
+    5.  Le commercial procède au remboursement.
+
+Cas 5 : Le client annule une commande avant validation du panier 
+
+    1.  Le client accède à son panier.
+    2.  Le client supprime les articles du panier.
+    3.  Aucune commande n'est passée.
+
+Cas 6 : Echec du mode de paiement
+
+    1. Le client valide le panier.
+    2. Choisis un mode de paiement.
+    3. Le paiement est refusé.
+    4. Le site indique une erreur et propose de vérifier les informations ou un autre mode de paiement.

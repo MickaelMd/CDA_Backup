@@ -1,0 +1,12 @@
+@startuml Diagramme de séquence
+
+actor Client
+participant "Base de données" as Bdd
+actor Commercial 
+
+Client -> Bdd: Accéde au site
+Bdd --> Client: Renvoie la liste des catégories / sous-catégories / produits
+Client -> Client: Ajoute un produit a son panier
+
+
+@enduml

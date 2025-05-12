@@ -1,0 +1,58 @@
+@startuml Mediatheque
+
+class Document {
+    + cote: VARCHAR(20)
+    + titre: VARCHAR(100)
+    + auteur: VARCHAR(100)
+    + disponible: BOOLEAN
+    + type: VARCHAR(50)
+    + date_parution: DATE
+    + empruntable: BOOLEAN
+    + caution: DECIMAL(4,2)
+    + etat: VARCHAR(50)
+}
+
+class Lecteur {
+    + Id_Lecteur: INT
+    + nom: VARCHAR(50)
+    + prenom: VARCHAR(50)
+    + adresse: VARCHAR(200)
+    + cotisation: DECIMAL(4,2)
+    + nb_emprunt: INT
+}
+
+class Employe {
+    + Id_Employe: INT
+    + nom: VARCHAR(50)
+    + prenom: VARCHAR(50)
+    + role: VARCHAR(50)
+    + autorise: BOOLEAN
+}
+
+class Emprunt {
+    + Id_Emprunt: INT
+    + date_debut: DATE
+    + date_fin: DATE
+    + caution: DECIMAL(4,2)
+}
+
+class Lettre_Relance {
+    + Id_Relance: INT
+    + date_envoie: DATE
+}
+
+class Ecran {
+    + Id_Ecran: INT
+    + etat: VARCHAR(50)
+    + disponible: BOOLEAN
+}
+
+
+Lecteur "0..*" --> "1..1" Emprunt : effectue
+Emprunt "0..*" --> "1..1" Lettre_Relance : relance
+Lecteur "0..*" --> "1..1" Lettre_Relance : recoit
+Document "0..*" --> "1..1" Emprunt : concerne
+Emprunt "0..1" --> "0..1" Ecran : utilise
+Employe "1..*" --> "1..1" Emprunt : enregistre
+
+@enduml

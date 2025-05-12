@@ -38,6 +38,9 @@ bdd -> bdd: Vérifie les cotisations
 alt Si le lecteur a une cotisation impayée
     bdd -> Employe: Informe l'employé des cotisations non payées
     Employe -> Lecteur: Demande la cotisation
+    Lecteur -> Employe: Paye sa cotisation
+    Employe -> bdd: Met a jour la cotisation
+    bdd --> Employe: Confirme la mise a jour
 end
 
 @enduml

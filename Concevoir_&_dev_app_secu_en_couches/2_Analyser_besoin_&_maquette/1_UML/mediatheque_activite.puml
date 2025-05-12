@@ -1,0 +1,32 @@
+@startuml Mediatheque : Activité
+
+start
+
+:Le lecteur demande un emprunt;
+:Vérifier si le lecteur est inscrit;
+
+if (Lecteur inscrit ?) then (oui)
+  :Vérifier si le lecteur est en règle;
+  
+  if (Lecteur en règle ?) then (oui)
+    :Vérifier disponibilité du document;
+
+    if (Document disponible ?) then (oui)
+      :Enregistrer l'emprunt;
+      :Le lecteur repart avec le document;
+    else (non)
+      :Informer le lecteur que le document est indisponible;
+      :Proposer une réservation ou un autre choix;
+    endif
+
+  else (non)
+    :Informer le lecteur qu’il n’est pas en règle;
+  endif
+
+else (non)
+  :Inscrire le lecteur;
+endif
+
+stop
+@enduml
+

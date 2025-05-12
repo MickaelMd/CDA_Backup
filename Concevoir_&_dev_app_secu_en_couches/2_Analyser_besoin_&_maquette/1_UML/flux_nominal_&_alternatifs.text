@@ -1,0 +1,33 @@
+Flux nominal médiathèque
+
+Emprunt d’un livre par un lecteur (lecteur inscrit, en règle, document disponible) :
+
+    1. Le lecteur se présente à l’employé pour emprunter un document.
+    2. L’employé vérifie que le lecteur est inscrit.
+    3. L’employé vérifie que le lecteur est en règle (cotisation à jour, moins de 5 emprunts en cours).
+    4. L’employé vérifie que le document est disponible.
+    5. L’employé enregistre l’emprunt dans le système.
+    6. Le lecteur repart avec le document.
+
+Flux alternatifs :
+
+Cas 1 : Le lecteur n'est pas inscrit.
+
+    1. Le lecteur fait une demande d'emprunt d'un document à un employé.
+    2. L’employé vérifie si le lecteur est inscrit.
+    3. L’employé inscrit le lecteur.
+
+Cas 2 : Le lecteur a des cotisations en retard / a plus de 5 emprunts
+
+    1. Le lecteur se présente à l’employé pour emprunter un document.
+    2. L’employé vérifie que le lecteur est inscrit.
+    3. L’employé vérifie que le lecteur est en règle (cotisation à jour, moins de 5 emprunts en cours).
+    4. L’employé informe de la situation au lecteur.
+
+Cas 3 : Le document est indisponible :
+
+    1. Le lecteur se présente à l’employé pour emprunter un document.
+    2. L’employé vérifie que le lecteur est inscrit et en règle.
+    3. L’employé vérifie la disponibilité du document.
+    4. L’employé constate que le document est indisponible (déjà emprunté ou réservé).
+    5. L’employé informe le lecteur.

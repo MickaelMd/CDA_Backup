@@ -1,0 +1,107 @@
+@startuml Diagramme des classes entités
+
+
+
+
+class Client {
+  +id_client : int
+  +ref_client : varchar(50)
+  +nom : varchar(80)
+  +prenom : varchar(80)
+  +telephone : varchar(80)
+  +email : varchar(320)
+  +pass_client : varchar(255)
+  +type_client : boolean
+  +coefficient : decimal(5,2)
+  +adresse_livraison : varchar(150)
+  +adresse_facturation : varchar(150)
+}
+
+class Commercial {
+  +id_commercial : int
+  +nom : varchar(80)
+  +prenom : varchar(80)
+  +email : varchar(320)
+  +pass_commercial : varchar(255)
+  +telephone : varchar(120)
+}
+
+class Fournisseur {
+  +id_fournisseur : int
+  +nom : varchar(80)
+  +email : varchar(320)
+  +telephone : varchar(80)
+  +adresse : varchar(50)
+}
+
+class Categorie {
+  +id_categorie : int
+  +nom : varchar(80)
+  +image_cat : varchar(200)
+  +active_cat : boolean
+}
+
+class SousCategorie {
+  +id_sous_categorie : int
+  +nom : varchar(80)
+  +image_sous_cat : varchar(200)
+  +active_sous_cat : boolean
+}
+
+class Produit {
+  +id_produit : int
+  +libelle_court : varchar(50)
+  +libelle_long : varchar(200)
+  +image_produit : varchar(200)
+  +prix_ht : decimal(15,2)
+  +prix_fournisseur : decimal(15,2)
+  +stock : int
+  +active_produit : boolean
+}
+
+class Commande {
+  +id_commande : int
+  +ref_commande : varchar(50)
+  +date_commande : datetime
+  +mode_paiement : varchar(50)
+  +statut : varchar(50)
+  +tva : decimal(5,2)
+  +reduction : decimal(5,2)
+  +total : decimal(15,2)
+  +total_ht : decimal(15,2)
+  +ref_facture : varchar(50)
+  +date_facture : datetime
+}
+
+class DetailCommande {
+  +id_details : int
+  +quantite : int
+  +prix : decimal(15,2)
+}
+
+class Livraison {
+  +id_livraison : int
+  +etat : varchar(50)
+  +date_livraison : date
+}
+
+class Acheminement {
+  +quantite_livree : int
+}
+
+Client "1" --> "0..*" Commande : passe
+Commande "1" --> "1..*" DetailCommande : contient
+DetailCommande "1" --> "1" Produit : concerne
+Produit "1" --> "0..*" Fournisseur : fourni par
+Commande "1" --> "1..*" Livraison : est transmis
+Livraison "1" --> "0..*" Acheminement : contient
+Acheminement "1" --> "0..*" Produit : concerne
+
+Commercial "1" --> "0..*" Client : est en lien
+Commercial "1" --> "0..*" Commande : traite
+
+Produit "1" --> "1" SousCategorie : est dans
+SousCategorie "1" --> "0..*" Produit
+Categorie "1" --> "0..*" SousCategorie : possède
+
+@enduml

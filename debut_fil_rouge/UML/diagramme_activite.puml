@@ -1,0 +1,39 @@
+@startuml Diagramme_Activite_Commande_Green_Village
+
+start
+
+:Le client accède au site;
+:Sélectionne une catégorie;
+:Sélectionne une sous-catégorie;
+:Consulte la fiche produit;
+:Ajoute l'article au panier;
+:Accède au panier;
+:Vérifie les articles et les quantités;
+
+if (Le client est connecté ?) then (Non)
+    :Redirection vers connexion/inscription;
+    :Création ou connexion au compte client;
+endif
+
+:Vérifie/modifie les infos de livraison et facturation;
+
+if (Client professionnel ?) then (Oui)
+    :Commande enregistrée;
+    :Un commercial applique le coefficient;
+else (Non)
+    :Choisit un mode de paiement;
+    if (Paiement accepté ?) then (Oui)
+        :Commande enregistrée;
+    else (Non)
+        :Erreur de paiement;
+        :Proposer un autre mode de paiement;
+    endif
+endif
+
+:Facture générée automatiquement;
+:Bon de livraison généré;
+:Commande facturée;
+:Commande expédiée;
+
+stop
+@enduml
