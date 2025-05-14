@@ -15,7 +15,7 @@ if (Le client est connecté ?) then (Non)
     :Création ou connexion au compte client;
 endif
 
-:Vérifie/modifie les infos de livraison et facturation;
+:Ajoute/modifie les infos de livraison et de facturation;
 
 if (Client professionnel ?) then (Oui)
     :Commande enregistrée;
