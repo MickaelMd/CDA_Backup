@@ -1,5 +1,5 @@
 @startuml Cas d’utilisation
-
+left to right direction
 actor Client
 actor Commercial
 
