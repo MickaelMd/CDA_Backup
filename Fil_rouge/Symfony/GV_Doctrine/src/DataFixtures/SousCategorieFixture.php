@@ -46,8 +46,6 @@ class SousCategorieFixture extends Fixture implements DependentFixtureInterface
             ['nom' => 'Accessoires Sonorisation', 'image' => 'image/souscategorie/accessoires-sonorisation.jpg', 'categorie_reference' => 'categorie-sonorisation', 'reference' => 'souscat-accessoires-sonorisation'],
         ];
 
-
-
         foreach ($sousCategoriesData as $data) {
             $sousCategorie = new SousCategorie();
             $sousCategorie->setNom($data['nom']);
