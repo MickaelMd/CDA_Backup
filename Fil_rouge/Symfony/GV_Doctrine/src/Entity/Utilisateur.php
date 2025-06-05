@@ -53,7 +53,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
      * @var Collection<int, Commande>
      */
     #[ORM\OneToMany(targetEntity: Commande::class, mappedBy: 'Commercial')]
-    private Collection $commandesTraitees;
+    private Collection $commandesCommerciales;
 
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -75,7 +75,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->fournisseurs = new ArrayCollection();
         $this->commandes = new ArrayCollection();
-        $this->commandesTraitees = new ArrayCollection();
+        $this->commandesCommerciales = new ArrayCollection();
 
     }
 
@@ -287,15 +287,15 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
         /**
      * @return Collection<int, Commande>
      */
-    public function getCommandesTraitees(): Collection
+    public function getCommandesCommerciales(): Collection
     {
-        return $this->commandesTraitees;
+        return $this->commandesCommerciales;
     }
 
     public function addCommandeTraitee(Commande $commande): static
     {
-        if (!$this->commandesTraitees->contains($commande)) {
-            $this->commandesTraitees->add($commande);
+        if (!$this->commandesCommerciales->contains($commande)) {
+            $this->commandesCommerciales->add($commande);
             $commande->setCommercial($this);
         }
 
@@ -304,7 +304,7 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeCommandeTraitee(Commande $commande): static
     {
-        if ($this->commandesTraitees->removeElement($commande)) {
+        if ($this->commandesCommerciales->removeElement($commande)) {
             // set the owning side to null (unless already changed)
             if ($commande->getCommercial() === $this) {
                 $commande->setCommercial(null);
