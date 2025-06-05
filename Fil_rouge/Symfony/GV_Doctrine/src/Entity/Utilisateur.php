@@ -71,11 +71,21 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Commande::class, mappedBy: 'Client')]
     private Collection $commandes;
 
+    #[ORM\ManyToOne(targetEntity: self::class, inversedBy: 'clientsPros')]
+    private ?self $Commercial = null;
+
+    /**
+     * @var Collection<int, self>
+     */
+    #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'Commercial')]
+    private Collection $clientsPros;
+
     public function __construct()
     {
         $this->fournisseurs = new ArrayCollection();
         $this->commandes = new ArrayCollection();
         $this->commandesCommerciales = new ArrayCollection();
+        $this->clientsPros = new ArrayCollection();
 
     }
 
@@ -308,6 +318,48 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($commande->getCommercial() === $this) {
                 $commande->setCommercial(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCommercial(): ?self
+    {
+        return $this->Commercial;
+    }
+
+    public function setCommercial(?self $Commercial): static
+    {
+        $this->Commercial = $Commercial;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, self>
+     */
+    public function getClientsPros(): Collection
+    {
+        return $this->clientsPros;
+    }
+
+    public function addClientsPro(self $clientsPro): static
+    {
+        if (!$this->clientsPros->contains($clientsPro)) {
+            $this->clientsPros->add($clientsPro);
+            $clientsPro->setCommercial($this);
+        }
+
+        return $this;
+    }
+
+    public function removeClientsPro(self $clientsPro): static
+    {
+        if ($this->clientsPros->removeElement($clientsPro)) {
+            // set the owning side to null (unless already changed)
+            if ($clientsPro->getCommercial() === $this) {
+                $clientsPro->setCommercial(null);
             }
         }
 
