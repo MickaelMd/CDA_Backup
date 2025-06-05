@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\ProduitRepository;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -47,10 +46,9 @@ class Produit
     #[ORM\OneToMany(targetEntity: DetailCommande::class, mappedBy: 'Produit')]
     private Collection $detailCommandes;
 
-    public function __construct()
-    {
-        $this->detailCommandes = new ArrayCollection();
-    }
+    #[ORM\ManyToOne(inversedBy: 'produits')]
+    private ?Fournisseur $Fournisseur = null;
+
 
     public function getId(): ?int
     {
@@ -179,6 +177,18 @@ class Produit
                 $detailCommande->setProduit(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFournisseur(): ?Fournisseur
+    {
+        return $this->Fournisseur;
+    }
+
+    public function setFournisseur(?Fournisseur $Fournisseur): static
+    {
+        $this->Fournisseur = $Fournisseur;
 
         return $this;
     }
