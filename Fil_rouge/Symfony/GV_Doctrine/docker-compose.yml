@@ -1,0 +1,42 @@
+services:
+  mariadb:
+    image: mariadb:10.6.22
+    container_name: mariadb_container
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: symfony_gv
+      MYSQL_USER: Afpa
+      MYSQL_PASSWORD: Afpa1234
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb_data:/var/lib/mysql
+      - ./init:/docker-entrypoint-initdb.d
+    networks:
+      - mariadb_network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin_container
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mariadb
+      PMA_PORT: 3306
+      PMA_USER: root
+      PMA_PASSWORD: root_password
+      MYSQL_ROOT_PASSWORD: root_password
+    ports:
+      - "8080:80"
+    depends_on:
+      - mariadb
+    networks:
+      - mariadb_network
+
+volumes:
+  mariadb_data:
+    driver: local
+
+networks:
+  mariadb_network:
+    driver: bridge

@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ parent() }}Accueil
+{% endblock %}
+
+{% block body %}
+
+	<h1 class="font-title">Salut Salut</h1>
+	<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum, molestias. Ullam illo autem illum inventore veniam aperiam delectus deleniti amet unde eos dicta facilis quidem iusto ab, asperiores at excepturi!</p>
+
+	{% for categorie in categorie %}
+
+
+		<h3 class="font-title">
+			{{categorie.nom}}
+			,
+			{{categorie.active}}
+			,
+			{{categorie.image}}
+			<img style="height:60px;" src="{{categorie.image}}" alt="Image catégorie {{categorie.nom}}">
+		</h3>
+
+
+		{% else %}
+
+	{% endfor %}
+
+
+{% endblock %}
