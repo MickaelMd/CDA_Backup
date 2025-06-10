@@ -6,34 +6,59 @@ use App\Repository\ProduitRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
+
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
+#[ApiResource(
+    operations: [
+        new Get(),  
+        new GetCollection(),
+    ],
+    normalizationContext: ['groups' => ['produit:read']]
+)]
+#[ApiFilter(SearchFilter::class, properties: ['libelleCourt' => 'ipartial'])]
+
+
 class Produit
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['produit:read'])]
     private ?int $id = null;
 
     #[ORM\Column]
+    #[Groups(['produit:read'])]
     private ?int $stock = null;
 
     #[ORM\Column]
+    #[Groups(['produit:read'])]
     private ?bool $active = null;
 
     #[ORM\Column(length: 80)]
+    #[Groups(['produit:read'])]
     private ?string $libelleCourt = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['produit:read'])]
     private ?string $libelleLong = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['produit:read'])]
     private ?string $image = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 15, scale: 2)]
+    #[Groups(['produit:read'])]
     private ?string $prixHt = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 15, scale: 2)]
+    #[Groups(['produit:read'])]
     private ?string $prixFournisseur = null;
 
     #[ORM\ManyToOne(inversedBy: 'produits')]
