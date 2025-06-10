@@ -1,3 +1,8 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
 body {
   top: 0;
   font-family: "Raleway", sans-serif;
@@ -7,8 +12,10 @@ body {
   -webkit-font-smoothing: antialiased;
   -webkit-text-size-adjust: 100%;
   -moz-osx-font-smoothing: grayscale;
-  max-width: 1920px;
+  /* max-width: 1920px; */
   /* peut être le mettre dans une div le max width */
+  margin: 0;
+  padding: 0;
 }
 
 .font-title {
@@ -39,6 +46,10 @@ body {
 }
 .color-logo {
   background-color: #15803d;
+}
+.color-logo-text {
+  color: #15803d;
+  text-decoration: none;
 }
 .color-secondLien {
   color: #626262;
