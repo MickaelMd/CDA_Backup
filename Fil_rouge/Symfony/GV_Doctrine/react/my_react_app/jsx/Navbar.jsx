@@ -76,7 +76,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="color-fond2" style={{ position: "relative" }}>
+      <nav className="color-fond2">
         <h1>
           <a className="nav-logo font-title color-logo-text" href="/">
             Green Village
@@ -116,6 +116,8 @@ const Navbar = () => {
               />
             </div>
             <ul
+              role="listbox"
+              aria-label="Suggestions de produits"
               style={{
                 background: "#fff",
                 color: "black",
@@ -139,6 +141,8 @@ const Navbar = () => {
               {results.map((produit) => (
                 <li
                   key={produit.id}
+                  role="option"
+                  aria-selected={false} // ou true si tu veux gérer la sélection clavier
                   style={{
                     padding: "10px",
                     borderBottom: "1px solid #eee",
@@ -243,6 +247,8 @@ const Navbar = () => {
           />
         </div>
         <ul
+          role="listbox"
+          aria-label="Suggestions de produits"
           style={{
             background: "#fff",
             color: "black",
@@ -268,6 +274,8 @@ const Navbar = () => {
           {results.map((produit) => (
             <li
               key={produit.id}
+              role="option"
+              aria-selected={false}
               style={{
                 padding: "10px",
                 borderBottom: "1px solid #eee",

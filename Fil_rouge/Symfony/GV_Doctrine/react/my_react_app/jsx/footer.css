@@ -1,0 +1,16 @@
+footer {
+  margin-top: 20px;
+  /* text-align: center; */
+  padding-bottom: 10px;
+  color: white;
+}
+
+.section-paiement {
+  display: flex;
+  flex-direction: c;
+}
+
+.section-reseau img,
+.section-paiement img {
+  margin: 5px;
+}

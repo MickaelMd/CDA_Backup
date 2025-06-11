@@ -21,8 +21,10 @@ Encore
    * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
    */
   .addEntry("app", "./assets/app.js")
-  .addEntry("nav-react", "./react/my_react_app/index.js")
+  .addEntry("nav-react", "./react/my_react_app/navbar.js")
   .addEntry("style", "./assets/styles/app.css")
+  .addEntry("index", "./assets/index.js")
+  .addEntry("footer-react", "./react/my_react_app/footer.js")
 
   // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
   .splitEntryChunks()
