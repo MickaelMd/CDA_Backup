@@ -4,7 +4,23 @@ import "./nav.css";
 const Navbar = () => {
   const [searchValue, setSearchValue] = useState("");
   const [results, setResults] = useState([]);
-  const [isFocused, setIsFocused] = useState(false);
+  const [isFocusedDesktop, setIsFocusedDesktop] = useState(false);
+  const [isFocusedMobile, setIsFocusedMobile] = useState(false);
+  const [showSearchMobile, setShowSearchMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 660) {
+        setShowSearchMobile(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     if (searchValue.trim() === "") {
@@ -25,7 +41,7 @@ const Navbar = () => {
           const activeProducts = (data.member || []).filter(
             (produit) => produit.active === true
           );
-          setResults(activeProducts);
+          setResults(activeProducts.slice(0, 5));
         } catch (error) {
           if (error.name !== "AbortError") {
           }
@@ -42,15 +58,12 @@ const Navbar = () => {
 
   const handleResultClick = (produit) => {
     setSearchValue(produit.libelleCourt);
-    setIsFocused(false);
-  };
-
-  const handleInputBlur = () => {
-    setTimeout(() => setIsFocused(false), 150);
+    setIsFocusedDesktop(false);
+    setIsFocusedMobile(false);
   };
 
   const handleSearchMobile = () => {
-    console.log("clique !!");
+    setShowSearchMobile((prev) => !prev);
   };
 
   const handleMenuMobile = () => {
@@ -59,7 +72,7 @@ const Navbar = () => {
 
   return (
     <>
-      <nav className="color-fond2">
+      <nav className="color-fond2" style={{ position: "relative" }}>
         <h1>
           <a className="nav-logo font-title color-logo-text" href="/">
             Green Village
@@ -88,9 +101,10 @@ const Navbar = () => {
                 placeholder="Rechercher un produit..."
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
-                onFocus={() => setIsFocused(true)}
-                onBlur={handleInputBlur}
+                onFocus={() => setIsFocusedDesktop(true)}
+                onBlur={() => setTimeout(() => setIsFocusedDesktop(false), 150)}
               />
+
               <img
                 src="./image/logo/interface/loupe.svg"
                 alt="Rechercher"
@@ -114,7 +128,8 @@ const Navbar = () => {
                 margin: "5px 0px 0px 0px",
                 padding: 0,
                 listStyle: "none",
-                display: isFocused && results.length > 0 ? "block" : "none",
+                display:
+                  isFocusedDesktop && results.length > 0 ? "block" : "none",
               }}
             >
               {results.map((produit) => (
@@ -173,6 +188,84 @@ const Navbar = () => {
           />
         </div>
       </nav>
+
+      <div
+        className="search-container-mobile"
+        style={{
+          position: "absolute",
+          top: "60px",
+          left: 0,
+          right: 0,
+          zIndex: 1001,
+          justifyContent: "center",
+          display: "flex",
+          maxHeight: showSearchMobile ? "500px" : "0px",
+          overflow: showSearchMobile ? "visible" : "hidden",
+          transition: "max-height 0.3s ease-in-out, opacity 0.3s ease-in-out",
+          opacity: showSearchMobile ? 1 : 0,
+        }}
+      >
+        <div
+          className="search-bar-mobile"
+          style={{
+            transform: showSearchMobile ? "translateY(0)" : "translateY(-20px)",
+            transition: "transform 0.3s ease-in-out",
+          }}
+        >
+          <input
+            type="text"
+            placeholder="Rechercher un produit..."
+            value={searchValue}
+            onChange={(e) => setSearchValue(e.target.value)}
+            onFocus={() => setIsFocusedMobile(true)}
+            onBlur={() => setTimeout(() => setIsFocusedMobile(false), 150)}
+          />
+        </div>
+        <ul
+          style={{
+            background: "#fff",
+            color: "black",
+            position: "absolute",
+            top: "100%",
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 1002,
+            maxHeight: "300px",
+            overflowY: "auto",
+            border: "1px solid #ccc",
+            fontSize: "16px",
+            borderRadius: "4px",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+            margin: "5px 0 0 0",
+            padding: 0,
+            listStyle: "none",
+            maxWidth: "90%",
+            width: "100%",
+            display: isFocusedMobile && results.length > 0 ? "block" : "none",
+          }}
+        >
+          {results.map((produit) => (
+            <li
+              key={produit.id}
+              style={{
+                padding: "10px",
+                borderBottom: "1px solid #eee",
+                cursor: "pointer",
+                transition: "background-color 0.2s",
+              }}
+              className="result"
+              onClick={() => handleResultClick(produit)}
+              onMouseDown={(e) => e.preventDefault()}
+              onMouseEnter={(e) => (e.target.style.backgroundColor = "#f5f5f5")}
+              onMouseLeave={(e) =>
+                (e.target.style.backgroundColor = "transparent")
+              }
+            >
+              <a href={"/produit/" + produit.id}>{produit.libelleCourt}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
     </>
   );
 };
