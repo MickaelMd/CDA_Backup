@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import "./nav.css";
+import "./navbar.css";
 
 const Navbar = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -7,11 +7,15 @@ const Navbar = () => {
   const [isFocusedDesktop, setIsFocusedDesktop] = useState(false);
   const [isFocusedMobile, setIsFocusedMobile] = useState(false);
   const [showSearchMobile, setShowSearchMobile] = useState(false);
+  const [showMenuMobile, setShowMenuMobile] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth > 660) {
+      if (window.innerWidth > 711) {
         setShowSearchMobile(false);
+      }
+      if (window.innerWidth > 530) {
+        setShowMenuMobile(false);
       }
     };
 
@@ -67,7 +71,7 @@ const Navbar = () => {
   };
 
   const handleMenuMobile = () => {
-    console.log("menu clique !");
+    setShowMenuMobile((prev) => !prev);
   };
 
   return (
@@ -162,7 +166,9 @@ const Navbar = () => {
           <img
             src="./image/logo/interface/loupe.svg"
             alt="Rechercher"
-            className="search-icon-mobile nav-icon"
+            className={`search-icon-mobile nav-icon ${
+              showSearchMobile ? "active" : ""
+            }`}
             onClick={handleSearchMobile}
           />
 
@@ -181,13 +187,28 @@ const Navbar = () => {
             />
           </a>
           <img
-            src="./image/logo/interface/menu.svg"
-            alt="Rechercher"
-            className=" nav-icon nav-hamb"
+            src={
+              showMenuMobile
+                ? "./image/logo/interface/cross.svg"
+                : "./image/logo/interface/menu.svg"
+            }
+            alt="Menu"
+            className={`nav-icon nav-hamb transition ${
+              showMenuMobile ? "rotate-in active" : "rotate-out"
+            }`}
             onClick={handleMenuMobile}
           />
         </div>
       </nav>
+
+      <div className={`menu-mobile-wrapper ${showMenuMobile ? "show" : ""}`}>
+        <a className="link-nav-mobile" href="">
+          Catégories
+        </a>
+        <a className="link-nav-mobile" href="">
+          À propos
+        </a>
+      </div>
 
       <div
         className="search-container-mobile"
