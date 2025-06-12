@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ parent() }}Catégorie
+	{{categorie.nom}}
+{% endblock %}
+{% block page_specific_stylesheets %}
+	{{ encore_entry_link_tags('index') }}
+{% endblock %}
+
+{% block body %}
+
+
+	<div class="fil-ariane">
+		<a href="/"><img src="/image/logo/interface/home.svg" alt="Logo Accueil"></a>
+		<ul>
+			<li>
+				<a class="color-secondLien" href="/">Accueil</a>
+			</li>
+			<li>
+				<span>></span>
+			</li>
+			<li>
+				<a class="color-secondLien" href="/categorie">Catégorie</a>
+			</li>
+			<li>
+				<span>></span>
+			</li>
+			<li>
+				<a href="/categorie/{{categorie.id}}">{{categorie.nom}}</a>
+			</li>
+		</ul>
+	</div>
+
+	<div class="header-title color-fond2 font-title">
+		<h1>Catégorie :
+			{{categorie.nom}}
+		</h1>
+	</div>
+
+	<section class="section-categorie">
+
+		{% for souscat in souscat %}
+			<a href="/sous-categorie/{{souscat.id}}" class="card-categorie-link">
+				<div class="card-categorie color-fond2">
+					<div class="card-categorie-img">
+						<img src="/{{ souscat.image }}" alt="{{ souscat.nom }}">
+					</div>
+					<h2 class="font-title">{{ souscat.nom }}</h2>
+				</div>
+			</a>
+		{% endfor %}
+	</section>
+
+
+	<div class="header-title color-fond2 font-title">
+		<h1>Nos autres catégories</h1>
+	</div>
+
+	<section class="section-autre-categorie">
+		{% for autresCategories in autresCategories %}
+			<a href="/categorie/{{autresCategories.id}}" class="card-autre-categorie-link">
+				<div class="card-autre-categorie color-fond2">
+
+					<div class="card-autre-categorie-img">
+						<img src="/{{ autresCategories.image }}" alt="{{ autresCategories.nom }}">
+					</div>
+
+					<h2 class="font-title">{{ autresCategories.nom }}</h2>
+
+				</div>
+			</a>
+		{% endfor %}
+	</section>
+
+{% endblock %}

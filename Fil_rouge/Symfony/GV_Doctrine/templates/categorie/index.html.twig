@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ parent() }}Catégorie
+{% endblock %}
+{% block page_specific_stylesheets %}
+	{{ encore_entry_link_tags('index') }}
+{% endblock %}
+
+{% block body %}
+
+
+	<div class="fil-ariane">
+		<a href="/"><img src="/image/logo/interface/home.svg" alt="Logo Accueil"></a>
+		<ul>
+			<li>
+				<a class="color-secondLien" href="/">Accueil</a>
+			</li>
+			<li>
+				<span>>&nbsp;&nbsp;</span>
+			</li>
+			<li>
+				<p>Catégorie</p>
+			</li>
+		</ul>
+	</div>
+
+	<div class="header-title color-fond2 font-title">
+		<h1>Toutes nos Catégories</h1>
+	</div>
+
+	<section class="section-categorie">
+
+		{% for categorie in categorie %}
+			<a href="/categorie/{{categorie.id}}" class="card-categorie-link">
+				<div class="card-categorie color-fond2">
+					<div class="card-categorie-img">
+						<img src="{{ categorie.image }}" alt="{{ categorie.nom }}">
+					</div>
+					<h2 class="font-title">{{ categorie.nom }}</h2>
+				</div>
+			</a>
+		{% endfor %}
+	</section>
+
+{% endblock %}
