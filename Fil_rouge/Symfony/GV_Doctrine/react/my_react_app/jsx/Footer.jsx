@@ -40,7 +40,7 @@ const Footer = () => {
                 <a href="#">Panier</a>
               </li>
               <li>
-                <a href="#">Connexion</a>
+                <a href="/connexion">Connexion</a>
               </li>
             </ul>
           </div>
@@ -49,13 +49,15 @@ const Footer = () => {
             <h3 className="font-title">Légal</h3>
             <ul>
               <li>
-                <a href="#">Politique de confidentialité</a>
+                <a href="/politiquedeconfidentialite">
+                  Politique de confidentialité
+                </a>
               </li>
               <li>
-                <a href="#">Mentions légales</a>
+                <a href="/mentionslegales">Mentions légales</a>
               </li>
               <li>
-                <a href="#">À propos</a>
+                <a href="/apropos">À propos</a>
               </li>
             </ul>
           </div>

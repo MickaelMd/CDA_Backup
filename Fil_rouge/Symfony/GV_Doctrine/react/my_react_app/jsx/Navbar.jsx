@@ -159,9 +159,7 @@ const Navbar = () => {
                     (e.target.style.backgroundColor = "transparent")
                   }
                 >
-                  <a href={"/produit/" + produit.libelleCourt}>
-                    {produit.libelleCourt}
-                  </a>
+                  <a href={"/produit/" + produit.id}>{produit.libelleCourt}</a>
                 </li>
               ))}
             </ul>
@@ -185,7 +183,7 @@ const Navbar = () => {
               alt="Logo Panier"
             />
           </a>
-          <a href="">
+          <a href="/profil">
             <img
               className="nav-icon"
               src="/image/logo/interface/user.svg"
@@ -292,9 +290,7 @@ const Navbar = () => {
                 (e.target.style.backgroundColor = "transparent")
               }
             >
-              <a href={"/produit/" + produit.libelleCourt}>
-                {produit.libelleCourt}
-              </a>
+              <a href={"/produit/" + produit.id}>{produit.libelleCourt}</a>
             </li>
           ))}
         </ul>

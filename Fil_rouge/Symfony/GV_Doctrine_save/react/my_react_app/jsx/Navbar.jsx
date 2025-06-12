@@ -86,7 +86,7 @@ const Navbar = () => {
         <div className="nav-center">
           <ul>
             <li>
-              <a className="link-nav" href="">
+              <a className="link-nav" href="/categorie">
                 Catégories
               </a>
             </li>
@@ -110,7 +110,7 @@ const Navbar = () => {
               />
 
               <img
-                src="./image/logo/interface/loupe.svg"
+                src="/image/logo/interface/loupe.svg"
                 alt="Rechercher"
                 className="search-icon"
               />
@@ -159,7 +159,9 @@ const Navbar = () => {
                     (e.target.style.backgroundColor = "transparent")
                   }
                 >
-                  <a href={"/produit/" + produit.id}>{produit.libelleCourt}</a>
+                  <a href={"/produit/" + produit.libelleCourt}>
+                    {produit.libelleCourt}
+                  </a>
                 </li>
               ))}
             </ul>
@@ -168,7 +170,7 @@ const Navbar = () => {
 
         <div className="nav-icons">
           <img
-            src="./image/logo/interface/loupe.svg"
+            src="/image/logo/interface/loupe.svg"
             alt="Rechercher"
             className={`search-icon-mobile nav-icon ${
               showSearchMobile ? "active" : ""
@@ -179,22 +181,22 @@ const Navbar = () => {
           <a href="">
             <img
               className="nav-icon"
-              src="./image/logo/interface/panier.svg"
+              src="/image/logo/interface/panier.svg"
               alt="Logo Panier"
             />
           </a>
           <a href="">
             <img
               className="nav-icon"
-              src="./image/logo/interface/user.svg"
+              src="/image/logo/interface/user.svg"
               alt="Logo Utilisateur"
             />
           </a>
           <img
             src={
               showMenuMobile
-                ? "./image/logo/interface/cross.svg"
-                : "./image/logo/interface/menu.svg"
+                ? "/image/logo/interface/cross.svg"
+                : "/image/logo/interface/menu.svg"
             }
             alt="Menu"
             className={`nav-icon nav-hamb transition ${
@@ -206,7 +208,7 @@ const Navbar = () => {
       </nav>
 
       <div className={`menu-mobile-wrapper ${showMenuMobile ? "show" : ""}`}>
-        <a className="link-nav-mobile" href="">
+        <a className="link-nav-mobile" href="/categorie">
           Catégories
         </a>
         <a className="link-nav-mobile" href="">
@@ -290,7 +292,9 @@ const Navbar = () => {
                 (e.target.style.backgroundColor = "transparent")
               }
             >
-              <a href={"/produit/" + produit.id}>{produit.libelleCourt}</a>
+              <a href={"/produit/" + produit.libelleCourt}>
+                {produit.libelleCourt}
+              </a>
             </li>
           ))}
         </ul>

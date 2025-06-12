@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ parent() }}Sous catégorie
+	{{souscat.nom}}
+{% endblock %}
+{% block page_specific_stylesheets %}
+	{{ encore_entry_link_tags('index') }}
+{% endblock %}
+
+{% block body %}
+	<div class="fil-ariane">
+		<a href="/"><img src="/image/logo/interface/home.svg" alt="Logo Accueil"></a>
+		<ul>
+			<li>
+				<a class="color-secondLien" href="/">Accueil</a>
+			</li>
+			<li>
+				<span>></span>
+			</li>
+			<li>
+				<a class="color-secondLien" href="/categorie">Catégorie</a>
+			</li>
+			<li>
+				<span>></span>
+			</li>
+			<li>
+				<a class="color-secondLien" href="/categorie/{{souscat.categorie.id}}">{{souscat.categorie.nom}}</a>
+			</li>
+
+			<span>> &nbsp;</span>
+		</li>
+		<li>
+			<p>{{souscat.nom}}</p>
+		</li>
+	</ul>
+</div>
+
+<div class="header-title color-fond2 font-title">
+	<h1>
+		Sous-catégorie :
+		{{souscat.nom}}
+	</h1>
+</div>
+
+<section class="section-produit">
+
+	{% for produit in produits %}
+
+		<div class="card-produit color-fond2">
+
+			<div class="card-produit-img">
+				<img src="/{{ produit.image }}" alt="{{ produit.libellecourt }}">
+			</div>
+			<h2 class="font-title">{{produit.libellecourt}}</h2>
+			<a class="color-secondLien" href="">{{produit.souscategorie.nom}}</a>
+			<p>{{ produit.prixHt * 1.2 }}€</p>
+			<a class="card-produit-btn" href="/produit/{{produit.id}}">Voir le produit</a>
+
+		</div>
+	{% endfor %}
+
+
+</section>{% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ parent() }}{{produit.libelleCourt}}
+{% endblock %}
+
+{% block page_specific_stylesheets %}
+	{{ encore_entry_link_tags('style-produit') }}
+{% endblock %}
+
+{% block body %}
+	<div class="fil-ariane">
+		<a href="/"><img src="/image/logo/interface/home.svg" alt="Logo Accueil"></a>
+		<ul>
+			<li>
+				<a class="color-secondLien" href="/">Accueil</a>
+			</li>
+			<li>
+				<span>></span>
+			</li>
+			<li>
+				<a class="color-secondLien" href="/categorie">Catégorie</a>
+			</li>
+			<li>
+				<span>></span>
+			</li>
+			<li>
+				<a class="color-secondLien" href="/categorie/{{ produit.sousCategorie.categorie.id }}">{{ produit.sousCategorie.categorie.nom }}</a>
+			</li>
+			<li>
+				<span>></span>
+			</li>
+			<li>
+				<a class="color-secondLien" href="/categorie">{{ produit.sousCategorie.nom }}</a>
+			</li>
+			<li>
+				<span>> &nbsp;</span>
+			</li>
+			<li>
+				<p>{{ produit.libelleCourt}}</p>
+			</li>
+		</ul>
+	</div>
+
+	<div class="header-title color-fond2 font-title">
+		<h1>
+			{{produit.libelleCourt}}
+		</h1>
+	</div>
+
+	<section class="section-produit color-fond2">
+		<div class="section-produit-fiche">
+			<div class="section-produit-image">
+				<img src="/{{produit.image}}" alt="{{produit.libelleCourt}}">
+			</div>
+			<div class="section-produit-info">
+				<h1 class="font-title">{{produit.libelleCourt}}</h1>
+				<p>{{produit.libelleLong}}</p>
+				<p class="font-title" style="font-size: 14pt; margin: 0 auto;">{{produit.prixHt * 1.2}}
+					€</p>
+				<a class="card-produit-btn" style="font-size: 14pt;" href="/produit/{{produit.id}}">Ajouter au panier</a>
+			</div>
+
+		</div>
+	</section>
+{% endblock %}
