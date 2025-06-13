@@ -33,28 +33,42 @@ class UtilisateurRepository extends ServiceEntityRepository implements PasswordU
         $this->getEntityManager()->flush();
     }
 
-    //    /**
-    //     * @return Utilisateur[] Returns an array of Utilisateur objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('u')
-    //            ->andWhere('u.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('u.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+     * Récupère un commercial aléatoire
+     */
+    public function findRandomCommercial(): ?Utilisateur
+    {
+        // Récupère tous les commerciaux
+        $commerciaux = $this->createQueryBuilder('u')
+            ->where('u.roles LIKE :role')
+            ->setParameter('role', '%"ROLE_COMMERCIAL"%')
+            ->getQuery()
+            ->getResult();
 
-    //    public function findOneBySomeField($value): ?Utilisateur
-    //    {
-    //        return $this->createQueryBuilder('u')
-    //            ->andWhere('u.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        if (empty($commerciaux)) {
+            return null;
+        }
+
+        // Sélectionne un commercial aléatoire avec PHP
+        $randomIndex = array_rand($commerciaux);
+        return $commerciaux[$randomIndex];
+    }
+
+    /**
+     * Alternative avec une requête SQL native si vous préférez
+     */
+    public function findRandomCommercialNative(): ?Utilisateur
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        
+        $sql = "SELECT id FROM utilisateur WHERE roles LIKE :role ORDER BY RAND() LIMIT 1";
+        $stmt = $conn->executeQuery($sql, ['role' => '%"ROLE_COMMERCIAL"%']);
+        $result = $stmt->fetchAssociative();
+        
+        if (!$result) {
+            return null;
+        }
+        
+        return $this->find($result['id']);
+    }
 }

@@ -92,7 +92,7 @@ const Navbar = () => {
             </li>
 
             <li>
-              <a className="link-nav" href="">
+              <a className="link-nav" href="/apropos">
                 À propos
               </a>
             </li>
@@ -176,7 +176,7 @@ const Navbar = () => {
             onClick={handleSearchMobile}
           />
 
-          <a href="">
+          <a href="/panier">
             <img
               className="nav-icon"
               src="/image/logo/interface/panier.svg"
@@ -209,7 +209,7 @@ const Navbar = () => {
         <a className="link-nav-mobile" href="/categorie">
           Catégories
         </a>
-        <a className="link-nav-mobile" href="">
+        <a className="link-nav-mobile" href="/apropos">
           À propos
         </a>
       </div>

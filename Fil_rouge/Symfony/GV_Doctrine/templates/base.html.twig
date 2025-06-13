@@ -23,6 +23,7 @@
 			{{ encore_entry_script_tags('app') }}
 			{{ encore_entry_script_tags('nav-react') }}
 			{{ encore_entry_script_tags('footer-react') }}
+			{{ encore_entry_script_tags('testsession-react') }}
 			{% block importmap %}
 				{{ importmap('app') }}
 			{% endblock %}
@@ -30,7 +31,26 @@
 	</head>
 	<body>
 		<div id="navbar-react"></div>
+		<div class="error_section">
+			{% for message in app.flashes('success') %}
+				<div class="notification flashe-success">
+					{{ message|raw }}
+				</div>
+			{% endfor %}
+
+			{% for message in app.flashes('error') %}
+				<div class="notification flashe-error">
+					{{ message|raw }}
+				</div>
+			{% endfor %}
+
+		</div>
+
+
 		{% block body %}{% endblock %}
 		<div id="footer-react"></div>
+		<div id="testsession-react" data-test="test data html" {% if app.user %} data-user-id="{{ app.user.id }}" data-user-email="{{ app.user.email }}" {% endif %}></div>
+
+
 	</body>
 </html>

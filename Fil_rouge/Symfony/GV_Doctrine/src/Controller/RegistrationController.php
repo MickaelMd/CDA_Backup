@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Utilisateur;
 use App\Form\RegistrationForm;
+use App\Repository\UtilisateurRepository;
 use App\Security\EmailVerifier;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -24,8 +25,10 @@ class RegistrationController extends AbstractController
     }
 
     #[Route('/inscription', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager, UtilisateurRepository $utilisateurRepository): Response
     {
+            // $this->addFlash('success', 'Message flash de test !');
+
         $user = new Utilisateur();
         $form = $this->createForm(RegistrationForm::class, $user);
         $form->handleRequest($request);
@@ -33,6 +36,15 @@ class RegistrationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             /** @var string $plainPassword */
             $plainPassword = $form->get('plainPassword')->getData();
+
+            // Attribution automatique du rôle ROLE_CLIENT
+            $user->setRoles(['ROLE_CLIENT']);
+
+            // Attribution d'un commercial aléatoire
+            $commercial = $utilisateurRepository->findRandomCommercial();
+            if ($commercial) {
+                $user->setCommercial($commercial);
+            }
 
             // encode the plain password
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
@@ -49,7 +61,8 @@ class RegistrationController extends AbstractController
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
 
-            // do anything else you need here, like send an email
+            // Message de succès
+            $this->addFlash('success', 'Votre compte a été créé avec succès ! Veuillez vérifier votre email.');
 
             return $security->login($user, 'form_login', 'main');
         }
@@ -70,13 +83,16 @@ class RegistrationController extends AbstractController
             $user = $this->getUser();
             $this->emailVerifier->handleEmailConfirmation($request, $user);
         } catch (VerifyEmailExceptionInterface $exception) {
-            $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
+      
+
+            $this->addFlash('error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
+
 
             return $this->redirectToRoute('app_register');
         }
 
-        // @TODO Change the redirect on success and handle or remove the flash message in your templates
-        $this->addFlash('success', 'Your email address has been verified.');
+        // Message de succès pour la vérification d'email
+        $this->addFlash('success', 'Votre adresse email a été vérifiée avec succès.');
 
         return $this->redirectToRoute('app_register');
     }

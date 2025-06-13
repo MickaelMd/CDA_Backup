@@ -31,13 +31,13 @@ const Footer = () => {
             <h3 className="font-title">Navigation</h3>
             <ul>
               <li>
-                <a href="#">Acceuil</a>
+                <a href="/">Acceuil</a>
               </li>
               <li>
                 <a href="/categorie">Catégories</a>
               </li>
               <li>
-                <a href="#">Panier</a>
+                <a href="/panier">Panier</a>
               </li>
               <li>
                 <a href="/connexion">Connexion</a>
