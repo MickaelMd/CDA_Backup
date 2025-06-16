@@ -8,7 +8,7 @@ const Navbar = () => {
   const [isFocusedMobile, setIsFocusedMobile] = useState(false);
   const [showSearchMobile, setShowSearchMobile] = useState(false);
   const [showMenuMobile, setShowMenuMobile] = useState(false);
-
+  const isActiveLink = (path) => window.location.pathname === path;
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth > 711) {
@@ -86,13 +86,23 @@ const Navbar = () => {
         <div className="nav-center">
           <ul>
             <li>
-              <a className="link-nav" href="/categorie">
+              <a
+                className={`link-nav ${
+                  isActiveLink("/categorie") ? "color-logo-text" : ""
+                }`}
+                href="/categorie"
+              >
                 Catégories
               </a>
             </li>
 
             <li>
-              <a className="link-nav" href="">
+              <a
+                className={`link-nav ${
+                  isActiveLink("/apropos") ? "color-logo-text" : ""
+                }`}
+                href="/apropos"
+              >
                 À propos
               </a>
             </li>
@@ -118,22 +128,8 @@ const Navbar = () => {
             <ul
               role="listbox"
               aria-label="Recherche de produit"
+              className="search-bar-result"
               style={{
-                background: "#fff",
-                color: "black",
-                position: "absolute",
-                top: "100%",
-                left: 0,
-                right: 0,
-                zIndex: 1000,
-                maxHeight: "300px",
-                overflowY: "auto",
-                border: "1px solid #ccc",
-                borderRadius: "4px",
-                boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-                margin: "5px 0px 0px 0px",
-                padding: 0,
-                listStyle: "none",
                 display:
                   isFocusedDesktop && results.length > 0 ? "block" : "none",
               }}
@@ -159,9 +155,7 @@ const Navbar = () => {
                     (e.target.style.backgroundColor = "transparent")
                   }
                 >
-                  <a href={"/produit/" + produit.libelleCourt}>
-                    {produit.libelleCourt}
-                  </a>
+                  <a href={"/produit/" + produit.id}>{produit.libelleCourt}</a>
                 </li>
               ))}
             </ul>
@@ -178,14 +172,14 @@ const Navbar = () => {
             onClick={handleSearchMobile}
           />
 
-          <a href="">
+          <a href="/panier">
             <img
               className="nav-icon"
               src="/image/logo/interface/panier.svg"
               alt="Logo Panier"
             />
           </a>
-          <a href="">
+          <a href="/profil">
             <img
               className="nav-icon"
               src="/image/logo/interface/user.svg"
@@ -208,10 +202,21 @@ const Navbar = () => {
       </nav>
 
       <div className={`menu-mobile-wrapper ${showMenuMobile ? "show" : ""}`}>
-        <a className="link-nav-mobile" href="/categorie">
+        <a
+          className={`link-nav-mobile ${
+            isActiveLink("/categorie") ? "color-logo-text" : ""
+          }`}
+          href="/categorie"
+        >
           Catégories
         </a>
-        <a className="link-nav-mobile" href="">
+
+        <a
+          className={`link-nav-mobile ${
+            isActiveLink("/apropos") ? "color-logo-text" : ""
+          }`}
+          href="/apropos"
+        >
           À propos
         </a>
       </div>
@@ -219,16 +224,8 @@ const Navbar = () => {
       <div
         className="search-container-mobile"
         style={{
-          position: "absolute",
-          top: "63px",
-          left: 0,
-          right: 0,
-          zIndex: 1001,
-          justifyContent: "center",
-          display: "flex",
           maxHeight: showSearchMobile ? "500px" : "0px",
           overflow: showSearchMobile ? "visible" : "hidden",
-          transition: "max-height 0.3s ease-in-out, opacity 0.3s ease-in-out",
           opacity: showSearchMobile ? 1 : 0,
         }}
       >
@@ -236,7 +233,6 @@ const Navbar = () => {
           className="search-bar-mobile"
           style={{
             transform: showSearchMobile ? "translateY(0)" : "translateY(-20px)",
-            transition: "transform 0.3s ease-in-out",
           }}
         >
           <input
@@ -251,25 +247,8 @@ const Navbar = () => {
         <ul
           role="listbox"
           aria-label="recherche de produit"
+          className="search-bar-result-mobile"
           style={{
-            background: "#fff",
-            color: "black",
-            position: "absolute",
-            top: "100%",
-            left: "50%",
-            transform: "translateX(-50%)",
-            zIndex: 1002,
-            maxHeight: "300px",
-            overflowY: "auto",
-            border: "1px solid #ccc",
-            fontSize: "16px",
-            borderRadius: "4px",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-            margin: "5px 0 0 0",
-            padding: 0,
-            listStyle: "none",
-            maxWidth: "90%",
-            width: "100%",
             display: isFocusedMobile && results.length > 0 ? "block" : "none",
           }}
         >
@@ -292,9 +271,7 @@ const Navbar = () => {
                 (e.target.style.backgroundColor = "transparent")
               }
             >
-              <a href={"/produit/" + produit.libelleCourt}>
-                {produit.libelleCourt}
-              </a>
+              <a href={"/produit/" + produit.id}>{produit.libelleCourt}</a>
             </li>
           ))}
         </ul>

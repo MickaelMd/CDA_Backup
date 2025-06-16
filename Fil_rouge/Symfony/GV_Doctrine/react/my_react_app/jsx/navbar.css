@@ -102,6 +102,24 @@ nav input::placeholder {
   pointer-events: none;
 }
 
+.search-bar-result {
+  background: #fff;
+  color: rgb(230, 0, 0);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 5px 0px 0px 0px;
+  padding: 0;
+  list-style: none;
+}
+
 .nav-icons {
   display: flex;
   align-items: center;
@@ -113,6 +131,9 @@ nav input::placeholder {
   width: 40px;
   height: 40px;
   transition: filter 200ms;
+}
+.nav-icons a {
+  text-decoration: none;
 }
 
 .nav-icon:hover {
@@ -140,15 +161,21 @@ nav input::placeholder {
 }
 
 .search-container-mobile {
-  display: flex;
   justify-content: center;
   display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 63px;
+  z-index: 1001;
+  transition: max-height 0.3s ease-in-out, opacity 0.3s ease-in-out;
 }
 
 .search-bar-mobile {
   position: relative;
   display: flex;
   align-items: center;
+  transition: transform 0.3s ease-in-out;
 }
 
 .search-bar-mobile input {
@@ -156,6 +183,27 @@ nav input::placeholder {
   border: 1px solid #ccc;
   border-radius: 32px;
   width: 250px;
+}
+
+.search-bar-result-mobile {
+  background: #fff;
+  color: black;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1002;
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin: 5px 0 0 0;
+  padding: 0;
+  list-style: none;
+  max-width: 90%;
+  width: 100%;
 }
 
 .search-icon-mobile,
@@ -196,6 +244,22 @@ nav input::placeholder {
   opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
+}
+
+#nav-count-panier {
+  position: absolute;
+  top: -5px;
+  right: -6px;
+  background-color: #369354;
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  min-width: 20px;
+  height: 20px;
+  line-height: 18px;
+  border-radius: 50%;
+  text-align: center;
+  z-index: 10;
 }
 
 @media (max-width: 864px) {

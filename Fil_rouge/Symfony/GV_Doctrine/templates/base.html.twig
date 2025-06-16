@@ -1,7 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 	<head>
 		<meta charset="UTF-8">
+		<meta name="description" content="Site e-commerce Green Village | Projet Afpa">
+		<meta name="author" content="Mickael Marchand">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>
 			{% block title %}Green Village :
@@ -30,7 +32,8 @@
 		{% endblock %}
 	</head>
 	<body>
-		<div id="navbar-react"></div>
+		<div id="navbar-react" {% if app.session.get('panier') is not empty %} data-panier='{{ app.session.get('panier')|json_encode|e('html_attr') }}' {% endif %}></div>
+
 		<div class="error_section">
 			{% for message in app.flashes('success') %}
 				<div class="notification flashe-success">
@@ -48,7 +51,7 @@
 
 
 		{% block body %}{% endblock %}
-		<div id="footer-react"></div>
+		<div id="footer-react" {% if app.user %} data-user-id="{{ app.user.id }}" {% endif %}></div>
 		<div id="testsession-react" data-test="test data html" {% if app.user %} data-user-id="{{ app.user.id }}" data-user-email="{{ app.user.email }}" {% endif %}></div>
 
 

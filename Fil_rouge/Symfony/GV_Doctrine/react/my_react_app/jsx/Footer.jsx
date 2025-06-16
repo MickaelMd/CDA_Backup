@@ -1,9 +1,11 @@
 import "./footer.css";
 
-const Footer = () => {
+const Footer = ({ userId }) => {
   const handleClickLogo = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  const isActive = (path) => window.location.pathname === path;
 
   return (
     <>
@@ -31,16 +33,45 @@ const Footer = () => {
             <h3 className="font-title">Navigation</h3>
             <ul>
               <li>
-                <a href="/">Acceuil</a>
+                <a href="/" className={isActive("/") ? "active-link" : ""}>
+                  Accueil
+                </a>
               </li>
               <li>
-                <a href="/categorie">Catégories</a>
+                <a
+                  href="/categorie"
+                  className={isActive("/categorie") ? "active-link" : ""}
+                >
+                  Catégories
+                </a>
               </li>
               <li>
-                <a href="/panier">Panier</a>
+                <a
+                  href="/panier"
+                  className={isActive("/panier") ? "active-link" : ""}
+                >
+                  Panier
+                </a>
               </li>
               <li>
-                <a href="/connexion">Connexion</a>
+                <a
+                  href="/profil"
+                  className={isActive("/profil") ? "active-link" : ""}
+                >
+                  Profil
+                </a>
+              </li>
+              <li>
+                <a
+                  href={userId ? "/deconnexion" : "/connexion"}
+                  className={
+                    isActive(userId ? "/deconnexion" : "/connexion")
+                      ? "active-link"
+                      : ""
+                  }
+                >
+                  {userId ? "Déconnexion" : "Connexion"}
+                </a>
               </li>
             </ul>
           </div>
@@ -49,15 +80,30 @@ const Footer = () => {
             <h3 className="font-title">Légal</h3>
             <ul>
               <li>
-                <a href="/politiquedeconfidentialite">
+                <a
+                  href="/politiquedeconfidentialite"
+                  className={
+                    isActive("/politiquedeconfidentialite") ? "active-link" : ""
+                  }
+                >
                   Politique de confidentialité
                 </a>
               </li>
               <li>
-                <a href="/mentionslegales">Mentions légales</a>
+                <a
+                  href="/mentionslegales"
+                  className={isActive("/mentionslegales") ? "active-link" : ""}
+                >
+                  Mentions légales
+                </a>
               </li>
               <li>
-                <a href="/apropos">À propos</a>
+                <a
+                  href="/apropos"
+                  className={isActive("/apropos") ? "active-link" : ""}
+                >
+                  À propos
+                </a>
               </li>
             </ul>
           </div>
@@ -119,7 +165,6 @@ const Footer = () => {
             </div>
           </div>
         </div>
-
         <hr
           style={{
             marginTop: "20px",

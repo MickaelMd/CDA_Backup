@@ -56,8 +56,10 @@
 			<div class="section-produit-info">
 				<h1 class="font-title">{{produit.libelleCourt}}</h1>
 				<p>{{produit.libelleLong}}</p>
-				<p class="font-title" style="font-size: 14pt; margin: 0 auto;">{{produit.prixHt * 1.2}}
-					€</p>
+				<div style="display: flex; flex-direction: column">
+					<p class="font-title" style="font-size: 14pt; margin: 0 auto;">{{produit.prixHt * 1.2}}
+						€</p>
+					<input class="" type="number" name="" id="produit_number" value="1" min="0" max="10"></div>
 				<a class="card-produit-btn" style="font-size: 14pt;" href="/produit/{{produit.id}}">Ajouter au panier</a>
 			</div>
 

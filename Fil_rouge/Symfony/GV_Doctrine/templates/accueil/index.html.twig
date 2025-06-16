@@ -14,10 +14,24 @@
 
 		<h2 class="">Bienvenue chez,</h2>
 		<h1 class="color-logo-text font-title">Green Village</h1>
+		<h2>
+			{% if app.user %}
+				{{ app.user.prenom }}
+			{% endif %}
+		</h2>
 
 		<div class="header-btn">
-			<a href="/connexion">Connectez-vous !</a>
-			<a href="/inscription">Inscrivez-vous !</a>
+			{% if app.user %}
+
+				<a href="/categorie">Voir nos catégories</a>
+				<a href="/profil">Accéder a votre profil</a>
+
+			{% else %}
+				<a href="/connexion">Connectez-vous !</a>
+				<a href="/inscription">Inscrivez-vous !</a>
+			{% endif %}
+
+
 		</div>
 
 	</header>

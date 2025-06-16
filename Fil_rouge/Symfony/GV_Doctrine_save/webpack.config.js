@@ -26,6 +26,7 @@ Encore
   .addEntry("index", "./assets/index.js")
   .addEntry("footer-react", "./react/my_react_app/footer.js")
   .addEntry("style-produit", "./assets/styles/produit.css")
+  .addEntry("testsession-react", "./react/my_react_app/testsession.js")
 
   // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
   .splitEntryChunks()

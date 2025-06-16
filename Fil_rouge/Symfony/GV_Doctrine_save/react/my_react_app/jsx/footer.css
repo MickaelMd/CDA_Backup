@@ -32,7 +32,8 @@ footer {
 .footer-content {
   display: flex;
   flex-wrap: wrap;
-
+  max-width: 1400px;
+  margin: 0 auto;
   justify-content: space-around;
 }
 
@@ -85,6 +86,10 @@ footer {
 .footer-nav h3,
 .footer-legal h3 {
   margin: 0 0 10px 5px;
+}
+.active-link {
+  font-weight: bold;
+  text-decoration: underline !important;
 }
 
 @media screen and (max-width: 992px) {

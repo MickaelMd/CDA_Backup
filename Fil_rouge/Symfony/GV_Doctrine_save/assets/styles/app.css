@@ -54,6 +54,52 @@ body {
   text-decoration: none;
 }
 
+.error_section {
+  position: fixed;
+  top: 100px;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  z-index: 999999;
+  padding-inline: 10px;
+  box-sizing: border-box;
+}
+
+.flashe-success,
+.flashe-error {
+  padding: 10px;
+  border-radius: 36px;
+  backdrop-filter: blur(4.3px);
+  -webkit-backdrop-filter: blur(4.3px);
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 500ms ease, transform 500ms ease;
+}
+
+.flashe-success {
+  border: 1px solid #59d26b;
+  background: #59d26b86;
+}
+
+.flashe-error {
+  border: 1px solid #ff624d;
+  background: #fd533d7c;
+}
+
+.notification {
+  opacity: 0;
+  transform: translateY(-10px); /* position d'entrée */
+  transition: opacity 500ms ease, transform 500ms ease;
+}
+
+.notification.show {
+  opacity: 1;
+  transform: translateY(0); /* position visible */
+}
+
 .header-title {
   display: flex;
   justify-content: center;

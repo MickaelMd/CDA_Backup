@@ -70,10 +70,8 @@ body {
 
 .flashe-success,
 .flashe-error {
-  border: 1px solid black;
   padding: 10px;
-  border-radius: 36px;
-  background: rgba(255, 255, 255, 0.14);
+  border-radius: 50px;
   backdrop-filter: blur(4.3px);
   -webkit-backdrop-filter: blur(4.3px);
   opacity: 1;
@@ -81,15 +79,25 @@ body {
   transition: opacity 500ms ease, transform 500ms ease;
 }
 
+.flashe-success {
+  border: 1px solid #59d26b;
+  background: #59d26b86;
+}
+
+.flashe-error {
+  border: 1px solid #ff624d;
+  background: #fd533d7c;
+}
+
 .notification {
   opacity: 0;
-  transform: translateY(-10px); /* position d'entrée */
+  transform: translateY(-10px);
   transition: opacity 500ms ease, transform 500ms ease;
 }
 
 .notification.show {
   opacity: 1;
-  transform: translateY(0); /* position visible */
+  transform: translateY(0);
 }
 
 .header-title {

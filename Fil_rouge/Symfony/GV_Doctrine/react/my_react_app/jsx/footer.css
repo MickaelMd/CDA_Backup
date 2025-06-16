@@ -87,6 +87,10 @@ footer {
 .footer-legal h3 {
   margin: 0 0 10px 5px;
 }
+.active-link {
+  font-weight: bold;
+  text-decoration: underline !important;
+}
 
 @media screen and (max-width: 992px) {
   #nav-logo-up {
