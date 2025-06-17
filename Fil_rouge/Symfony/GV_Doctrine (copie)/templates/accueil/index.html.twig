@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ parent() }}Accueil
+{% endblock %}
+
+{% block page_specific_stylesheets %}
+	{{ encore_entry_link_tags('index') }}
+{% endblock %}
+
+{% block body %}
+
+	<header class="color-fond2">
+
+		<h2 class="">Bienvenue chez,</h2>
+		<h1 class="color-logo-text font-title">Green Village</h1>
+		<h2>
+			{% if app.user %}
+				{{ app.user.prenom }}
+			{% endif %}
+		</h2>
+
+		<div class="header-btn">
+			{% if app.user %}
+
+				<a href="/categorie">Voir nos catégories</a>
+				<a href="/profil">Accéder a votre profil</a>
+
+			{% else %}
+				<a href="/connexion">Connectez-vous !</a>
+				<a href="/inscription">Inscrivez-vous !</a>
+			{% endif %}
+
+
+		</div>
+
+	</header>
+
+	<div class="header-title color-fond2 font-title">
+		<h1>Nos Catégorie Populaires</h1>
+	</div>
+
+	<section class="section-categorie">
+
+		{% for categorie in categorie|slice(0, 4) %}
+			<a href="/categorie/{{categorie.id}}" class="card-categorie-link">
+				<div class="card-categorie color-fond2">
+					<div class="card-categorie-img">
+						<img src="{{ categorie.image }}" alt="{{ categorie.nom }}">
+					</div>
+					<h2 class="font-title">{{ categorie.nom }}</h2>
+				</div>
+			</a>
+		{% endfor %}
+	</section>
+
+	<div class="header-title color-fond2 font-title">
+		<h1>Toutes nos catégories</h1>
+	</div>
+
+	<section class="section-autre-categorie">
+		{% for categorie in categorie%}
+			<a href="/categorie/{{categorie.id}}" class="card-autre-categorie-link">
+				<div class="card-autre-categorie color-fond2">
+
+					<div class="card-autre-categorie-img">
+						<img src="{{ categorie.image }}" alt="{{ categorie.nom }}">
+					</div>
+
+					<h2 class="font-title">{{ categorie.nom }}</h2>
+
+				</div>
+			</a>
+		{% endfor %}
+	</section>
+
+
+	<div class="header-title color-fond2 font-title">
+		<h1>Nos Produits Populaires</h1>
+	</div>
+
+	<section class="section-produit">
+
+		{% for produit in produit|slice(0, 4) %}
+
+			<div class="card-produit color-fond2">
+
+				<div class="card-produit-img">
+					<img src="{{ produit.image }}" alt="{{ produit.libellecourt }}">
+				</div>
+				<h2 class="font-title">{{produit.libellecourt}}</h2>
+				<a class="color-secondLien" href="">{{produit.souscategorie.nom}}</a>
+				<p>{{ produit.prixHt * 1.2 }}€</p>
+				<a class="card-produit-btn" href="/produit/{{produit.id}}">Voir le produit</a>
+
+			</div>
+		{% endfor %}
+
+	</section>
+
+
+{% endblock %}

@@ -4,17 +4,7 @@
 	{{ parent() }}Connexion
 {% endblock %}
 
-{% block page_specific_stylesheets %}
-	{{ encore_entry_link_tags('login-style') }}
-{% endblock %}
-
 {% block body %}
-	<div class="header-title color-fond2 font-title">
-
-		<h1>
-			Connexion
-		</h1>
-	</div>
 	<form method="post">
 		{% if error %}
 			<div class="error_section">
@@ -22,6 +12,12 @@
 			</div>
 		{% endif %}
 
+		<div class="header-title color-fond2 font-title">
+
+			<h1>
+				Connexion
+			</h1>
+		</div>
 
 		{% if app.user %}
 			<div class="">
@@ -32,28 +28,18 @@
 		{% endif %}
 
 
-		<label for="username">E-mail</label>
+		<label for="username">Email</label>
 		<input type="email" value="{{ last_username }}" name="_username" id="username" class="" autocomplete="email" required autofocus>
-		<label for="password">Mot de passe</label>
+		<label for="password">Password</label>
 		<input type="password" name="_password" id="password" class="" autocomplete="current-password" required>
 		<input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
 		<div class="">
 			<input type="checkbox" name="_remember_me" id="_remember_me">
-			<label for="_remember_me">Se souvenir de moi</label>
+			<label for="_remember_me">Remember me</label>
 		</div>
 
-		<button class="login_btn" type="submit">
-			Se connecter
+		<button class="" type="submit">
+			Sign in
 		</button>
 	</form>
-
-	<section class="login_ask">
-
-		<h1 class="font-title">Pas encore de compte ?</h1>
-
-		<a class="login_btn" href="/inscription">
-			Inscrivez-vous !
-		</a>
-
-	</section>
 {% endblock %}

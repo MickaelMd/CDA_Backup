@@ -34,8 +34,7 @@
 				<div class="panier_card_produit_div_del_quant">
 					<div class="panier_card_produit_formdel">
 						<form method="POST" action="">
-							<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-							<input type="hidden" name="produit_id" value="{{ detail.produit.id }}">
+
 							<button type="submit">
 								<p class="font-title">Supprimer le produit</p>
 								<img src="/image/logo/interface/delete.svg" alt=""/>
@@ -43,14 +42,9 @@
 						</form>
 					</div>
 					<div class="panier_card_produit_quantite">
-						<div class="panier_update">
-							<span>Quantité :
-							</span>
-							<form action="" method="post">
-								<input type="hidden" name="produit_id" value="{{ detail.produit.id }}">
-								<input type="number" name="quantite" class="produit_number" value="{{ detail.quantite }}" min="1" max="10"/>
-							</form>
-						</div>
+						<span>Quantité :
+						</span>
+						<input type="number" name="quantite" class="produit_number" value="{{ detail.quantite }}" min="1" max="10"/>
 						<p>Prix TTC Unitaire :
 							{{ detail.prixTTC|number_format(2, ',', ' ') }}€</p>
 						<p>Prix Total TTC :

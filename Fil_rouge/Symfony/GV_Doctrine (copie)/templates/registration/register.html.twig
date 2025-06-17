@@ -4,20 +4,11 @@
 	{{ parent() }}Inscription
 {% endblock %}
 
-{% block stylesheets %}
-	{{ parent() }}
-	{{ encore_entry_link_tags('form-inscription-react') }}
-{% endblock %}
-
-{% block javascripts %}
-	{{ parent() }}
-	{{ encore_entry_script_tags('form-inscription-react') }}
-{% endblock %}
-
 {% block body %}
 	{% for flash_error in app.flashes('verify_email_error') %}
 		<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
 	{% endfor %}
+
 
 	<div class="header-title color-fond2 font-title">
 
@@ -64,8 +55,8 @@
 
 	<div class="">
 		{{ form_row(registrationForm.plainPassword, {
-		            label: 'Mot de passe'
-		        }) }}
+            label: 'Mot de passe'
+        }) }}
 	</div>
 
 	{{ form_row(registrationForm.agreeTerms) }}
@@ -76,7 +67,4 @@
 	<p>Déjà inscrit ?
 		<a href="{{ path('app_login') }}">Se connecter</a>
 	</p>
-
-	{# <div id="form-inscription-react" data-csrf-token="{{ csrf_token('registration_form') }}"></div> #}
-
 {% endblock %}

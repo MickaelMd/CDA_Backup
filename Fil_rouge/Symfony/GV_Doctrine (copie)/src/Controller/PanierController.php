@@ -20,22 +20,6 @@ final class PanierController extends AbstractController
         ProduitRepository $produitRepository,
         CsrfTokenManagerInterface $csrfTokenManager
     ): Response {
-
-        if ($request->isMethod('POST')) {
-
-             $token = new CsrfToken('authenticate', $request->request->get('_csrf_token'));
-        if (!$csrfTokenManager->isTokenValid($token)) {
-            throw new \Exception('Jeton CSRF invalide.');
-           
-        }
-    
-            $produitId = $request->request->get('produit_id');
-            if ($produitId && is_numeric($produitId)) {
-                $panierService->supprimerProduit((int)$produitId);
-                $this->addFlash('success', 'Produit supprimé du panier');
-                return $this->redirectToRoute('app_panier');
-            }
-        }
         
         dump($request->getSession()->get('panier', []));
         

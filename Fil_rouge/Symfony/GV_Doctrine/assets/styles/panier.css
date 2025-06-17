@@ -1,0 +1,181 @@
+.section_panier_produit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+}
+
+.panier_card_produit {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-width: 900px;
+  padding: 1.5rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.panier_card_produit_img {
+  width: 100%;
+  max-width: 200px;
+  height: 200px;
+  margin: 0 auto;
+}
+
+.panier_card_produit_img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.panier_card_produit_info {
+  text-align: center;
+}
+
+.panier_card_produit_info h1 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.panier_card_produit_info p {
+  font-size: 0.95rem;
+  color: #444;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.panier_card_produit_div_del_quant {
+  display: flex;
+  flex-direction: column;
+  align-items: center !important;
+  gap: 1rem;
+}
+
+.panier_card_produit_formdel p {
+  margin: 0.5rem 0;
+  font-size: 0.9rem;
+}
+
+.panier_card_produit_formdel button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  border: 1px solid #ccc;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  transition: 200ms;
+}
+.panier_card_produit_formdel button:hover {
+  color: red;
+  border: 1px solid #fc3434;
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+}
+
+.panier_card_produit_formdel img {
+  width: 30px;
+  height: 30px;
+}
+
+.panier_card_produit_quantite {
+  text-align: center;
+}
+
+.panier_card_produit_quantite span {
+  font-weight: bold;
+}
+
+.panier_card_produit_quantite input {
+  margin: 0 auto;
+  justify-content: center;
+  width: 55px;
+  font-size: 12pt;
+  padding: 4px 6px;
+  border-radius: 36px;
+  border: 1px solid #ccc;
+  text-align: center;
+  outline: none;
+  transition: border 0.3s, box-shadow 0.3s;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+  background: #f9f9f9;
+}
+.panier_card_produit_quantite input:focus {
+  border: 1px solid #4caf50;
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.6);
+  background: white;
+}
+.panier_card_produit_quantite p {
+  margin: 0.3rem 0;
+  font-size: 0.9rem;
+}
+
+.panier_total {
+  margin-top: 50px;
+  text-align: center;
+}
+.panier_commande_btn {
+  padding: 5px 40px;
+  background: #369354;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 25px;
+  color: white;
+  text-decoration: none;
+  margin-top: 20px;
+  transition: box-shadow 250ms ease;
+  text-align: center;
+  font-size: 13pt;
+}
+
+.panier_commande_btn:hover {
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25),
+    inset 0px 0px 16px 5px rgba(0, 0, 0, 0.25);
+}
+
+.panier_update {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.panier_update form {
+  margin-left: 3px;
+}
+
+@media (min-width: 768px) {
+  .panier_card_produit {
+    flex-direction: row;
+    gap: 2rem;
+    align-items: flex-start;
+  }
+
+  .panier_card_produit_img {
+    margin: 0;
+  }
+
+  .panier_card_produit_info,
+  .panier_card_produit_div_del_quant {
+    flex: 1;
+    text-align: left;
+  }
+
+  .panier_card_produit_info h1 {
+    font-size: 1.75rem;
+  }
+
+  .panier_card_produit_info p {
+    margin: 0;
+  }
+
+  .panier_card_produit_div_del_quant {
+    align-items: flex-start;
+  }
+
+  .panier_card_produit_quantite {
+    text-align: left;
+  }
+}

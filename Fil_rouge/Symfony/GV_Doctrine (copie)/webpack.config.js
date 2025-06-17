@@ -28,11 +28,6 @@ Encore
   .addEntry("style-produit", "./assets/styles/produit.css")
   .addEntry("testsession-react", "./react/my_react_app/testsession.js")
   .addEntry("panier-style", "./assets/styles/panier.css")
-  .addEntry("login-style", "./assets/styles/login.css")
-  .addEntry(
-    "form-inscription-react",
-    "./react/my_react_app/form_inscription.js"
-  )
 
   // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
   .splitEntryChunks()
