@@ -36,11 +36,8 @@ form {
   font-size: 12pt;
   width: 100%;
   box-sizing: border-box;
-  transition: 200ms;
 }
 
-#username:active,
-#password:active,
 form label {
   text-align: center;
   margin-bottom: 5px;
@@ -48,11 +45,6 @@ form label {
   text-align: left;
   width: 100%;
   max-width: 300px;
-}
-#username:focus,
-#password:focus {
-  border: 1px solid #4caf50;
-  outline: none;
 }
 
 .login_ask {

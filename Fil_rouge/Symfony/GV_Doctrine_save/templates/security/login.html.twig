@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ parent() }}Connexion
+{% endblock %}
+
+{% block page_specific_stylesheets %}
+	{{ encore_entry_link_tags('login-style') }}
+{% endblock %}
+
+{% block body %}
+	<div class="header-title color-fond2 font-title">
+
+		<h1>
+			Connexion
+		</h1>
+	</div>
+	<form method="post">
+		{% if error %}
+			<div class="error_section">
+				<div class="notification flashe-error">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+			</div>
+		{% endif %}
+
+
+		{% if app.user %}
+			<div class="">
+				You are logged in as
+				{{ app.user.userIdentifier }},
+				<a href="{{ path('app_logout') }}">Logout</a>
+			</div>
+		{% endif %}
+
+
+		<label for="username">E-mail</label>
+		<input type="email" value="{{ last_username }}" name="_username" id="username" class="" autocomplete="email" required autofocus>
+		<label for="password">Mot de passe</label>
+		<input type="password" name="_password" id="password" class="" autocomplete="current-password" required>
+		<input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+		<div class="">
+			<input type="checkbox" name="_remember_me" id="_remember_me">
+			<label for="_remember_me">Se souvenir de moi</label>
+		</div>
+
+		<button class="login_btn" type="submit">
+			Se connecter
+		</button>
+	</form>
+
+	<section class="login_ask">
+
+		<h1 class="font-title">Pas encore de compte ?</h1>
+
+		<a class="login_btn" href="/inscription">
+			Inscrivez-vous !
+		</a>
+
+	</section>
+{% endblock %}

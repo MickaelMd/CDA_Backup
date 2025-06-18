@@ -1,0 +1,23 @@
+.profil_section_card {
+  display: flex;
+  justify-content: center;
+}
+
+.card_profil {
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  max-width: 500px;
+  padding: 20px;
+  border-radius: 16px;
+}
+
+.card_profil form {
+  display: flex;
+  flex-direction: column;
+}
+
+.card_profil input {
+  max-width: 200px;
+}

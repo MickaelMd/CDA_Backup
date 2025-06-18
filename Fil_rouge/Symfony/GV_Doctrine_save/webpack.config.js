@@ -34,7 +34,6 @@ Encore
     "./react/my_react_app/form_inscription.js"
   )
   .addEntry("paiement-style", "./assets/styles/paiement.css")
-  .addEntry("profil-style", "./assets/styles/profil.css")
 
   // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
   .splitEntryChunks()

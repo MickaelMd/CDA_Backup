@@ -49,11 +49,6 @@ final class PanierController extends AbstractController
                     
                     if ($nouvelleQuantite !== null && is_numeric($nouvelleQuantite)) {
                         $nouvelleQuantite = (int)$nouvelleQuantite;
-
-                        if ($nouvelleQuantite > 10) {
-                            $this->addFlash('error', 'Quantité limitée à 10 par produit dans le panier.');
-                            return $this->redirectToRoute('app_panier');
-                        }
                         
                         if ($nouvelleQuantite <= 0) {
                             $panierService->supprimerProduit((int)$produitId);

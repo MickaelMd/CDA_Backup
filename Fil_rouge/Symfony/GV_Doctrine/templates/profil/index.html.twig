@@ -5,6 +5,10 @@
 
 {% endblock %}
 
+{% block page_specific_stylesheets %}
+	{{ encore_entry_link_tags('profil-style') }}
+{% endblock %}
+
 {% block body %}
 	<div class="header-title color-fond2 font-title">
 		<h1>
@@ -17,4 +21,32 @@
 			Modifier ses informations
 		</h1>
 	</div>
+
+	{# <section class="profil_section_card">
+	
+			<div class="color-fond2 card_profil">
+				<h1>Adresse de facturation</h1>
+	
+				<form action="">
+	
+					<label for="">Nom :</label>
+					<input type="text" name="" id="">
+	
+					<label for="">Prénom :</label>
+					<input type="text" name="" id="">
+	
+					<label for="">Adresse</label>
+					<input type="text" name="" id="">
+	
+					<label for="">Téléphone :</label>
+					<input type="text" name="" id="">
+	
+					<button type="submit">Modifier</button>
+	
+				</form>
+	
+			</div>
+	
+		</section> #}
+
 {% endblock %}

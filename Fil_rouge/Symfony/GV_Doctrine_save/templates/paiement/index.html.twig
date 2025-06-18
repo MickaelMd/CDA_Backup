@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ parent() }}Validation de la commande
+{% endblock %}
+
+{% block page_specific_stylesheets %}
+	{{ encore_entry_link_tags('paiement-style') }}
+{% endblock %}
+
+{% block body %}
+
+	<div class="header-title color-fond2 font-title">
+
+		<h1>
+			Validation de la commande
+		</h1>
+	</div>
+
+
+	{% if app.user %}
+
+		{#  #}
+
+	{% else %}
+
+		<div class="header-paiement color-fond2">
+
+			<h1>Vous devez être connecté pour valider votre commande</h1>
+
+			<div class="header-paiement-btn">
+				<a href="/connexion">Connectez-vous !</a>
+				<a href="/inscription">Inscrivez-vous !</a>
+			</div>
+		</div>
+
+	{% endif %}
+
+
+{% endblock %}

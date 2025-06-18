@@ -52,9 +52,9 @@ const FormInscription = ({ token_csrf }) => {
 
     if (!formData.plainPassword) {
       newErrors.plainPassword = "Le mot de passe est requis";
-    } else if (formData.plainPassword.length < 8) {
+    } else if (formData.plainPassword.length < 6) {
       newErrors.plainPassword =
-        "Le mot de passe doit contenir au moins 8 caractères";
+        "Le mot de passe doit contenir au moins 6 caractères";
     }
 
     if (!formData.agreeTerms) {
@@ -72,8 +72,6 @@ const FormInscription = ({ token_csrf }) => {
       return;
     }
 
-    setIsSubmitting(true);
-
     // Créer un formulaire HTML et le soumettre
     const form = document.createElement("form");
     form.method = "POST";
@@ -88,12 +86,15 @@ const FormInscription = ({ token_csrf }) => {
       form.appendChild(input);
     });
 
-    // Ajouter le token CSRF passé en props
-    if (token_csrf) {
+    // Ajouter le token CSRF (vous devrez le récupérer de votre template Twig)
+    const csrfToken = document
+      .querySelector('meta[name="csrf-token"]')
+      ?.getAttribute("content");
+    if (csrfToken) {
       const tokenInput = document.createElement("input");
       tokenInput.type = "hidden";
       tokenInput.name = "registration_form[_token]";
-      tokenInput.value = token_csrf;
+      tokenInput.value = csrfToken;
       form.appendChild(tokenInput);
     }
 
@@ -103,7 +104,11 @@ const FormInscription = ({ token_csrf }) => {
 
   return (
     <div className="form-inscription-container">
-      <div className="registration-form">
+      <div className="header-title color-fond2 font-title">
+        <h1>Inscription</h1>
+      </div>
+
+      <div onSubmit={handleSubmit} className="registration-form">
         <div className="form-group">
           <div>
             <label htmlFor="registration_form_nom" className="required">
@@ -260,15 +265,24 @@ const FormInscription = ({ token_csrf }) => {
         <button
           type="button"
           onClick={handleSubmit}
-          className="submit-btn login_btn"
+          className="submit-btn"
           disabled={isSubmitting}
         >
-          {isSubmitting ? "Inscription en cours..." : "S'inscrire"}
+          S'inscrire
         </button>
       </div>
 
       <p className="login-link">
-        Déjà inscrit ? <a href="/connexion">Se connecter</a>
+        Déjà inscrit ?{" "}
+        <a
+          href="#"
+          onClick={(e) => {
+            e.preventDefault();
+            alert("Redirection vers connexion");
+          }}
+        >
+          Se connecter
+        </a>
       </p>
     </div>
   );
