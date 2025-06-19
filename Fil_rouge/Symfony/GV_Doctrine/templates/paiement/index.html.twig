@@ -20,13 +20,59 @@
 
 	{% if app.user %}
 
-		{#  #}
+		<section class="section-paiement-info">
+
+
+			<div class="paiement-card-info color-fond2">
+				<h1 class="font-title">Adresse de livraison</h1>
+				{% if app.user.adresselivraison is empty %}
+					<p class="paiement-adresse-error">Une adresse de livraison est requise</p>
+				{% else %}
+					<p>Adresse :
+						{{ app.user.adresselivraison|e('html_attr') }}</p>
+				{% endif %}
+
+
+				<a class="profil-link" href="/profil">Modifier cette information</a>
+			</div>
+
+			<div class="paiement-card-info color-fond2">
+				<h1 class="font-title">Adresse de facturation
+				</h1>
+
+				{% if app.user.adressefacturation is empty %}
+					{% if app.user.adresselivraison is empty %}
+						<p class="paiement-adresse-error">Une adresse de facturation est requise</p>
+					{% else %}
+						<p>Adresse :
+							{{ app.user.adresselivraison|e('html_attr') }}</p>
+					{% endif %}
+				{% else %}
+					<p>Adresse :{{ app.user.adressefacturation|e('html_attr') }}</p>
+				{% endif %}
+
+				<a class="profil-link" href="/profil">Modifier cette information</a>
+			</div>
+		</section>
+
+
+		<section class="section-paiement-recap-com">
+
+			<h1>Récupitulatif de la commande</h1>
+
+		</section>
+
+		{# ------------------------ #}
+
+		<section class="section-paiement-btn-annulation">
+			<a class="profil-link color-erreur" href="/panier">Annuler le paiement et revenir au panier</a>
+		</section>
 
 	{% else %}
 
 		<div class="header-paiement color-fond2">
 
-			<h1>Vous devez être connecté pour valider votre commande</h1>
+			<h1 class="font-title">Vous devez être connecté pour valider votre commande</h1>
 
 			<div class="header-paiement-btn">
 				<a href="/connexion">Connectez-vous !</a>

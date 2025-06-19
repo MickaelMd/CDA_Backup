@@ -30,53 +30,6 @@
 		<div class="form-errorr">{{ error.message }}</div>
 	{% endfor %}
 
-	{# 
-			{{ form_errors(registrationForm) }}
-		
-			{{ form_start(registrationForm) }}
-		
-			<div class="">
-				{{ form_row(registrationForm.nom) }}
-			</div>
-		
-			<div class="">
-				{{ form_row(registrationForm.prenom) }}
-			</div>
-		
-			<div class="">
-				{{ form_row(registrationForm.email) }}
-			</div>
-		
-			<div class="">
-				{{ form_row(registrationForm.telephone) }}
-			</div>
-		
-		
-			<div class="">
-				{{ form_row(registrationForm.adresseLivraison) }}
-				<small>Optionnel - Adresse où seront livrées vos commandes</small>
-			</div>
-		
-			<div class="">
-				{{ form_row(registrationForm.adresseFacturation) }}
-				<small>Optionnel - Adresse pour la facturation (si différente de la livraison)</small>
-			</div>
-		
-			<div class="">
-				{{ form_row(registrationForm.plainPassword, {
-				            label: 'Mot de passe'
-				        }) }}
-			</div>
-		
-			{{ form_row(registrationForm.agreeTerms) }}
-		
-			<button type="submit" class="">S'inscrire</button>
-			{{ form_end(registrationForm) }}
-		
-			<p>Déjà inscrit ?
-				<a href="{{ path('app_login') }}">Se connecter</a>
-			</p> #}
-
 	<div id="form-inscription-react" data-csrf-token="{{ csrf_token('registration_form') }}"></div>
 
 {% endblock %}

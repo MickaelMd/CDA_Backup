@@ -16,7 +16,7 @@
 		<h1 class="color-logo-text font-title">Green Village</h1>
 		<h2>
 			{% if app.user %}
-				{{ app.user.prenom }}
+				{{ app.user.prenom|e('html_attr') }}
 			{% endif %}
 		</h2>
 
@@ -31,7 +31,6 @@
 				<a href="/inscription">Inscrivez-vous !</a>
 			{% endif %}
 
-
 		</div>
 
 	</header>
@@ -43,12 +42,12 @@
 	<section class="section-categorie">
 
 		{% for categorie in categorie|slice(0, 4) %}
-			<a href="/categorie/{{categorie.id}}" class="card-categorie-link">
+			<a href="/categorie/{{categorie.id|e('html_attr')}}" class="card-categorie-link">
 				<div class="card-categorie color-fond2">
 					<div class="card-categorie-img">
-						<img src="{{ categorie.image }}" alt="{{ categorie.nom }}">
+						<img src="{{ categorie.image|e('html_attr') }}" alt="{{ categorie.nom|e('html_attr') }}">
 					</div>
-					<h2 class="font-title">{{ categorie.nom }}</h2>
+					<h2 class="font-title">{{ categorie.nom|e('html_attr') }}</h2>
 				</div>
 			</a>
 		{% endfor %}
@@ -60,20 +59,19 @@
 
 	<section class="section-autre-categorie">
 		{% for categorie in categorie%}
-			<a href="/categorie/{{categorie.id}}" class="card-autre-categorie-link">
+			<a href="/categorie/{{categorie.id|e('html_attr')}}" class="card-autre-categorie-link">
 				<div class="card-autre-categorie color-fond2">
 
 					<div class="card-autre-categorie-img">
-						<img src="{{ categorie.image }}" alt="{{ categorie.nom }}">
+						<img src="{{ categorie.image|e('html_attr') }}" alt="{{ categorie.nom|e('html_attr') }}">
 					</div>
 
-					<h2 class="font-title">{{ categorie.nom }}</h2>
+					<h2 class="font-title">{{ categorie.nom|e('html_attr') }}</h2>
 
 				</div>
 			</a>
 		{% endfor %}
 	</section>
-
 
 	<div class="header-title color-fond2 font-title">
 		<h1>Nos Produits Populaires</h1>
@@ -86,12 +84,17 @@
 			<div class="card-produit color-fond2">
 
 				<div class="card-produit-img">
-					<img src="{{ produit.image }}" alt="{{ produit.libellecourt }}">
+					<img src="{{ produit.image|e('html_attr') }}" alt="{{ produit.libellecourt|e('html_attr') }}">
 				</div>
-				<h2 class="font-title">{{produit.libellecourt}}</h2>
-				<a class="color-secondLien" href="">{{produit.souscategorie.nom}}</a>
-				<p>{{ produit.prixHt * 1.2 }}€</p>
-				<a class="card-produit-btn" href="/produit/{{produit.id}}">Voir le produit</a>
+				<h2 class="font-title">{{produit.libellecourt|e('html_attr')}}</h2>
+				<a class="color-secondLien" href="">{{produit.souscategorie.nom|e('html_attr')}}</a>
+				<p>
+					{% if app.user %}
+						{{produit.prixHt * app.user.coefficient}}
+					{% else %}
+						{{produit.prixHt * 1.2}}
+					{% endif %}€</p>
+				<a class="card-produit-btn" href="/produit/{{produit.id|e('html_attr')}}">Voir le produit</a>
 
 			</div>
 		{% endfor %}

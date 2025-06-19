@@ -23,7 +23,6 @@ const FormInscription = ({ token_csrf }) => {
       [name]: type === "checkbox" ? checked : value,
     }));
 
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,
@@ -35,19 +34,56 @@ const FormInscription = ({ token_csrf }) => {
   const validateForm = () => {
     const newErrors = {};
 
-    // Validation des champs requis
     if (!formData.nom.trim()) {
       newErrors.nom = "Le nom est requis";
+    } else if (!/^[a-zA-ZÀ-ÿ\s'-]+$/.test(formData.nom.trim())) {
+      newErrors.nom =
+        "Le nom ne peut contenir que des lettres, espaces, apostrophes et tirets";
     }
 
     if (!formData.prenom.trim()) {
       newErrors.prenom = "Le prénom est requis";
+    } else if (!/^[a-zA-ZÀ-ÿ\s'-]+$/.test(formData.prenom.trim())) {
+      newErrors.prenom =
+        "Le prénom ne peut contenir que des lettres, espaces, apostrophes et tirets";
     }
 
     if (!formData.email.trim()) {
       newErrors.email = "L'adresse email est requise";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
       newErrors.email = "Format d'email invalide";
+    }
+
+    if (formData.telephone.trim()) {
+      const phoneRegex =
+        /^(?:(?:\+33|0)[1-9](?:[0-9]{8}))$|^(?:0[1-9](?:[-.\s]?[0-9]{2}){4})$/;
+      const cleanPhone = formData.telephone.replace(/[-.\s]/g, "");
+
+      if (
+        !phoneRegex.test(cleanPhone) &&
+        !/^0[1-9][0-9]{8}$/.test(cleanPhone)
+      ) {
+        newErrors.telephone =
+          "Format de téléphone invalide (ex: 01 23 45 67 89)";
+      }
+    }
+
+    if (formData.adresseLivraison.trim()) {
+      if (formData.adresseLivraison.trim().length < 10) {
+        newErrors.adresseLivraison =
+          "L'adresse de livraison doit contenir au moins 10 caractères";
+      } else if (!/\d/.test(formData.adresseLivraison)) {
+        newErrors.adresseLivraison = "L'adresse doit contenir un numéro";
+      }
+    }
+
+    if (formData.adresseFacturation.trim()) {
+      if (formData.adresseFacturation.trim().length < 10) {
+        newErrors.adresseFacturation =
+          "L'adresse de facturation doit contenir au moins 10 caractères";
+      } else if (!/\d/.test(formData.adresseFacturation)) {
+        newErrors.adresseFacturation = "L'adresse doit contenir un numéro";
+      }
     }
 
     if (!formData.plainPassword) {
@@ -74,12 +110,10 @@ const FormInscription = ({ token_csrf }) => {
 
     setIsSubmitting(true);
 
-    // Créer un formulaire HTML et le soumettre
     const form = document.createElement("form");
     form.method = "POST";
-    form.action = window.location.href; // Soumet à la même URL (route d'inscription)
+    form.action = window.location.href;
 
-    // Ajouter tous les champs comme inputs cachés
     Object.keys(formData).forEach((key) => {
       const input = document.createElement("input");
       input.type = "hidden";
@@ -88,7 +122,6 @@ const FormInscription = ({ token_csrf }) => {
       form.appendChild(input);
     });
 
-    // Ajouter le token CSRF passé en props
     if (token_csrf) {
       const tokenInput = document.createElement("input");
       tokenInput.type = "hidden";
@@ -171,7 +204,11 @@ const FormInscription = ({ token_csrf }) => {
               value={formData.telephone}
               onChange={handleChange}
               placeholder="01 23 45 67 89"
+              className={errors.telephone ? "error" : ""}
             />
+            {errors.telephone && (
+              <div className="form-error">{errors.telephone}</div>
+            )}
           </div>
         </div>
 
@@ -187,7 +224,11 @@ const FormInscription = ({ token_csrf }) => {
               onChange={handleChange}
               placeholder="Adresse complète de livraison"
               rows="3"
+              className={errors.adresseLivraison ? "error" : ""}
             />
+            {errors.adresseLivraison && (
+              <div className="form-error">{errors.adresseLivraison}</div>
+            )}
           </div>
           <small>Optionnel - Adresse où seront livrées vos commandes</small>
         </div>
@@ -204,7 +245,11 @@ const FormInscription = ({ token_csrf }) => {
               onChange={handleChange}
               placeholder="Adresse complète de facturation"
               rows="3"
+              className={errors.adresseFacturation ? "error" : ""}
             />
+            {errors.adresseFacturation && (
+              <div className="form-error">{errors.adresseFacturation}</div>
+            )}
           </div>
           <small>
             Optionnel - Adresse pour la facturation (si différente de la
@@ -240,6 +285,7 @@ const FormInscription = ({ token_csrf }) => {
           <label
             htmlFor="registration_form_agreeTerms"
             className="required checkbox-label"
+            style={{ textAlign: "center" }}
           >
             <input
               type="checkbox"
@@ -260,7 +306,7 @@ const FormInscription = ({ token_csrf }) => {
         <button
           type="button"
           onClick={handleSubmit}
-          className="submit-btn login_btn"
+          className="login-btn"
           disabled={isSubmitting}
         >
           {isSubmitting ? "Inscription en cours..." : "S'inscrire"}

@@ -27,26 +27,26 @@
 				<span>></span>
 			</li>
 			<li>
-				<a href="/categorie/{{categorie.id}}">{{categorie.nom}}</a>
+				<a href="/categorie/{{categorie.id|e('html_attr')}}">{{categorie.nom|e('html_attr')}}</a>
 			</li>
 		</ul>
 	</div>
 
 	<div class="header-title color-fond2 font-title">
 		<h1>Catégorie :
-			{{categorie.nom}}
+			{{categorie.nom|e('html_attr')}}
 		</h1>
 	</div>
 
 	<section class="section-categorie">
 
 		{% for souscat in souscat %}
-			<a href="/sous-categorie/{{souscat.id}}" class="card-categorie-link">
+			<a href="/sous-categorie/{{souscat.id|e('html_attr')}}" class="card-categorie-link">
 				<div class="card-categorie color-fond2">
 					<div class="card-categorie-img">
-						<img src="/{{ souscat.image }}" alt="{{ souscat.nom }}">
+						<img src="/{{ souscat.image|e('html_attr') }}" alt="{{ souscat.nom|e('html_attr') }}">
 					</div>
-					<h2 class="font-title">{{ souscat.nom }}</h2>
+					<h2 class="font-title">{{ souscat.nom|e('html_attr') }}</h2>
 				</div>
 			</a>
 		{% endfor %}
@@ -59,14 +59,14 @@
 
 	<section class="section-autre-categorie">
 		{% for autresCategories in autresCategories %}
-			<a href="/categorie/{{autresCategories.id}}" class="card-autre-categorie-link">
+			<a href="/categorie/{{autresCategories.id|e('html_attr')}}" class="card-autre-categorie-link">
 				<div class="card-autre-categorie color-fond2">
 
 					<div class="card-autre-categorie-img">
-						<img src="/{{ autresCategories.image }}" alt="{{ autresCategories.nom }}">
+						<img src="/{{ autresCategories.image|e('html_attr') }}" alt="{{ autresCategories.nom|e('html_attr') }}">
 					</div>
 
-					<h2 class="font-title">{{ autresCategories.nom }}</h2>
+					<h2 class="font-title">{{ autresCategories.nom|e('html_attr') }}</h2>
 
 				</div>
 			</a>

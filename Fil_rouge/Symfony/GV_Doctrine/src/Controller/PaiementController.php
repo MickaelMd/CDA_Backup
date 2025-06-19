@@ -24,6 +24,8 @@ final class PaiementController extends AbstractController
             return $this->redirectToRoute('app_accueil');
         }
 
+        
+
         return $this->render('paiement/index.html.twig', [
             'controller_name' => 'PaiementController',
         ]);

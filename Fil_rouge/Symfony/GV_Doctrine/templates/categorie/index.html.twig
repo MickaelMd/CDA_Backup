@@ -32,12 +32,12 @@
 	<section class="section-categorie">
 
 		{% for categorie in categorie %}
-			<a href="/categorie/{{categorie.id}}" class="card-categorie-link">
+			<a href="/categorie/{{categorie.id|e('html_attr')}}" class="card-categorie-link">
 				<div class="card-categorie color-fond2">
 					<div class="card-categorie-img">
-						<img src="{{ categorie.image }}" alt="{{ categorie.nom }}">
+						<img src="{{ categorie.image|e('html_attr') }}" alt="{{ categorie.nom|e('html_attr') }}">
 					</div>
-					<h2 class="font-title">{{ categorie.nom }}</h2>
+					<h2 class="font-title">{{ categorie.nom|e('html_attr') }}</h2>
 				</div>
 			</a>
 		{% endfor %}

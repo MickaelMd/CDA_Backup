@@ -13,31 +13,31 @@
 		<h1>Panier</h1>
 	</div>
 
-	<section class="section_panier_produit">
+	<section class="section-panier-produit">
 
 		{% for detail in detailsPanier %}
 
-			<div class="panier_card_produit">
+			<div class="panier-card-produit">
 
-				<div class="panier_card_produit_img">
-					<img src="/{{ detail.produit.image}}" alt=""/>
+				<div class="panier-card-produit-img">
+					<img src="/{{ detail.produit.image|e('html_attr')}}" alt=""/>
 				</div>
 
-				<div class="panier_card_produit_info">
-					<a href="/produit/{{detail.produit.id}}">
-						<h1 class="font-title">{{ detail.produit.libelleCourt }}</h1>
+				<div class="panier-card-produit-info">
+					<a href="/produit/{{detail.produit.id|e('html_attr')}}">
+						<h1 class="font-title">{{ detail.produit.libelleCourt|e('html_attr') }}</h1>
 					</a>
 					<p>
-						{{ detail.produit.libelleLong }}
+						{{ detail.produit.libelleLong|e('html_attr') }}
 					</p>
 				</div>
 
 
-				<div class="panier_card_produit_div_del_quant">
-					<div class="panier_card_produit_formdel">
+				<div class="panier-card-produit-div-del-quant">
+					<div class="panier-card-produit-formdel">
 						<form method="POST" action="">
 							<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-							<input type="hidden" name="produit_id" value="{{ detail.produit.id }}">
+							<input type="hidden" name="produit_id" value="{{ detail.produit.id|e('html_attr') }}">
 							<input type="hidden" name="action" value="supprimer">
 							<button type="submit">
 								<p class="font-title">Supprimer le produit</p>
@@ -45,15 +45,15 @@
 							</button>
 						</form>
 					</div>
-					<div class="panier_card_produit_quantite">
-						<div class="panier_update">
+					<div class="panier-card-produit-quantite">
+						<div class="panier-update">
 							<span>Quantité :</span>
 							<form action="" method="post" class="quantite-form">
 								<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-								<input type="hidden" name="produit_id" value="{{ detail.produit.id }}">
+								<input type="hidden" name="produit_id" value="{{ detail.produit.id|e('html_attr') }}">
 								<input type="hidden" name="action" value="modifier">
 								<div class="quantite-controls">
-									<input type="number" name="quantite" class="produit_number" value="{{ detail.quantite }}" min="1" max="10"/>
+									<input type="number" name="quantite" class="produit-number" value="{{ detail.quantite|e('html_attr') }}" min="1" max="10"/>
 									<button type="submit" class="btn-modifier-quantite">
 										<img src="/image/logo/interface/check.svg" alt="Modifier" title="Modifier la quantité"/>
 									</button>
@@ -69,7 +69,7 @@
 			</div>
 		{% endfor %}
 
-		<div class="panier_total">
+		<div class="panier-total">
 			<p>
 				<strong>Nombre d'articles :</strong>
 				{{ nombreArticles ?? 0 }}</p>
@@ -78,7 +78,7 @@
 				{{ totalPanier ?? 0 }}€</p>
 
 		</div>
-		<a class="panier_commande_btn" href="/paiement">Valider la commande</a>
+		<a class="panier-commande-btn" href="/paiement">Valider la commande</a>
 	</section>
 
 {% endblock %}

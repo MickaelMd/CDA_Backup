@@ -17,7 +17,7 @@
 	</div>
 	<form method="post">
 		{% if error %}
-			<div class="error_section">
+			<div class="error-section">
 				<div class="notification flashe-error">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 			</div>
 		{% endif %}
@@ -42,16 +42,16 @@
 			<label for="_remember_me">Se souvenir de moi</label>
 		</div>
 
-		<button class="login_btn" type="submit">
+		<button class="login-btn" type="submit">
 			Se connecter
 		</button>
 	</form>
 
-	<section class="login_ask">
+	<section class="login-ask">
 
 		<h1 class="font-title">Pas encore de compte ?</h1>
 
-		<a class="login_btn" href="/inscription">
+		<a class="login-btn" href="/inscription">
 			Inscrivez-vous !
 		</a>
 

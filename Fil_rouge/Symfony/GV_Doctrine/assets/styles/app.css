@@ -54,7 +54,7 @@ body {
   text-decoration: none;
 }
 
-.error_section {
+.error-section {
   position: fixed;
   top: 100px;
   inset-inline-start: 0;

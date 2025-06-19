@@ -52,7 +52,7 @@
   margin-top: auto;
 }
 
-#produit_number {
+#produit-number {
   margin: 0 auto;
   justify-content: center;
   width: 55px;
@@ -67,7 +67,7 @@
   background: #f9f9f9;
 }
 
-#produit_number:focus {
+#produit-number:focus {
   border: 1px solid #4caf50;
   box-shadow: 0 0 5px rgba(76, 175, 80, 0.6);
   background: white;

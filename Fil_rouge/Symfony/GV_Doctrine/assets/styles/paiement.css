@@ -31,3 +31,56 @@
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25),
     inset 0px 0px 16px 5px rgba(0, 0, 0, 0.25);
 }
+
+.section-paiement-info {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.paiement-card-info {
+  max-width: 400px;
+  text-align: center;
+  margin: 40px;
+  padding: 40px;
+  border-radius: 16px;
+}
+.paiement-card-info h1 {
+  font-size: 15pt;
+  margin-bottom: 16px;
+}
+
+.profil-link {
+  display: inline-block;
+  padding: 5px 40px;
+  background: #369354;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 25px;
+  color: white;
+  text-decoration: none;
+  margin-top: 20px;
+  transition: box-shadow 200ms ease;
+  text-align: center;
+  font-size: 13pt;
+  border: none;
+  cursor: pointer;
+  margin-top: 30px;
+}
+
+.profil-link:hover {
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25),
+    inset 0px 0px 16px 5px rgba(0, 0, 0, 0.25);
+}
+
+.section-paiement-btn-annulation {
+  display: flex;
+  justify-content: center;
+}
+
+.section-paiement-recap-com {
+  display: flex;
+  justify-content: center;
+}
+.paiement-adresse-error {
+  color: #ff624d;
+}

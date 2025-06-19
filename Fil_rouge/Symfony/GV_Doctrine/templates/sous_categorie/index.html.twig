@@ -39,7 +39,7 @@
 <div class="header-title color-fond2 font-title">
 	<h1>
 		Sous-catégorie :
-		{{souscat.nom}}
+		{{souscat.nom|e('html_attr')}}
 	</h1>
 </div>
 
@@ -50,12 +50,12 @@
 		<div class="card-produit color-fond2">
 
 			<div class="card-produit-img">
-				<img src="/{{ produit.image }}" alt="{{ produit.libellecourt }}">
+				<img src="/{{ produit.image|e('html_attr') }}" alt="{{ produit.libellecourt|e('html_attr') }}">
 			</div>
-			<h2 class="font-title">{{produit.libellecourt}}</h2>
-			<a class="color-secondLien" href="">{{produit.souscategorie.nom}}</a>
+			<h2 class="font-title">{{produit.libellecourt|e('html_attr')}}</h2>
+			<a class="color-secondLien" href="">{{produit.souscategorie.nom|e('html_attr')}}</a>
 			<p>{{ produit.prixHt * 1.2 }}€</p>
-			<a class="card-produit-btn" href="/produit/{{produit.id}}">Voir le produit</a>
+			<a class="card-produit-btn" href="/produit/{{produit.id|e('html_attr')}}">Voir le produit</a>
 
 		</div>
 	{% endfor %}
