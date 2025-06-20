@@ -80,7 +80,21 @@
 .section-paiement-recap-com {
   display: flex;
   justify-content: center;
+  flex-direction: column;
 }
 .paiement-adresse-error {
   color: #ff624d;
+}
+
+.paiement-card-produit-img {
+  width: 100%;
+  max-width: 200px;
+  height: 200px;
+  border-radius: 10px;
+}
+
+.paiement-card-produit-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }

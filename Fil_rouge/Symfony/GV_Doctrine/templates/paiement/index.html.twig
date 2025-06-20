@@ -27,13 +27,14 @@
 				<h1 class="font-title">Adresse de livraison</h1>
 				{% if app.user.adresselivraison is empty %}
 					<p class="paiement-adresse-error">Une adresse de livraison est requise</p>
+					<a class="profil-link" href="/profil">Ajouter cette information</a>
 				{% else %}
 					<p>Adresse :
 						{{ app.user.adresselivraison|e('html_attr') }}</p>
+					<a class="profil-link" href="/profil">Modifier cette information</a>
 				{% endif %}
 
 
-				<a class="profil-link" href="/profil">Modifier cette information</a>
 			</div>
 
 			<div class="paiement-card-info color-fond2">
@@ -43,15 +44,18 @@
 				{% if app.user.adressefacturation is empty %}
 					{% if app.user.adresselivraison is empty %}
 						<p class="paiement-adresse-error">Une adresse de facturation est requise</p>
+						<a class="profil-link" href="/profil">Ajouter cette information</a>
 					{% else %}
 						<p>Adresse :
 							{{ app.user.adresselivraison|e('html_attr') }}</p>
+						<a class="profil-link" href="/profil">Modifier cette information</a>
 					{% endif %}
 				{% else %}
 					<p>Adresse :{{ app.user.adressefacturation|e('html_attr') }}</p>
+					<a class="profil-link" href="/profil">Modifier cette information</a>
 				{% endif %}
 
-				<a class="profil-link" href="/profil">Modifier cette information</a>
+
 			</div>
 		</section>
 
@@ -59,6 +63,50 @@
 		<section class="section-paiement-recap-com">
 
 			<h1>Récupitulatif de la commande</h1>
+
+			{# --------------------------------------------- #}
+
+
+			{% for detail in detailsPanier %}
+
+				<div class="paiement-card-produit">
+
+					<div class="paiement-card-produit-img">
+						<img src="/{{ detail.produit.image|e('html_attr')}}" alt=""/>
+					</div>
+
+					<div class="paiement-card-produit-info">
+						<a href="/produit/{{detail.produit.id|e('html_attr')}}">
+							<h1 class="font-title">{{ detail.produit.libelleCourt|e('html_attr') }}</h1>
+						</a>
+					</div>
+
+					<div class="paiement-card-produit-div-del-quant">
+
+						<div class="paiement-card-produit-quantite">
+							<div class="paiement-update">
+								<span>Quantité :
+									{{ detail.quantite|e('html_attr') }}</span>
+							</div>
+							<p>Prix TTC Unitaire :
+								{{ detail.prixTTC|number_format(2, ',', ' ') }}€</p>
+							<p>Prix Total TTC :
+								{{ detail.sousTotal|number_format(2, ',', ' ') }}€</p>
+						</div>
+					</div>
+				</div>
+			{% endfor %}
+
+			<div class="paiement-total">
+				<p>
+					<strong>Nombre d'articles :</strong>
+					{{ nombreArticles ?? 0 }}</p>
+				<p>
+					<strong>Total du panier TTC:</strong>
+					{{ totalPanier ?? 0 }}€</p>
+			</div>
+
+			{# --------------------------------------------- #}
 
 		</section>
 
