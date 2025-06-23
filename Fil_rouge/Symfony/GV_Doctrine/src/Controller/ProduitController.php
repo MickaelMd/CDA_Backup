@@ -29,11 +29,14 @@ public function index(
     }
 
     if ($request->isMethod('POST')) {
-        
+    try {
+
+    
     $token = new CsrfToken('authenticate', $request->request->get('_csrf_token'));
         if (!$csrfTokenManager->isTokenValid($token)) {
             throw new \Exception('Jeton CSRF invalide.');
         }
+
     $quantite = $request->request->getInt('quantite', 1);
     $panier = $panierService->getPanier(); 
     $quantiteActuelle = $panier[$produit->getId()] ?? 0;
@@ -45,7 +48,13 @@ public function index(
     $panierService->ajouterProduit($produit->getId(), $quantite);
     $this->addFlash('success', 'Produit ajouté au panier !');
     return $this->redirectToRoute('app_produit', ['id' => $id]);
+} catch (\Exception $e) {
+    $this->addFlash('error', 'Une erreur c\'est produite.');
+        return $this->redirectToRoute('app_produit', ['id' => $id]);
 }
+}
+
+
     return $this->render('produit/index.html.twig', [
         'produit' => $produit
     ]);

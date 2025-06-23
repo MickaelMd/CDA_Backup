@@ -28,15 +28,23 @@
 	</div>
 
 	<section class="profil-form-cards">
-		<div id="form-adresse-livraison" data-adresselivraison="{{ app.user.adresseLivraison|e('html_attr') }}" data-titre="Adresse de livraison"></div>
-		<div id="form-adresse-facturation" data-adresselivraison="	{% if app.user.adressefacturation is empty %}
-											{% if app.user.adresselivraison is empty %}
-			
-											{% else %}
-												{{app.user.adresselivraison|e('html_attr')}}</p>
-										{% endif %}
-									{% else %}
-										{{ app.user.adressefacturation|e('html_attr') }}
-									{% endif %}" data-titre="Adresse de facturation"></div>
+
+
+		<div class="profil-card-adresse">
+			<h3>Adresse de livraison</h3>
+			{{ form_start(formLivraison) }}
+			{{ form_row(formLivraison.adresseLivraison) }}
+			<button>Mettre à jour la livraison</button>
+			{{ form_end(formLivraison) }}
+		</div>
+
+		<div class="profil-card-adresse">
+			<h3>Adresse de facturation</h3>
+			{{ form_start(formFacturation) }}
+			{{ form_row(formFacturation.adresseFacturation) }}
+			<button>Mettre à jour la facturation</button>
+			{{ form_end(formFacturation) }}
+
+		</div>
 	</section>
 {% endblock %}

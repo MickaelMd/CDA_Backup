@@ -68,21 +68,33 @@ const FormInscription = ({ token_csrf }) => {
       }
     }
 
+    // Validation adresse de livraison avec nouveaux caractères autorisés
     if (formData.adresseLivraison.trim()) {
-      if (formData.adresseLivraison.trim().length < 10) {
+      const adresseLivraison = formData.adresseLivraison.trim();
+
+      if (adresseLivraison.length < 10) {
         newErrors.adresseLivraison =
           "L'adresse de livraison doit contenir au moins 10 caractères";
-      } else if (!/\d/.test(formData.adresseLivraison)) {
+      } else if (!/\d/.test(adresseLivraison)) {
         newErrors.adresseLivraison = "L'adresse doit contenir un numéro";
+      } else if (!/^[a-zA-Z0-9À-ÿ\s,.''-]+$/.test(adresseLivraison)) {
+        newErrors.adresseLivraison =
+          "Seuls les lettres, chiffres, espaces et les caractères , . ' - sont autorisés";
       }
     }
 
+    // Validation adresse de facturation avec nouveaux caractères autorisés
     if (formData.adresseFacturation.trim()) {
-      if (formData.adresseFacturation.trim().length < 10) {
+      const adresseFacturation = formData.adresseFacturation.trim();
+
+      if (adresseFacturation.length < 10) {
         newErrors.adresseFacturation =
           "L'adresse de facturation doit contenir au moins 10 caractères";
-      } else if (!/\d/.test(formData.adresseFacturation)) {
+      } else if (!/\d/.test(adresseFacturation)) {
         newErrors.adresseFacturation = "L'adresse doit contenir un numéro";
+      } else if (!/^[a-zA-Z0-9À-ÿ\s,.''-]+$/.test(adresseFacturation)) {
+        newErrors.adresseFacturation =
+          "Seuls les lettres, chiffres, espaces et les caractères , . ' - sont autorisés";
       }
     }
 
@@ -110,15 +122,24 @@ const FormInscription = ({ token_csrf }) => {
 
     setIsSubmitting(true);
 
+    const dataToSubmit = { ...formData };
+
+    if (
+      !dataToSubmit.adresseFacturation.trim() &&
+      dataToSubmit.adresseLivraison.trim()
+    ) {
+      dataToSubmit.adresseFacturation = dataToSubmit.adresseLivraison;
+    }
+
     const form = document.createElement("form");
     form.method = "POST";
     form.action = window.location.href;
 
-    Object.keys(formData).forEach((key) => {
+    Object.keys(dataToSubmit).forEach((key) => {
       const input = document.createElement("input");
       input.type = "hidden";
       input.name = `registration_form[${key}]`;
-      input.value = formData[key];
+      input.value = dataToSubmit[key];
       form.appendChild(input);
     });
 
@@ -230,7 +251,7 @@ const FormInscription = ({ token_csrf }) => {
               <div className="form-error">{errors.adresseLivraison}</div>
             )}
           </div>
-          <small>Optionnel - Adresse où seront livrées vos commandes</small>
+          <small>Exemple : 8 boulevard des Instruments, 69007 Lyon</small>
         </div>
 
         <div className="form-group">
@@ -252,8 +273,7 @@ const FormInscription = ({ token_csrf }) => {
             )}
           </div>
           <small>
-            Optionnel - Adresse pour la facturation (si différente de la
-            livraison)
+            Optionnel - Si vide, l'adresse de livraison sera utilisée
           </small>
         </div>
 

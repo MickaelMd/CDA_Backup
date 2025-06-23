@@ -106,12 +106,17 @@ class RegistrationForm extends AbstractType
                         'max' => 255,
                         'maxMessage' => 'L\'adresse de livraison ne peut pas dépasser {{ limit }} caractères',
                     ]),
+                    new Regex([
+                        'pattern' => '/^[a-zA-Z0-9À-ÿ\s,.\'-]+$/u',
+                        'message' => 'Seuls les lettres, chiffres, espaces et les caractères , . \' - sont autorisés',
+                    ]),
                     new Callback([$this, 'validateAdresse']),
                 ],
                 'attr' => [
                     'placeholder' => 'Adresse complète de livraison',
                     'rows' => 3
-                ]
+                ],
+                'help' => 'Exemple : 8 boulevard des Instruments, 69007 Lyon'
             ])
             
             ->add('adresseFacturation', TextareaType::class, [
@@ -122,12 +127,17 @@ class RegistrationForm extends AbstractType
                         'max' => 255,
                         'maxMessage' => 'L\'adresse de facturation ne peut pas dépasser {{ limit }} caractères',
                     ]),
+                    new Regex([
+                        'pattern' => '/^[a-zA-Z0-9À-ÿ\s,.\'-]+$/u',
+                        'message' => 'Seuls les lettres, chiffres, espaces et les caractères , . \' - sont autorisés',
+                    ]),
                     new Callback([$this, 'validateAdresse']),
                 ],
                 'attr' => [
                     'placeholder' => 'Adresse complète de facturation',
                     'rows' => 3
-                ]
+                ],
+                'help' => 'Optionnel - Si vide, l\'adresse de livraison sera utilisée'
             ])
             
             ->add('plainPassword', PasswordType::class, [
@@ -160,6 +170,7 @@ class RegistrationForm extends AbstractType
             ]);
 
         $builder->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'onPreSubmit']);
+        $builder->addEventListener(FormEvents::POST_SUBMIT, [$this, 'onPostSubmit']);
     }
 
    
@@ -176,6 +187,25 @@ class RegistrationForm extends AbstractType
         }
 
         $event->setData($data);
+    }
+
+    /**
+     * Copie l'adresse de livraison vers l'adresse de facturation si cette dernière est vide
+     */
+    public function onPostSubmit(FormEvent $event): void
+    {
+        $form = $event->getForm();
+        $utilisateur = $form->getData();
+
+        if ($utilisateur instanceof Utilisateur) {
+            $adresseLivraison = $utilisateur->getAdresseLivraison();
+            $adresseFacturation = $utilisateur->getAdresseFacturation();
+
+            // Si l'adresse de facturation est vide mais qu'il y a une adresse de livraison
+            if (empty(trim($adresseFacturation)) && !empty(trim($adresseLivraison))) {
+                $utilisateur->setAdresseFacturation($adresseLivraison);
+            }
+        }
     }
 
     
