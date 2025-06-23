@@ -11,7 +11,7 @@ final class ProfilController extends AbstractController
     #[Route('/profil', name: 'app_profil')]
     public function index(): Response
     {
-         if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+         if (!$this->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             $this->addFlash('error', 'Vous devez être <a href="/connexion">connecté</a> pour accéder à votre Profil.');
             return $this->redirectToRoute('app_accueil');
         }

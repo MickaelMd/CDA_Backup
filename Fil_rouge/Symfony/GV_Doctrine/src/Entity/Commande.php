@@ -55,6 +55,12 @@ private ?Utilisateur $Commercial = null;
     #[ORM\OneToMany(targetEntity: Livraison::class, mappedBy: 'Commande')]
     private Collection $livraisons;
 
+    #[ORM\Column(length: 255)]
+    private ?string $adresse_livraison = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $adresse_facturation = null;
+
     public function __construct()
     {
         $this->detailCommandes = new ArrayCollection();
@@ -230,6 +236,30 @@ private ?Utilisateur $Commercial = null;
                 $livraison->setCommande(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAdresseLivraison(): ?string
+    {
+        return $this->adresse_livraison;
+    }
+
+    public function setAdresseLivraison(string $adresse_livraison): static
+    {
+        $this->adresse_livraison = $adresse_livraison;
+
+        return $this;
+    }
+
+    public function getAdresseFacturation(): ?string
+    {
+        return $this->adresse_facturation;
+    }
+
+    public function setAdresseFacturation(string $adresse_facturation): static
+    {
+        $this->adresse_facturation = $adresse_facturation;
 
         return $this;
     }

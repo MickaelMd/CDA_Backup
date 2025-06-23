@@ -2,14 +2,15 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import FormAdresse from "./jsx/FormAdresse.jsx";
 
-const el = document.getElementById("form-adresse-react");
+const elements = document.querySelectorAll('[id^="form-adresse-"]');
 
-if (el) {
+elements.forEach((el) => {
   const adresseLivraison = el.dataset.adresselivraison;
+  const titre = el.dataset.titre;
 
   ReactDOM.createRoot(el).render(
     <React.StrictMode>
-      <FormAdresse adresseLivraison={adresseLivraison} />
+      <FormAdresse adresseLivraison={adresseLivraison} titre={titre} />
     </React.StrictMode>
   );
-}
+});

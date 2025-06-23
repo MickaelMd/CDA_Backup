@@ -86,10 +86,26 @@
   color: #ff624d;
 }
 
+.section-paiement-recap-com {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.section-paiement-recap-com h1 {
+  margin-bottom: 30px;
+  font-size: 20pt;
+}
+
+.paiement-card-produit h1 {
+  margin-bottom: 30px;
+  font-size: 14pt;
+}
+
 .paiement-card-produit-img {
   width: 100%;
-  max-width: 200px;
-  height: 200px;
+  max-width: 100px;
+  height: 100px;
   border-radius: 10px;
 }
 
@@ -97,4 +113,32 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.paiement-card-right {
+  margin-left: 20px;
+}
+
+.paiement-card-produit {
+  border-bottom: 1px solid black;
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  margin: 5px;
+  width: 100%;
+  max-width: 700px;
+  min-height: 100px;
+  box-sizing: border-box;
+}
+.paiement-card-produit a {
+  text-decoration: none;
+  color: black;
+  transition: 200ms;
+}
+.paiement-card-produit a:hover {
+  color: #626262;
+}
+
+.paiement-total {
+  margin-top: 30px;
 }

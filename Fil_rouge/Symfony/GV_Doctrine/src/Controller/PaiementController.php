@@ -18,6 +18,11 @@ final class PaiementController extends AbstractController
     public function index(PanierService $panierService, ProduitRepository $produitRepository): Response
     {
 
+        if (!$this->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            $this->addFlash('error', 'Vous devez être <a href="/connexion">connecté</a> pour valider votre commande.');
+            return $this->redirectToRoute('app_panier');
+        }
+
          $panier = $panierService->getPanier(); 
 
         if (empty($panier)) {
