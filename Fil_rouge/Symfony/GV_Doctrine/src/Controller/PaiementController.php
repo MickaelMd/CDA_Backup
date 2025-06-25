@@ -2,28 +2,30 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\HttpFoundation\Request;
+use App\Entity\Commande;
+use App\Entity\DetailCommande;
+use App\Entity\Utilisateur;
 use App\Repository\ProduitRepository;
 use App\Service\PanierService;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
-
 
 final class PaiementController extends AbstractController
 {
     #[Route('/paiement', name: 'app_paiement')]
     public function index(PanierService $panierService, ProduitRepository $produitRepository): Response
     {
-
         if (!$this->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             $this->addFlash('error', 'Vous devez être <a href="/connexion">connecté</a> pour valider votre commande.');
             return $this->redirectToRoute('app_panier');
         }
 
-         $panier = $panierService->getPanier(); 
+        $panier = $panierService->getPanier(); 
 
         if (empty($panier)) {
             $this->addFlash('error', 'Votre panier est vide.');
@@ -33,14 +35,14 @@ final class PaiementController extends AbstractController
         $user = $this->getUser();
         $detailsPanier = [];
         $totalPanier = 0;
-         if (!$user instanceof \App\Entity\Utilisateur) {
-                $coefficient = 1.2; 
-            } else {
-                $coefficient = (float) $user->getCoefficient();
-            }
+        
+        if (!$user instanceof Utilisateur) {
+            $coefficient = 1.2; 
+        } else {
+            $coefficient = (float) $user->getCoefficient();
+        }
         
         foreach ($panier as $produitId => $quantite) {
-        
             $produit = $produitRepository->find($produitId);
 
             if ($produit) {
@@ -63,5 +65,125 @@ final class PaiementController extends AbstractController
             'totalPanier' => $totalPanier,
             'nombreArticles' => array_sum($panier)
         ]);
+    }
+
+    #[Route('/paiement/valider', name: 'app_paiement_valider', methods: ['POST'])]
+    public function validerCommande(
+        Request $request,
+        PanierService $panierService,
+        ProduitRepository $produitRepository,
+        EntityManagerInterface $entityManager,
+        CsrfTokenManagerInterface $csrfTokenManager
+    ): Response {
+      
+        if (!$this->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            $this->addFlash('error', 'Vous devez être connecté pour valider votre commande.');
+            return $this->redirectToRoute('app_panier');
+        }
+
+        $panier = $panierService->getPanier();
+        if (empty($panier)) {
+            $this->addFlash('error', 'Votre panier est vide.');
+            return $this->redirectToRoute('app_accueil');
+        }
+
+        $token = new CsrfToken('authenticate', $request->request->get('_token'));
+        if (!$csrfTokenManager->isTokenValid($token)) {
+            throw new \Exception('Jeton CSRF invalide.');
+        }
+
+        /** @var \App\Entity\Utilisateur $user */
+        $user = $this->getUser();
+   
+        if ($user->getAdresseLivraison() == "") {
+            $this->addFlash('error', 'Vous devez avoir une adresse de livraison pour valider votre commande.');
+            return $this->redirectToRoute('app_paiement');
+        }
+
+        try {
+            $commande = $this->creerCommande();
+            $this->ajouterDetailsCommande($commande, $panier, $produitRepository);
+            $this->sauvegarderCommande($commande, $entityManager);
+            $panierService->viderPanier();
+            
+            $this->addFlash('success', 'Commande validée');
+            return $this->redirectToRoute('app_profil');
+            
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Erreur détaillée: ' . $e->getMessage() . ' - Ligne: ' . $e->getLine() . ' - Fichier: ' . $e->getFile());
+            return $this->redirectToRoute('app_paiement');
+        }
+    }
+
+    private function creerCommande(): Commande
+    {
+        $user = $this->getUser();
+        
+        if (!$user instanceof Utilisateur) {
+            throw new \RuntimeException('L\'utilisateur doit être connecté');
+        }
+        
+        $commande = new Commande();
+        
+        $commande->setDateCommande(new \DateTimeImmutable());
+        $commande->setModePaiement('carte'); 
+        $commande->setStatu('en_attente');
+        $commande->setClient($user);
+        
+        if ($user->getCommercial() !== null) {
+            $commande->setCommercial($user->getCommercial());
+        }
+        
+        $commande->setAdresseLivraison($user->getAdresseLivraison() ?? '');
+        $commande->setAdresseFacturation($user->getAdresseFacturation() ?? $user->getAdresseLivraison() ?? '');
+        
+        $commande->setTva($user->getCoefficient());
+        
+        return $commande;
+    }
+
+    private function ajouterDetailsCommande(Commande $commande, array $panier, ProduitRepository $produitRepository): void
+    {
+        /** @var \App\Entity\Utilisateur $user */
+        $user = $this->getUser();
+        
+        $coefficient = 1.2; 
+        if ($user instanceof Utilisateur && $user->getCoefficient() !== null) {
+            $coefficient = (float) $user->getCoefficient();
+        }
+        
+        $totalHT = 0;
+        
+        foreach ($panier as $produitId => $quantite) {
+            $produit = $produitRepository->find($produitId);
+            
+            if ($produit) {
+                $detailCommande = new DetailCommande();
+                $detailCommande->setProduit($produit);
+                $detailCommande->setQuantite($quantite);
+             
+                $prixAvecCoefficient = $produit->getPrixHt() * $coefficient;
+                $detailCommande->setPrix((string) $prixAvecCoefficient);
+                
+                $detailCommande->setCommande($commande);
+                
+                $commande->addDetailCommande($detailCommande);
+                $totalHT += $prixAvecCoefficient * $quantite;
+            }
+        }
+        
+        $commande->setTotalHt((string) $totalHT);
+        $commande->setTotal((string) $totalHT);
+    }
+
+    private function sauvegarderCommande(Commande $commande, EntityManagerInterface $entityManager): void
+    {
+        $entityManager->persist($commande);
+        
+        foreach ($commande->getDetailCommandes() as $detailCommande) {
+            $entityManager->persist($detailCommande);
+        }
+        
+        $entityManager->flush();
     }
 }

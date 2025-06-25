@@ -8,6 +8,7 @@
 	{{ encore_entry_link_tags('paiement-style') }}
 {% endblock %}
 
+
 {% block body %}
 
 	<div class="header-title color-fond2 font-title">
@@ -23,9 +24,38 @@
 		<section class="section-paiement-info">
 
 
-			<div id="form-adresse-livraison" data-adresselivraison="{{ app.user.adresseLivraison|e('html_attr') }}" data-titre="Adresse de livraison"></div>
-			<div id="form-adresse-facturation" data-adresselivraison="{% if app.user.adressefacturation is empty %}{% if app.user.adresselivraison is not empty %}{{ app.user.adresselivraison|e('html_attr') }}{% endif %}{% else %}{{ app.user.adressefacturation|e('html_attr') }}{% endif %}" data-titre="Adresse de facturation"></div>
+			<div class="paiement-card-info color-fond2">
+				<h1 class="font-title">Adresse de livraison</h1>
+				{% if app.user.adresselivraison is empty %}
+					<p class="paiement-adresse-error">Une adresse de livraison est requise</p>
+				{% else %}
+					<p>Adresse :
+						{{ app.user.adresselivraison|e('html_attr') }}</p>
+				{% endif %}
+
+
+				<a class="profil-link" href="/profil">Modifier cette information</a>
+			</div>
+
+			<div class="paiement-card-info color-fond2">
+				<h1 class="font-title">Adresse de facturation
+				</h1>
+
+				{% if app.user.adressefacturation is empty %}
+					{% if app.user.adresselivraison is empty %}
+						<p class="paiement-adresse-error">Une adresse de facturation est requise</p>
+					{% else %}
+						<p>Adresse :
+							{{ app.user.adresselivraison|e('html_attr') }}</p>
+					{% endif %}
+				{% else %}
+					<p>Adresse :{{ app.user.adressefacturation|e('html_attr') }}</p>
+				{% endif %}
+
+				<a class="profil-link" href="/profil">Modifier cette information</a>
+			</div>
 		</section>
+
 
 		<section class="section-paiement-recap-com">
 
@@ -74,8 +104,20 @@
 		</section>
 
 		<section class="section-paiement-btn-annulation">
-			<a class="profil-link color-erreur" href="/panier">Annuler le paiement et revenir au panier</a>
+			<a class="cancel-btn color-erreur" href="/panier">Annuler le paiement et revenir au panier</a>
+
 		</section>
+		<section class="section-paiement-btn-paiement">
+			<form action="{{ path('app_paiement_valider') }}" method="post">
+
+				<input type="hidden" name="_token" value="{{ csrf_token('authenticate') }}">
+
+				<button type="submit">Payer et valider la commande</button>
+
+			</form>
+
+		</section>
+
 
 	{% else %}
 

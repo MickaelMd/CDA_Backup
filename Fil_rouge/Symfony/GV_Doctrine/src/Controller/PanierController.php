@@ -75,7 +75,7 @@ final class PanierController extends AbstractController
             }
         }
         
-        dump($request->getSession()->get('panier', []));
+        // dump($request->getSession()->get('panier', []));
         
         $panier = $panierService->getPanier(); 
 
