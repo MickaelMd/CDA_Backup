@@ -42,21 +42,30 @@ public function index(
     $quantiteActuelle = $panier[$produit->getId()] ?? 0;
     $quantiteTotale = $quantiteActuelle + $quantite;
     if ($quantiteTotale > 10) {
-        $this->addFlash('error', 'Quantité limitée à 10 par produit dans le panier.');
-        return $this->redirectToRoute('app_produit', ['id' => $id]);
-    }
+            $this->addFlash('error', 'Quantité limitée à 10 par produit dans le panier.');
+            return $this->redirectToRoute('app_produit', ['id' => $id]);
+        }
     $panierService->ajouterProduit($produit->getId(), $quantite);
     $this->addFlash('success', 'Produit ajouté au panier !');
+
     return $this->redirectToRoute('app_produit', ['id' => $id]);
-} catch (\Exception $e) {
-    $this->addFlash('error', 'Une erreur c\'est produite.');
-        return $this->redirectToRoute('app_produit', ['id' => $id]);
+
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Une erreur c\'est produite.');
+                return $this->redirectToRoute('app_produit', ['id' => $id]);
+          }
 }
-}
+
+        $produitSimilaire = $produitRepository->ProduitSimilaire(
+        $produit->getSousCategorie(),
+        $produit->getId(),
+        4 
+    );
 
 
     return $this->render('produit/index.html.twig', [
-        'produit' => $produit
+        'produit' => $produit,
+        'produitSimilaire' => $produitSimilaire
     ]);
 
 }

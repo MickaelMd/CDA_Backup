@@ -78,4 +78,21 @@ public function produitpopulaire(int $limit = 5): array
     return $popularProducts;
 }
 
+public function ProduitSimilaire($sousCategorie, $excludeId, $limit = null)
+{
+    $qb = $this->createQueryBuilder('p')
+        ->where('p.active = :active')
+        ->andWhere('p.sousCategorie = :sousCategorie')
+        ->andWhere('p.id != :excludeId')
+        ->setParameter('active', 1)
+        ->setParameter('sousCategorie', $sousCategorie)
+        ->setParameter('excludeId', $excludeId);
+    
+    if ($limit) {
+        $qb->setMaxResults($limit);
+    }
+    
+    return $qb->getQuery()->getResult();
+}
+
 }
