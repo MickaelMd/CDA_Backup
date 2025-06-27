@@ -10,28 +10,31 @@
 
 {% block body %}
 	<div class="fil-ariane">
-		<a href="/"><img src="/image/logo/interface/home.svg" alt="Logo Accueil"></a>
+		<a href="{{ path('app_accueil') }}"><img src="/image/logo/interface/home.svg" alt="Logo Accueil"></a>
 		<ul>
 			<li>
-				<a class="color-secondLien" href="/">Accueil</a>
+				<a class="color-secondLien" href="{{ path('app_accueil') }}">Accueil</a>
 			</li>
 			<li>
 				<span>></span>
 			</li>
 			<li>
-				<a class="color-secondLien" href="/categorie">Catégorie</a>
+				<a class="color-secondLien" href="{{ path('app_categorie') }}">Catégorie</a>
 			</li>
 			<li>
 				<span>></span>
 			</li>
 			<li>
-				<a class="color-secondLien" href="/categorie/{{ produit.sousCategorie.categorie.id }}">{{ produit.sousCategorie.categorie.nom }}</a>
+				<a class="color-secondLien" href="{{ path('app_sous-categorie', {'id': produit.sousCategorie.categorie.id}) }}">{{ produit.sousCategorie.categorie.nom }}
+
+				</a>
 			</li>
 			<li>
 				<span>></span>
+
 			</li>
 			<li>
-				<a class="color-secondLien" href="/categorie">{{ produit.sousCategorie.nom }}</a>
+				<a class="color-secondLien" href="{{ path('app_sous_categorie', {'id': produit.sousCategorie.id}) }}">{{ produit.sousCategorie.nom }}</a>
 			</li>
 			<li>
 				<span>> &nbsp;</span>
@@ -92,14 +95,14 @@
 					<img src="/{{ produit.image|e('html_attr') }}" alt="{{ produit.libellecourt|e('html_attr') }}">
 				</div>
 				<h2 class="font-title">{{produit.libellecourt|e('html_attr')}}</h2>
-				<a class="color-secondLien" href="">{{produit.souscategorie.nom|e('html_attr')}}</a>
+				<a class="color-secondLien" href="{{ path('app_sous_categorie', {'id': produit.sousCategorie.id}) }}">{{produit.souscategorie.nom|e('html_attr')}}</a>
 				<p>
 					{% if app.user %}
 						{{produit.prixHt * app.user.coefficient}}
 					{% else %}
 						{{produit.prixHt * 1.2}}
 					{% endif %}€</p>
-				<a class="card-produit-btn" href="/produit/{{produit.id|e('html_attr')}}">Voir le produit</a>
+				<a class="card-produit-btn" href="{{ path('app_produit', {'id': produit.id}) }}">Voir le produit</a>
 
 			</div>
 		{% endfor %}

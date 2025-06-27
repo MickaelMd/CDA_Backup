@@ -52,3 +52,13 @@ form {
   align-items: center;
   justify-content: center;
 }
+
+#login-mdp-oublie {
+  margin-top: 20px;
+  color: black;
+  text-decoration: none;
+  transition: 200ms;
+}
+#login-mdp-oublie:hover {
+  color: #369354;
+}

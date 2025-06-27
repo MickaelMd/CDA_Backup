@@ -42,16 +42,21 @@
 			<label for="_remember_me">Se souvenir de moi</label>
 		</div>
 
+		<a id="login-mdp-oublie" href="{{ path('app_forgot_password_request') }}">Vous avez oublié votre mot de passe ?</a>
+
 		<button class="login-btn" type="submit">
 			Se connecter
 		</button>
+
+
 	</form>
+
 
 	<section class="login-ask">
 
 		<h1 class="font-title">Pas encore de compte ?</h1>
 
-		<a class="login-btn" href="/inscription">
+		<a class="login-btn" href="{{ path('app_register') }}">
 			Inscrivez-vous !
 		</a>
 

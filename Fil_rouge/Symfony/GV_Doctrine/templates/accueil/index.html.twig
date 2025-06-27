@@ -23,12 +23,12 @@
 		<div class="header-btn">
 			{% if app.user %}
 
-				<a href="/categorie">Voir nos catégories</a>
-				<a href="/profil">Accéder a votre profil</a>
+				<a href="{{ path('app_categorie') }}">Voir nos catégories</a>
+				<a href="{{ path('app_profil') }}">Accéder a votre profil</a>
 
 			{% else %}
-				<a href="/connexion">Connectez-vous !</a>
-				<a href="/inscription">Inscrivez-vous !</a>
+				<a href="{{ path('app_login') }}">Connectez-vous !</a>
+				<a href="{{ path('app_register') }}">Inscrivez-vous !</a>
 			{% endif %}
 
 		</div>
@@ -42,7 +42,7 @@
 	<section class="section-categorie">
 
 		{% for categorie in categorie|slice(0, 4) %}
-			<a href="/categorie/{{categorie.id|e('html_attr')}}" class="card-categorie-link">
+			<a href="{{ path('app_sous-categorie', {'id': categorie.id}) }}" class="card-categorie-link">
 				<div class="card-categorie color-fond2">
 					<div class="card-categorie-img">
 						<img src="{{ categorie.image|e('html_attr') }}" alt="{{ categorie.nom|e('html_attr') }}">
@@ -59,7 +59,7 @@
 
 	<section class="section-autre-categorie">
 		{% for categorie in categorie%}
-			<a href="/categorie/{{categorie.id|e('html_attr')}}" class="card-autre-categorie-link">
+			<a href="{{ path('app_sous-categorie', {'id': categorie.id}) }}" class="card-autre-categorie-link">
 				<div class="card-autre-categorie color-fond2">
 
 					<div class="card-autre-categorie-img">
@@ -87,14 +87,14 @@
 					<img src="{{ produit.image|e('html_attr') }}" alt="{{ produit.libellecourt|e('html_attr') }}">
 				</div>
 				<h2 class="font-title">{{produit.libellecourt|e('html_attr')}}</h2>
-				<a class="color-secondLien" href="">{{produit.souscategorie.nom|e('html_attr')}}</a>
+				<a class="color-secondLien" href="{{ path('app_sous_categorie', {'id': produit.sousCategorie.id}) }}">{{produit.souscategorie.nom|e('html_attr')}}</a>
 				<p>
 					{% if app.user %}
 						{{produit.prixHt * app.user.coefficient}}
 					{% else %}
 						{{produit.prixHt * 1.2}}
 					{% endif %}€</p>
-				<a class="card-produit-btn" href="/produit/{{produit.id|e('html_attr')}}">Voir le produit</a>
+				<a class="card-produit-btn" href="{{ path('app_produit', {'id': produit.id}) }} ">Voir le produit</a>
 
 			</div>
 		{% endfor %}

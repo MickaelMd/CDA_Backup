@@ -34,7 +34,7 @@
 				{% endif %}
 
 
-				<a class="profil-link" href="/profil">Modifier cette information</a>
+				<a class="profil-link" href="{{ path('app_profil') }}">Modifier cette information</a>
 			</div>
 
 			<div class="paiement-card-info color-fond2">
@@ -52,7 +52,7 @@
 					<p>Adresse :{{ app.user.adressefacturation|e('html_attr') }}</p>
 				{% endif %}
 
-				<a class="profil-link" href="/profil">Modifier cette information</a>
+				<a class="profil-link" href="{{ path('app_profil') }}">Modifier cette information</a>
 			</div>
 		</section>
 
@@ -70,7 +70,7 @@
 					</div>
 					<div class="paiement-card-right">
 						<div class="paiement-card-produit-info">
-							<a href="/produit/{{detail.produit.id|e('html_attr')}}">
+							<a href="{{ path('app_produit', {'id': detail.produit.id}) }}">
 								<h1 class="font-title">{{ detail.produit.libelleCourt|e('html_attr') }}</h1>
 							</a>
 						</div>
@@ -104,7 +104,7 @@
 		</section>
 
 		<section class="section-paiement-btn-annulation">
-			<a class="cancel-btn color-erreur" href="/panier">Annuler le paiement et revenir au panier</a>
+			<a class="cancel-btn color-erreur" href="{{ path('app_panier')}}">Annuler le paiement et revenir au panier</a>
 
 		</section>
 		<section class="section-paiement-btn-paiement">
@@ -126,8 +126,8 @@
 			<h1 class="font-title">Vous devez être connecté pour valider votre commande</h1>
 
 			<div class="header-paiement-btn">
-				<a href="/connexion">Connectez-vous !</a>
-				<a href="/inscription">Inscrivez-vous !</a>
+				<a href="{{ path('app_login') }}">Connectez-vous !</a>
+				<a href="{{ path('app_register') }}">Inscrivez-vous !</a>
 			</div>
 		</div>
 

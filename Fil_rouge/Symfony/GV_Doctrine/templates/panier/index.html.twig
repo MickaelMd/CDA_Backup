@@ -24,7 +24,7 @@
 				</div>
 
 				<div class="panier-card-produit-info">
-					<a href="/produit/{{detail.produit.id|e('html_attr')}}">
+					<a href="{{ path('app_produit', {'id': detail.produit.id}) }}">
 						<h1 class="font-title">{{ detail.produit.libelleCourt|e('html_attr') }}</h1>
 					</a>
 					<p>
@@ -78,7 +78,7 @@
 				{{ totalPanier ?? 0 }}€</p>
 
 		</div>
-		<a class="panier-commande-btn" href="/paiement">Valider la commande</a>
+		<a class="panier-commande-btn" href="{{ path('app_paiement') }}">Valider la commande</a>
 	</section>
 
 {% endblock %}
