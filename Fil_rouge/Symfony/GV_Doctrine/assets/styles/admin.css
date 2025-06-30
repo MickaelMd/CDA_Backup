@@ -1,0 +1,9 @@
+#admin-section-produit {
+  display: flex;
+  justify-content: center;
+  border: 1px solid black;
+}
+
+#admin-produit-react {
+  border: 1px solid yellow;
+}

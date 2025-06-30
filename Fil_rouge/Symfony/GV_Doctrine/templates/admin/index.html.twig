@@ -1,10 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AdminController!
+{% block title %}
+	{{ parent() }}Administration
 {% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	{{ encore_entry_link_tags('admin-style') }}
+{% endblock %}
+
 
 {% block body %}
 	<div class="header-title color-fond2 font-title">
 		<h1>Administration</h1>
 	</div>
+	<section id="admin-section-produit">
+		<h1>test</h1>
+	</section>
 {% endblock %}

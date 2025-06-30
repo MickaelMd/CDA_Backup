@@ -1,0 +1,42 @@
+      <h1 className="font-title">Modifier / ajouter un produit</h1>
+
+      <form action="">
+        <select name="" id="">
+          <option value="">Guitar</option>
+          <option value="">Piano</option>
+        </select>
+        <label htmlFor="">Nom du produit</label>
+        <input type="text" name="" id="" />
+
+        <label htmlFor="">Description du produit</label>
+        <textarea name="" id="" cols="30" rows="10"></textarea>
+
+        <label htmlFor="">Categorie</label>
+        <select name="" id="">
+          <option value="">1</option>
+        </select>
+
+        <label htmlFor="">Sous-categorie</label>
+        <select name="" id="">
+          <option value="">1</option>
+        </select>
+
+        <label htmlFor="">Stock</label>
+        <input type="number" name="" id="" />
+
+        <label htmlFor="">Prix Hors taxe</label>
+        <input type="number" name="" id="" />
+
+        <label htmlFor="">Prix fournisseur</label>
+        <input type="number" name="" id="" />
+
+        <label htmlFor="">Fournisseur</label>
+        <select name="" id="">
+          <option value="">1</option>
+        </select>
+        <label htmlFor="">Promotion</label>
+        <input type="number" name="" id="" />
+
+        <label htmlFor="">Image</label>
+        <input type="file" />
+      </form>
