@@ -6,26 +6,25 @@
 
 ### Base de données :
 
-- [ ] Élaboration du dictionnaire de données
+- [x] Élaboration du dictionnaire de données
 - [ ] Répertorisation des règles de gestion avec identifiants
-- [ ] Construction du schéma entité-association (validation formateur requise)
-- [ ] Génération du modèle physique de données optimisé
-- [ ] Création du script de génération de la base de données
+- [x] Construction du schéma entité-association (validation formateur requise)
+- [x] Création du script de génération de la base de données
 
 ### Structure et contraintes :
 
-- [ ] Création de la base de données (contraintes, index, droits)
-- [ ] Script d'insertion des données de test (données cohérentes)
+- [x] Création de la base de données (contraintes, index, droits)
+- [x] Script d'insertion des données de test (données cohérentes)
 - [ ] Mise en place des procédures de sauvegarde-restauration
-- [ ] Test de restauration
+- [x] Test de restauration
 
 ## Développement des composants d'accès aux données SQL et NoSQL
 
 ### Requêtes et procédures :
 
-- [ ] Scripts SQL pour les interrogations du tableau de bord
-- [ ] Procédure stockée : sélection des commandes non soldées
-- [ ] Procédure stockée : calcul du délai moyen commande/facturation
+- [] Scripts SQL pour les interrogations du tableau de bord
+- [] Procédure stockée : sélection des commandes non soldées
+- [] Procédure stockée : calcul du délai moyen commande/facturation
 
 ### Gestion des vues :
 
@@ -36,31 +35,31 @@
 
 ### Maquettes Web (Mockflow/Figma) :
 
-- [ ] Fenêtre de démarrage (liste des catégories)
-- [ ] Page liste des sous-catégories
-- [ ] Page liste des produits d'une sous-catégorie
-- [ ] Page détails produit + ajout panier
-- [ ] Page contenu du panier
-- [ ] Page d'inscription
-- [ ] Page de connexion
-- [ ] Page changement de mot de passe
+- [x] Fenêtre de démarrage (liste des catégories)
+- [x] Page liste des sous-catégories
+- [x] Page liste des produits d'une sous-catégorie
+- [x] Page détails produit + ajout panier
+- [x] Page contenu du panier
+- [x] Page d'inscription
+- [x] Page de connexion
+- [x] Page changement de mot de passe
 
 ### Maquettes Mobile :
 
-- [ ] Écran de démarrage (liste des catégories)
-- [ ] Page sous-catégories d'une catégorie
-- [ ] Page produits d'une sous-catégorie
-- [ ] Page détails du produit sélectionné
+- [x] Écran de démarrage (liste des catégories)
+- [x] Page sous-catégories d'une catégorie
+- [x] Page produits d'une sous-catégorie
+- [x] Page détails du produit sélectionné
 
 ## Architecture logicielle d'une application
 
 ### Diagrammes UML :
 
-- [ ] Diagramme des cas d'utilisation complet
-- [ ] Scénario détaillé : création d'une commande (flux principal + alternatifs)
-- [ ] Diagramme de séquences pour le scénario de commande
-- [ ] Diagramme d'activité : processus de saisie d'une commande
-- [ ] Diagramme des classes entités (modèle de données)
+- [x] Diagramme des cas d'utilisation complet
+- [x] Scénario détaillé : création d'une commande (flux principal + alternatifs)
+- [x] Diagramme de séquences pour le scénario de commande
+- [x] Diagramme d'activité : processus de saisie d'une commande
+- [x] Diagramme des classes entités (modèle de données)
 
 ## Installation et configuration de l'environnement
 
@@ -78,14 +77,14 @@
 
 #### Front Office :
 
-- [ ] Page d'accueil (intégration charte graphique)
-- [ ] Liste des catégories
-- [ ] Liste des sous-catégories
-- [ ] Liste des produits
-- [ ] Détails d'un produit
-- [ ] Contenu du panier
-- [ ] Page d'inscription
-- [ ] Page de connexion
+- [x] Page d'accueil (intégration charte graphique)
+- [x] Liste des catégories
+- [x] Liste des sous-catégories
+- [x] Liste des produits
+- [x] Détails d'un produit
+- [x] Contenu du panier
+- [x] Page d'inscription
+- [x] Page de connexion
 
 #### Back Office :
 
@@ -95,9 +94,9 @@
 
 ### Scripts clients (JavaScript) :
 
-- [ ] Formulaire d'inscription avec validation
-- [ ] Gestion des erreurs utilisateur
-- [ ] Prévention des soumissions erronées
+- [x] Formulaire d'inscription avec validation
+- [x] Gestion des erreurs utilisateur
+- [x] Prévention des soumissions erronées
 
 ## Développement des composants métier
 
@@ -106,8 +105,8 @@
 #### Front Office :
 
 - [ ] Création de commande (panier + inscription + validation)
-- [ ] Ajout de produits au panier
-- [ ] Processus d'inscription et connexion
+- [x] Ajout de produits au panier
+- [x] Processus d'inscription et connexion
 - [ ] Validation et enregistrement de commande
 
 #### Back Office :
