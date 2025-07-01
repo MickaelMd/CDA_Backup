@@ -22,14 +22,14 @@
 
 ### Requêtes et procédures :
 
-- [] Scripts SQL pour les interrogations du tableau de bord
-- [] Procédure stockée : sélection des commandes non soldées
-- [] Procédure stockée : calcul du délai moyen commande/facturation
+- [x] Scripts SQL pour les interrogations du tableau de bord
+- [x] Procédure stockée : sélection des commandes non soldées
+- [x] Procédure stockée : calcul du délai moyen commande/facturation
 
 ### Gestion des vues :
 
-- [ ] Vue jointure Produits - Fournisseurs
-- [ ] Vue jointure Produits - Catégorie/Sous-catégorie
+- [x] Vue jointure Produits - Fournisseurs
+- [x] Vue jointure Produits - Catégorie/Sous-catégorie
 
 ## Analyse des besoins et maquettage d'une application
 
@@ -60,6 +60,7 @@
 - [x] Diagramme de séquences pour le scénario de commande
 - [x] Diagramme d'activité : processus de saisie d'une commande
 - [x] Diagramme des classes entités (modèle de données)
+- [ ] Diagramme de déploiement UML
 
 ## Installation et configuration de l'environnement
 
@@ -121,6 +122,16 @@
 - [ ] Organisation en couches
 - [ ] Mise en place d'une API sécurisée (JWT)
 - [ ] Configuration du module JWT (désactivé pour tests)
+
+### Fonctionnalités métier spécifiques :
+
+- [x] Calcul automatique des prix selon coefficient client
+- [ ] Gestion des réductions commerciales
+- [ ] Système de paiement différencié (immédiat/différé)
+- [ ] Workflow de validation des commandes
+- [ ] Génération automatique des factures (une facture par commande, même expédiée partiellement)
+- [ ]Génération des bons de livraison (multiples possibles par commande)
+- [ ] Archivage des documents (conservation 3 ans minimum)
 
 ## Application mobile
 
