@@ -142,39 +142,46 @@ final class PaiementController extends AbstractController
         return $commande;
     }
 
-    private function ajouterDetailsCommande(Commande $commande, array $panier, ProduitRepository $produitRepository): void
-    {
-        /** @var \App\Entity\Utilisateur $user */
-        $user = $this->getUser();
-        
-        $coefficient = 1.2; 
-        if ($user instanceof Utilisateur && $user->getCoefficient() !== null) {
-            $coefficient = (float) $user->getCoefficient();
-        }
-        
-        $totalHT = 0;
-        
-        foreach ($panier as $produitId => $quantite) {
-            $produit = $produitRepository->find($produitId);
-            
-            if ($produit) {
-                $detailCommande = new DetailCommande();
-                $detailCommande->setProduit($produit);
-                $detailCommande->setQuantite($quantite);
-             
-                $prixAvecCoefficient = $produit->getPrixHt() * $coefficient;
-                $detailCommande->setPrix((string) $prixAvecCoefficient);
-                
-                $detailCommande->setCommande($commande);
-                
-                $commande->addDetailCommande($detailCommande);
-                $totalHT += $prixAvecCoefficient * $quantite;
-            }
-        }
-        
-        $commande->setTotalHt((string) $totalHT);
-        $commande->setTotal((string) $totalHT);
+
+private function ajouterDetailsCommande(Commande $commande, array $panier, ProduitRepository $produitRepository): void
+{
+    /** @var \App\Entity\Utilisateur $user */
+    $user = $this->getUser();
+    
+    $coefficient = 1.2; 
+    if ($user instanceof Utilisateur && $user->getCoefficient() !== null) {
+        $coefficient = (float) $user->getCoefficient();
     }
+    
+    $totalHT = 0;
+    $totalTTC = 0;
+    
+    foreach ($panier as $produitId => $quantite) {
+        $produit = $produitRepository->find($produitId);
+        
+        if ($produit) {
+            $detailCommande = new DetailCommande();
+            $detailCommande->setProduit($produit);
+            $detailCommande->setQuantite($quantite);
+         
+            $prixHT = $produit->getPrixHt();
+         
+            $prixTTC = $prixHT * $coefficient;
+            
+            $detailCommande->setPrix((string) $prixTTC);
+            
+            $detailCommande->setCommande($commande);
+            $commande->addDetailCommande($detailCommande);
+       
+            $totalHT += $prixHT * $quantite;
+            $totalTTC += $prixTTC * $quantite;
+        }
+    }
+    
+
+    $commande->setTotalHt((string) $totalHT);
+    $commande->setTotal((string) $totalTTC);
+}
 
     private function sauvegarderCommande(Commande $commande, EntityManagerInterface $entityManager): void
     {
