@@ -68,8 +68,8 @@
 
 - [ ] Fichier `compose.yaml` et Dockerfile
 - [ ] Conteneur PHP pour l'exécution du site
-- [ ] Conteneur pour la base de données
-- [ ] Conteneur pour la gestion des emails
+- [x] Conteneur pour la base de données
+- [x] Conteneur pour la gestion des emails
 - [ ] Documentation des conteneurs de développement
 
 ## Développement des interfaces utilisateur

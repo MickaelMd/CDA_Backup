@@ -35,6 +35,10 @@ body {
   background-color: #369354;
 }
 
+.color-btnCom {
+  background-color: #535353;
+}
+
 .color-erreur {
   background-color: #ff624d;
 }
@@ -326,7 +330,6 @@ body {
 
 .app-button {
   padding: 5px 40px;
-  background: #369354;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 25px;
   color: white;
@@ -359,4 +362,35 @@ body {
     font-size: 9pt;
     padding: 15px;
   }
+}
+
+/* ------------------------------- RESET PASS -------------------------------
+
+*/
+
+.reset-pass-page-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.reset-pass-page-section ul {
+  display: flex;
+  flex-direction: column;
+}
+.reset-pass-page-section ul li {
+  color: #ff624d;
+  margin: 0 auto;
+}
+
+.reset-pass-page-section p {
+  max-width: 600px;
+  margin: 20px;
+}
+
+.reset-pass-page-section input,
+.reset-pass-page-section button {
+  margin-top: 20px;
 }

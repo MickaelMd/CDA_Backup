@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{parent()}}
+	Hello DetailCommandeController!
+{% endblock %}
+
+{% block page_specific_stylesheets %}
+	{{ encore_entry_link_tags('profil-style') }}
+{% endblock %}
+
+{% block body %}
+
+	<div class="header-title color-fond2 font-title">
+		<h1>
+			Commande numéro :
+			{{commande.id}}
+		</h1>
+	</div>
+
+	<section class="profil-detail-commande-section">
+
+		<p>Adresse de livraison :
+			{{commande.AdresseLivraison}}</p>
+		<p>Adresse de facturation :
+			{{commande.AdresseFacturation}}</p>
+		<p>Date de la commande :
+			{{ commande.dateCommande|date('d/m/Y H:i') }}</p>
+		<p>Mode de paiement :
+			{{commande.modePaiement}}</p>
+		<p>Total HT :
+			{{commande.totalHT}}</p>
+		<p>Total TTC :
+			{{commande.total}}</p>
+		<p>TVA appliquée :
+			{{ ((commande.TVA - 1) * 100)|number_format(2, '.', '') }}
+			%
+		</p>
+		<p>Statut de la commande :
+			{{ commande.statu|replace({'_': ' '}) }}</p>
+
+		<h1>Produit</h1>
+		<table class="color-logo">
+			<thead>
+				<tr>
+					<th scope="col">Nom</th>
+					<th scope="col">Prix TTC Unitaire</th>
+					<th scope="col">Quantité</th>
+					<th scope="col">Page du produit</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for detail in commande.detailCommandes %}
+					<tr>
+						<th data-label="Nom">{{detail.produit.libelleCourt}}</th>
+						<td data-label="Prix TTC Unitaire">{{detail.prix}}</td>
+						<td data-label="Quantité">{{detail.quantite}}</td>
+						<td data-label="Page du produit">
+							<a href="{{ path('app_produit', {'id': detail.produit.id}) }}">Voir le produit</a>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		<div class="detail-commande-facture">
+			<a href="" class="app-button color-btnCom">Télécharger la facture</a>
+			<a href="" class="app-button color-btnCom">Télécharger le bon de commande</a>
+		</div>
+	</section>
+	<div class="detail-btp">
+		<a class="app-button color-btnCta" href="{{path("app_profil")}}">Revenir au profil</a>
+	</div>
+{% endblock %}

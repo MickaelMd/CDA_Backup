@@ -104,6 +104,14 @@ final class PaiementController extends AbstractController
             $commande = $this->creerCommande();
             $this->ajouterDetailsCommande($commande, $panier, $produitRepository);
             $this->sauvegarderCommande($commande, $entityManager);
+
+            // ----------------PDF & MAIL SOON ---------------------
+
+
+
+            
+              // ----------------PDF & MAIL SOON ---------------------
+
             $panierService->viderPanier();
             
             $this->addFlash('success', 'Commande validée');
