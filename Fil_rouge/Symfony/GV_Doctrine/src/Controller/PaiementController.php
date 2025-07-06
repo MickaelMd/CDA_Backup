@@ -14,6 +14,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 final class PaiementController extends AbstractController
 {
@@ -105,12 +107,47 @@ final class PaiementController extends AbstractController
             $this->ajouterDetailsCommande($commande, $panier, $produitRepository);
             $this->sauvegarderCommande($commande, $entityManager);
 
-            // ----------------PDF & MAIL SOON ---------------------
+                // ----------------PDF FACTURE ---------------------
 
+                $pdfOptions = new Options();
+                $pdfOptions->set('defaultFont', 'Arial');
+
+                $dompdf = new Dompdf($pdfOptions);
+
+                $html = $this->renderView('paiement/facture.html.twig', [
+                    'commande' => $commande,
+                ]);
+
+                $dompdf->loadHtml($html);
+                $dompdf->setPaper('A4', 'portrait');
+                $dompdf->render();
+
+                $output = $dompdf->output();
+
+                // nom dynamique
+                $filename = sprintf('facture-%d.pdf', $commande->getId());
+                $filePath = $this->getParameter('kernel.project_dir') . '/public/facture/' . $filename;
+
+                file_put_contents($filePath, $output);
+
+                return new Response(
+                    $output,
+                    200,
+                    [
+                        'Content-Type' => 'application/pdf',
+                        'Content-Disposition' => 'inline; filename="' . $filename . '"'
+                    ]
+                );
 
 
             
-              // ----------------PDF & MAIL SOON ---------------------
+              // ----------------PDF FACTURE ---------------------
+
+
+              // ----------------PDF MAIL ---------------------
+
+              // ----------------PDF MAIL ---------------------
+              
 
             $panierService->viderPanier();
             
