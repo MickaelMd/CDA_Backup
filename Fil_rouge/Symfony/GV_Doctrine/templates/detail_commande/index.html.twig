@@ -2,7 +2,8 @@
 
 {% block title %}
 	{{parent()}}
-	Hello DetailCommandeController!
+	Commande numéro :
+	{{commande.id}}
 {% endblock %}
 
 {% block page_specific_stylesheets %}
@@ -25,7 +26,7 @@
 		<p>Adresse de facturation :
 			{{commande.AdresseFacturation}}</p>
 		<p>Date de la commande :
-			{{ commande.dateCommande|date('d/m/Y H:i') }}</p>
+			{{ commande.dateCommande|date('d/m/Y') }}</p>
 		<p>Mode de paiement :
 			{{commande.modePaiement}}</p>
 		<p>Total HT :
@@ -46,6 +47,7 @@
 					<th scope="col">Nom</th>
 					<th scope="col">Prix TTC Unitaire</th>
 					<th scope="col">Quantité</th>
+					<th scope="col">Statut du produit</th>
 					<th scope="col">Page du produit</th>
 				</tr>
 			</thead>
@@ -55,6 +57,7 @@
 						<th data-label="Nom">{{detail.produit.libelleCourt}}</th>
 						<td data-label="Prix TTC Unitaire">{{detail.prix}}</td>
 						<td data-label="Quantité">{{detail.quantite}}</td>
+						<td data-label="Statut">{{detail.statut|replace({'_': ' '})}}</td>
 						<td data-label="Page du produit">
 							<a href="{{ path('app_produit', {'id': detail.produit.id}) }}">Voir le produit</a>
 						</td>
@@ -64,8 +67,11 @@
 		</table>
 
 		<div class="detail-commande-facture">
-			<a href="" class="app-button color-btnCom">Télécharger la facture</a>
-			<a href="" class="app-button color-btnCom">Télécharger le bon de commande</a>
+			<form action="" method="post" target="_blank">
+				<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+				<button type="" class="app-button color-btnCom">Télécharger la facture</button>
+			</form>
+			{# <a href="" class="app-button color-btnCom">Télécharger le bon de commande</a> #}
 		</div>
 	</section>
 	<div class="detail-btp">

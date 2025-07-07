@@ -1,1 +1,135 @@
-<h1>test mail</h1>
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Green Village : Confirmation de commande #{{ commande.id }}</title>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				font-size: 12px;
+				color: #000;
+				margin: 40px;
+			}
+
+			h1 {
+				font-size: 20px;
+				margin-bottom: 20px;
+				text-align: center;
+			}
+
+			p {
+				margin: 10px 0;
+			}
+
+			section {
+				margin-bottom: 30px;
+			}
+
+			section p {
+				margin: 5px 0;
+				padding: 6px 10px;
+				background-color: #f2f2f2;
+			}
+
+			section p span {
+				font-weight: bold;
+			}
+
+			table {
+				width: 100%;
+				border-collapse: collapse;
+				margin-top: 20px;
+				font-size: 12px;
+			}
+
+			thead {
+				background-color: #333;
+				color: #fff;
+			}
+
+			thead th {
+				padding: 8px;
+				text-align: left;
+			}
+
+			tbody tr:nth-child(even) {
+				background-color: #f9f9f9;
+			}
+
+			tbody tr:nth-child(odd) {
+				background-color: #fff;
+			}
+
+			tbody td,
+			tbody th {
+				padding: 8px;
+				border: 1px solid #ccc;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Merci pour votre commande !</h1>
+
+		<p>Bonjour
+			{{ commande.client.prenom }}
+			{{ commande.client.nom }},</p>
+
+		<p>Nous vous confirmons que votre commande
+			<strong>#{{ commande.id }}</strong>
+			a bien été prise en compte.</p>
+
+		<p>Vous recevrez un email dès que vos articles seront expédiés.</p>
+
+		<p>Merci pour votre confiance ! Toute l'équipe Green Village reste à votre disposition.</p>
+
+		<section>
+			<h1>Détails de la commande</h1>
+			<p>
+				<span>Date de la commande :</span>
+				{{ commande.dateCommande|date('d/m/Y') }}</p>
+			<p>
+				<span>Adresse de livraison :</span>
+				{{ commande.AdresseLivraison }}</p>
+			<p>
+				<span>Adresse de facturation :</span>
+				{{ commande.AdresseFacturation }}</p>
+			<p>
+				<span>Mode de paiement :</span>
+				{{ commande.modePaiement }}</p>
+			<p>
+				<span>Total HT :</span>
+				{{ commande.totalHT }}</p>
+			<p>
+				<span>Total TTC :</span>
+				{{ commande.total }}</p>
+			<p>
+				<span>TVA appliquée :</span>
+				{{ ((commande.TVA - 1) * 100)|number_format(2, '.', '') }}%</p>
+			<p>
+				<span>Statut :</span>
+				{{ commande.statu|replace({'_': ' '}) }}</p>
+		</section>
+
+		<h1>Produits commandés</h1>
+		<table>
+			<thead>
+				<tr>
+					<th>Nom du produit</th>
+					<th>Prix TTC Unitaire</th>
+					<th>Quantité</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for detail in commande.detailCommandes %}
+					<tr>
+						<td>{{ detail.produit.libelleCourt }}</td>
+						<td>{{ detail.prix }}</td>
+						<td>{{ detail.quantite }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		<p>À bientôt sur Green Village !</p>
+	</body>
+</html>

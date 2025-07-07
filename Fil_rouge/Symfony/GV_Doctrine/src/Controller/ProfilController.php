@@ -31,7 +31,12 @@ final class ProfilController extends AbstractController
         /** @var \App\Entity\Utilisateur $user */
         $user = $this->getUser();
 
-        $commande = $commandeRepository->findBy(['Client' => $user]);
+        $commande = $commandeRepository->findBy(
+            ['Client' => $user],
+            ['dateCommande' => 'DESC'],
+            3
+        );
+
 
       
         $formLivraison = $this->createForm(AdresseLivraisonForm::class, $user);
@@ -105,4 +110,29 @@ final class ProfilController extends AbstractController
             'formEmail' => $formEmail->createView(),
         ]);
     }
+
+
+#[Route('/profil/listecommande', name: 'app_profil_commande')]
+public function confirmation(CommandeRepository $commandeRepository): Response
+{
+
+      if (!$this->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            $this->addFlash('error', 'Vous devez être <a href="/connexion">connecté</a> pour accéder à votre Profil.');
+            return $this->redirectToRoute('app_accueil');
+        }
+
+        /** @var \App\Entity\Utilisateur $user */
+        $user = $this->getUser();
+
+        $commande = $commandeRepository->findBy(
+            ['Client' => $user],
+          
+        );
+
+
+    return $this->render('profil/listecommande.html.twig', [
+        'commande' => $commande,
+    ]);
+}
+
 }

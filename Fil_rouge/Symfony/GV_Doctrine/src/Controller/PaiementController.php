@@ -16,6 +16,13 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Part\DataPart;
+use Symfony\Component\Mime\Part\File;
+
+
 
 final class PaiementController extends AbstractController
 {
@@ -75,7 +82,8 @@ final class PaiementController extends AbstractController
         PanierService $panierService,
         ProduitRepository $produitRepository,
         EntityManagerInterface $entityManager,
-        CsrfTokenManagerInterface $csrfTokenManager
+        CsrfTokenManagerInterface $csrfTokenManager,
+        MailerInterface $mailer
     ): Response {
       
         if (!$this->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
@@ -102,63 +110,60 @@ final class PaiementController extends AbstractController
             return $this->redirectToRoute('app_paiement');
         }
 
-        try {
+            try {
             $commande = $this->creerCommande();
             $this->ajouterDetailsCommande($commande, $panier, $produitRepository);
             $this->sauvegarderCommande($commande, $entityManager);
 
-                // ----------------PDF FACTURE ---------------------
+            // ---------------- PDF FACTURE ---------------------
 
-                $pdfOptions = new Options();
-                $pdfOptions->set('defaultFont', 'Arial');
+            $pdfOptions = new Options();
+            $pdfOptions->set('defaultFont', 'Arial');
 
-                $dompdf = new Dompdf($pdfOptions);
+            $dompdf = new Dompdf($pdfOptions);
 
-                $html = $this->renderView('paiement/facture.html.twig', [
+            $html = $this->renderView('dompdf/facture.html.twig', [
+                'commande' => $commande,
+            ]);
+
+            $dompdf->loadHtml($html);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+
+            $output = $dompdf->output(); 
+
+            $filename = sprintf('facture-green-village-%d.pdf', $commande->getId());
+
+            // ---------------- MAIL ---------------------
+
+            $email = (new TemplatedEmail())
+                ->from(new Address('noreply@greenvillage.com', 'Green Village'))
+                ->to((string) $user->getEmail())
+                ->subject('Green Village - Votre commande # ' . $commande->getId())
+                ->htmlTemplate('paiement/mail.html.twig')
+                ->context([
                     'commande' => $commande,
-                ]);
+                ])
+                ->attach($output, $filename, 'application/pdf');
 
-                $dompdf->loadHtml($html);
-                $dompdf->setPaper('A4', 'portrait');
-                $dompdf->render();
+            $mailer->send($email);
 
-                $output = $dompdf->output();
-
-                // nom dynamique
-                $filename = sprintf('facture-%d.pdf', $commande->getId());
-                $filePath = $this->getParameter('kernel.project_dir') . '/public/facture/' . $filename;
-
-                file_put_contents($filePath, $output);
-
-                return new Response(
-                    $output,
-                    200,
-                    [
-                        'Content-Type' => 'application/pdf',
-                        'Content-Disposition' => 'inline; filename="' . $filename . '"'
-                    ]
-                );
-
-
-            
-              // ----------------PDF FACTURE ---------------------
-
-
-              // ----------------PDF MAIL ---------------------
-
-              // ----------------PDF MAIL ---------------------
-              
+            // ------------------------------------- 
 
             $panierService->viderPanier();
+
             
             $this->addFlash('success', 'Commande validée');
-            return $this->redirectToRoute('app_profil');
-            
+            return $this->redirectToRoute('app_paiement_valide');
+
         } catch (\Exception $e) {
             $this->addFlash('error', 'Erreur détaillée: ' . $e->getMessage() . ' - Ligne: ' . $e->getLine() . ' - Fichier: ' . $e->getFile());
             return $this->redirectToRoute('app_paiement');
         }
+
     }
+
+     // ------------------------------------- Fonction
 
     private function creerCommande(): Commande
     {
@@ -238,4 +243,12 @@ private function ajouterDetailsCommande(Commande $commande, array $panier, Produ
         
         $entityManager->flush();
     }
+
+
+#[Route('/paiement/valide/', name: 'app_paiement_valide')]
+public function confirmation(): Response
+{
+    return $this->render('paiement/valide.html.twig');
+}
+
 }

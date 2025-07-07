@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="UTF-8">
-		<title>Facture #{{ commande.id }}</title>
+		<title>Green Village : Facture #{{ commande.id }}</title>
 		<style>
 			body {
 				font-family: Arial, sans-serif;
@@ -93,7 +93,7 @@
 			<h1>Informations de la commande</h1>
 			<p>
 				<span>Date de la commande :</span>
-				{{ commande.dateCommande|date('d/m/Y H:i') }}</p>
+				{{ commande.dateCommande|date('d/m/Y') }}</p>
 			<p>
 				<span>Adresse de livraison :</span>
 				{{ commande.AdresseLivraison }}</p>
@@ -113,9 +113,7 @@
 			<p>
 				<span>TVA appliquée :</span>
 				{{ ((commande.TVA - 1) * 100)|number_format(2, '.', '') }}%</p>
-			<p>
-				<span>Statut de la commande :</span>
-				{{ commande.statu|replace({'_': ' '}) }}</p>
+
 		</section>
 
 		<h1>Produits</h1>

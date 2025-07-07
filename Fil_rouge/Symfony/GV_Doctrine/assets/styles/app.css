@@ -364,9 +364,7 @@ body {
   }
 }
 
-/* ------------------------------- RESET PASS -------------------------------
-
-*/
+/* ----------------- MDP Perdu ----------------- */
 
 .reset-pass-page-section {
   display: flex;
@@ -393,4 +391,62 @@ body {
 .reset-pass-page-section input,
 .reset-pass-page-section button {
   margin-top: 20px;
+}
+
+/* ----------------- A propos ----------------- */
+
+.section-d-f-l {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+}
+
+.section-d-f-l-content {
+  max-width: 800px;
+  width: 100%;
+  padding: 2rem;
+  line-height: 1.6;
+}
+
+.section-d-f-l-content p {
+  margin-bottom: 1.5rem;
+  text-align: justify;
+}
+
+.section-d-f-l-content h3 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.section-d-f-l-content h4 {
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  color: #555;
+}
+
+.section-d-f-l-content ul {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+.section-d-f-l-content li {
+  margin-bottom: 0.5rem;
+}
+
+.section-d-f-l-content strong {
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .section-d-f-l {
+    padding: 2rem 1rem;
+  }
+
+  .section-d-f-l-content {
+    padding: 2rem;
+  }
 }

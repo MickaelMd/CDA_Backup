@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ parent() }}Historique des commandes
+{% endblock %}
+
+{% block page_specific_stylesheets %}
+	{{ encore_entry_link_tags('profil-style') }}
+{% endblock %}
+
+
+{% block body %}
+
+	<div class="header-title color-fond2 font-title">
+		<h1>Historique des commandes</h1>
+	</div>
+
+	<section id="profil-section-commande">
+		{% for commande in commande %}
+			<div class="profil-card-commande">
+				<h1>Commande numéro :
+					{{ commande.id }}</h1>
+
+				<div class="profil-card-commande-produit">
+					{% for detail in commande.detailCommandes %}
+						<div class="profil-card-commande-img">
+							<a href="{{ path('app_produit', {'id': detail.produit.id}) }}">
+								<img src="/{{ detail.produit.image }}" alt="{{ detail.produit.libelleCourt }}">
+							</a>
+						</div>
+
+					{% endfor %}
+				</div>
+				<div class="profil-card-commande-info">
+					<p>Date :
+						{{ commande.dateCommande|date('d/m/Y H:i') }}</p>
+					<p>Statut :
+						{{ commande.statu|replace({'_': ' '}) }}</p>
+
+					<p>Prix total HT :
+						{{ commande.totalHt }}</p>
+
+					<p>Prix total TTC :
+						{{ commande.total }}</p>
+					<a class="app-button color-btnCom" href="{{ path('app_detail_commande', {'id': commande.id}) }}">Détail de la commande</a>
+				</div>
+
+			</div>
+
+			<hr class="profil-hr">
+		{% endfor %}
+		<div class="profil-card-commande-info">
+
+			<a class="app-button color-btnCta" href="{{path('app_profil')}}">Revenir a votre profil</a>
+
+		</div>
+	</section>
+
+{% endblock %}
