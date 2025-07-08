@@ -105,6 +105,9 @@
 				<a class="card-produit-btn" href="{{ path('app_produit', {'id': produit.id}) }}">Voir le produit</a>
 
 			</div>
+		{% else %}
+
+			<h1 class="color-erreur-text">Erreur dans le chargement des produits</h1>
 		{% endfor %}
 
 	</section>

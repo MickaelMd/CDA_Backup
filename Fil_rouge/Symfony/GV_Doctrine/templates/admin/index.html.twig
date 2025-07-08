@@ -9,6 +9,11 @@
 	{{ encore_entry_link_tags('admin-style') }}
 {% endblock %}
 
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('admin-js') }}
+{% endblock %}
+
 
 {% block body %}
 	<div class="header-title color-fond2 font-title">
@@ -23,11 +28,82 @@
 		<h1>Gestion des fournisseurs</h1>
 	</div>
 
+	<div class="admin-form">
+		<select class="admin-select font-title" name="" id="">
+			<option value="" selected>Ajouter un fournisseur</option>
+			{% for fournisseur in fournisseur %}
+				<option value="{{fournisseur.id}}" data-user-id="{{fournisseur.id}}" data-user-commercial="{{ fournisseur.Commercial.id }}" data-user-nom="{{fournisseur.nom}}" data-user-email="{{fournisseur.email}}" data-user-telephone="{{fournisseur.telephone}}" data-user-adresse="{{fournisseur.adresse}}">{{fournisseur.nom}}</option>
+			{% endfor %}
+
+		</select>
+	</div>
+	<form class="admin-form" action="" method="post">
+
+		<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+		<input type="hidden" name="fourni-id" id="fourni-id">
+		<label for="nom">Nom du fournisseur</label>
+		<input class="app-input" type="text" name="fourni-nom" id="fourni-nom">
+		<label for="email">E-mail du fournisseur</label>
+		<input class="app-input" type="text" name="fourni-email" id="fourni-email">
+		<label for="telephone">Téléphone du fournisseur</label>
+		<input class="app-input" type="text" name="fourni-telephone" id="fourni-telephone">
+		<label for="adresse">Adresse du fournisseur</label>
+		<input class="app-input" type="text" name="fourni-adresse" id="fourni-adresse">
+		<label for="commercial">Commercial en charge</label>
+		<select class="admin-select" name="" id="select-commercial">
+			{% for commercial in commercial %}
+				<option value="{{commercial.id}}">{{commercial.email}}</option>
+			{% endfor %}
+		</select>
+
+		<button class="app-button color-btnCta" type="submit">Modifier ou Ajouter le fournisseur</button>
+
+	</form>
+
 	<div class="header-title color-fond2 font-title">
 		<h1>Gestion des produits</h1>
 	</div>
 
-	<section id="admin-section-produit">
-		<h1>test</h1>
-	</section>
+	<form class="admin-form" action="" method="post">
+		<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+		<input type="hidden" name="produit-id" id="produit-id">
+
+		<label for="">Nom du produit</label>
+		<input class="app-input" type="text" name="produit-libelle_court" id="produit-libelle_court">
+
+		<label for="produit_libelle_long">Description du produit</label>
+		<textarea name="produit_libelle_long" id="produit_libelle_long" col="10" row="10"></textarea>
+
+		<label for="produit-stock">Stock</label>
+		<input type="number" name="produit-stock" id="produit-stock">
+
+		<label for="produit-prixht">Prix Hors taxe</label>
+		<input type="number" name="produit-prixht" id="produit-prixht">
+
+		<label for="produit-prixFournisseur">Prix fournisseur</label>
+		<input type="number" name="produit-prixFournisseur" id="produit-prixFournisseur">
+
+		<label for="produit-fournisseur">Nom du fournisseur</label>
+		<select class="admin-select" name="" id="produit-select-fournisseur">
+			{% for fournisseur in fournisseur %}
+				<option value="{{fournisseur.id}}">{{fournisseur.nom}}</option>
+			{% endfor %}
+		</select>
+
+		<label for="produit-categorie">Catégorie du produit</label>
+
+		<select name="produit-categorie" id="produit-categorie">
+
+			{% for categorie in categorie %}
+
+				<option value="{{categorie.id}}">{{categorie.nom}}</option>
+
+
+			{% endfor %}
+
+		</select>
+
+		<button class="app-button color-btnCta" type="submit">Modifier ou Ajouter le produit</button>
+	</form>
+
 {% endblock %}

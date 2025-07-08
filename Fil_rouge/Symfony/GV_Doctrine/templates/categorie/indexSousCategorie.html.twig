@@ -50,6 +50,9 @@
 					<h2 class="font-title">{{ souscat.nom|e('html_attr') }}</h2>
 				</div>
 			</a>
+		{% else %}
+
+			<h1 class="color-erreur-text">Erreur dans le chargement des catégories</h1>
 		{% endfor %}
 	</section>
 
@@ -71,6 +74,9 @@
 
 				</div>
 			</a>
+		{% else %}
+
+			<h1 class="color-erreur-text">Erreur dans le chargement des catégories</h1>
 		{% endfor %}
 	</section>
 

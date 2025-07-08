@@ -126,6 +126,7 @@ public function confirmation(CommandeRepository $commandeRepository): Response
 
         $commande = $commandeRepository->findBy(
             ['Client' => $user],
+            ['dateCommande' => 'DESC']
           
         );
 

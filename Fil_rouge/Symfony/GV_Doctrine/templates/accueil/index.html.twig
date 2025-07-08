@@ -50,6 +50,9 @@
 					<h2 class="font-title">{{ categorie.nom|e('html_attr') }}</h2>
 				</div>
 			</a>
+		{% else %}
+
+			<h1 class="color-erreur-text">Erreur dans le chargement des catégories</h1>
 		{% endfor %}
 	</section>
 
@@ -70,6 +73,9 @@
 
 				</div>
 			</a>
+		{% else %}
+
+			<h1 class="color-erreur-text">Erreur dans le chargement des catégories</h1>
 		{% endfor %}
 	</section>
 
@@ -97,6 +103,9 @@
 				<a class="card-produit-btn" href="{{ path('app_produit', {'id': produit.id}) }} ">Voir le produit</a>
 
 			</div>
+		{% else %}
+
+			<h1 class="color-erreur-text">Erreur dans le chargement des produits</h1>
 		{% endfor %}
 
 	</section>

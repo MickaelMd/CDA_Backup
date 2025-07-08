@@ -55,6 +55,10 @@
 			</div>
 
 			<hr class="profil-hr">
+
+		{% else %}
+
+			<h1 class="color-erreur-text">Erreur dans le chargement des commandes</h1>
 		{% endfor %}
 
 		<div class="profil-card-commande-info">
@@ -121,6 +125,7 @@
 			{{ form_end(formEmail) }}
 		</div>
 	</section>
-
-	<a class="app-button color-erreur" href="{{ path('app_logout') }}">Se déconnecter</a>
+	<div class="profil-btn-deco">
+		<a class="app-button color-erreur" href="{{ path('app_logout') }}">Se déconnecter</a>
+	</div>
 {% endblock %}

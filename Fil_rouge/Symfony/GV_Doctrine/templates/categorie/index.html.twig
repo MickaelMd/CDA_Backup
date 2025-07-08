@@ -40,6 +40,11 @@
 					<h2 class="font-title">{{ categorie.nom|e('html_attr') }}</h2>
 				</div>
 			</a>
+
+		{% else %}
+
+			<h1 class="color-erreur-text">Erreur dans le chargement des catégories</h1>
+
 		{% endfor %}
 	</section>
 
