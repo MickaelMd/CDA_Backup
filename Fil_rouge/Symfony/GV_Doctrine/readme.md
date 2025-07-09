@@ -118,8 +118,8 @@
 
 ### Architecture :
 
-- [ ] Mise en place de l'architecture MVC
-- [ ] Organisation en couches
+- [x] Mise en place de l'architecture MVC
+- [x] Organisation en couches
 - [ ] Mise en place d'une API sécurisée (JWT)
 - [ ] Configuration du module JWT (désactivé pour tests)
 
@@ -129,8 +129,8 @@
 - [ ] Gestion des réductions commerciales
 - [ ] Système de paiement différencié (immédiat/différé)
 - [ ] Workflow de validation des commandes
-- [ ] Génération automatique des factures (une facture par commande, même expédiée partiellement)
-- [ ]Génération des bons de livraison (multiples possibles par commande)
+- [x] Génération automatique des factures (une facture par commande, même expédiée partiellement)
+- [ ] Génération des bons de livraison (multiples possibles par commande)
 - [ ] Archivage des documents (conservation 3 ans minimum)
 
 ## Application mobile
