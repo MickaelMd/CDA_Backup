@@ -52,7 +52,7 @@
   margin-top: auto;
 }
 
-#produit_number {
+#produit-number {
   margin: 0 auto;
   justify-content: center;
   width: 55px;
@@ -67,7 +67,7 @@
   background: #f9f9f9;
 }
 
-#produit_number:focus {
+#produit-number:focus {
   border: 1px solid #4caf50;
   box-shadow: 0 0 5px rgba(76, 175, 80, 0.6);
   background: white;
@@ -82,6 +82,17 @@ form button {
   border: none;
   cursor: pointer;
 }
+
+.section-produit-similaire {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  max-width: 1920px;
+  margin: 50px auto;
+}
+
 @media (max-width: 768px) {
   s .section-produit {
     padding: 30px 0px;

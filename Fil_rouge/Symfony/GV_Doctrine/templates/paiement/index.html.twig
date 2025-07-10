@@ -39,103 +39,107 @@
 
 			<div class="paiement-card-info color-fond2">
 				<h1 class="font-title">Adresse de facturation
-				</h1>
+					<span class="app-tooltip">
+						?
+						<span class="app-tooltip-text">Si aucune adresse de facturation,</br>
+						l'adresse de livraison sera utilisée</span>
+				</span>
+			</h1>
 
-				{% if app.user.adressefacturation is empty %}
-					{% if app.user.adresselivraison is empty %}
-						<p class="paiement-adresse-error">Une adresse de facturation est requise</p>
-					{% else %}
-						<p>Adresse :
-							{{ app.user.adresselivraison|e('html_attr') }}</p>
-					{% endif %}
+			{% if app.user.adressefacturation is empty %}
+				{% if app.user.adresselivraison is empty %}
+					<p class="paiement-adresse-error">Une adresse de facturation est requise
+					</p>
 				{% else %}
-					<p>Adresse :{{ app.user.adressefacturation|e('html_attr') }}</p>
+					<p>Adresse :
+						{{ app.user.adresselivraison|e('html_attr') }}</p>
 				{% endif %}
+			{% else %}
+				<p>Adresse :{{ app.user.adressefacturation|e('html_attr') }}</p>
+			{% endif %}
 
-				<a class="profil-link" href="{{ path('app_profil') }}">Modifier cette information</a>
-			</div>
-		</section>
+			<a class="profil-link" href="{{ path('app_profil') }}">Modifier cette information</a>
+		</div>
+	</section>
 
 
-		<section class="section-paiement-recap-com">
+	<section class="section-paiement-recap-com">
 
-			<h1>Récupitulatif de la commande</h1>
+		<h1>Récupitulatif de la commande</h1>
 
-			{% for detail in detailsPanier %}
+		{% for detail in detailsPanier %}
 
-				<div class="paiement-card-produit">
+			<div class="paiement-card-produit">
 
-					<div class="paiement-card-produit-img">
-						<img src="/{{ detail.produit.image|e('html_attr')}}" alt=""/>
+				<div class="paiement-card-produit-img">
+					<img src="/{{ detail.produit.image|e('html_attr')}}" alt=""/>
+				</div>
+				<div class="paiement-card-right">
+					<div class="paiement-card-produit-info">
+						<a href="{{ path('app_produit', {'id': detail.produit.id}) }}">
+							<h1 class="font-title">{{ detail.produit.libelleCourt|e('html_attr') }}</h1>
+						</a>
 					</div>
-					<div class="paiement-card-right">
-						<div class="paiement-card-produit-info">
-							<a href="{{ path('app_produit', {'id': detail.produit.id}) }}">
-								<h1 class="font-title">{{ detail.produit.libelleCourt|e('html_attr') }}</h1>
-							</a>
-						</div>
 
-						<div class="paiement-card-produit-div-del-quant">
+					<div class="paiement-card-produit-div-del-quant">
 
-							<div class="paiement-card-produit-quantite">
-								<div class="paiement-update">
-									<span>Quantité :
-										{{ detail.quantite|e('html_attr') }}</span>
-								</div>
-								<p>Prix TTC Unitaire :
-									{{ detail.prixTTC|number_format(2, ',', ' ') }}€</p>
-								<p>Prix Total TTC :
-									{{ detail.sousTotal|number_format(2, ',', ' ') }}€</p>
+						<div class="paiement-card-produit-quantite">
+							<div class="paiement-update">
+								<span>Quantité :
+									{{ detail.quantite|e('html_attr') }}</span>
 							</div>
+							<p>Prix TTC Unitaire :
+								{{ detail.prixTTC|number_format(2, ',', ' ') }}€</p>
+							<p>Prix Total TTC :
+								{{ detail.sousTotal|number_format(2, ',', ' ') }}€</p>
 						</div>
 					</div>
 				</div>
-
-			{% else %}
-
-				<h1 class="color-erreur-text">Erreur dans le chargement des produits</h1>
-			{% endfor %}
-
-			<div class="paiement-total">
-				<p class="font-title">
-					<strong class="font-title">Nombre d'articles :</strong>
-					{{ nombreArticles ?? 0 }}</p>
-				<p>
-					<strong class="font-title">Total du panier TTC:</strong>
-					{{ totalPanier ?? 0 }}€</p>
 			</div>
 
-		</section>
+		{% else %}
 
-		<section class="section-paiement-btn-annulation">
-			<a class="cancel-btn color-erreur" href="{{ path('app_panier')}}">Annuler le paiement et revenir au panier</a>
+			<h1 class="color-erreur-text">Erreur dans le chargement des produits</h1>
+		{% endfor %}
 
-		</section>
-		<section class="section-paiement-btn-paiement">
-			<form action="{{ path('app_paiement_valider') }}" method="post">
-
-				<input type="hidden" name="_token" value="{{ csrf_token('authenticate') }}">
-
-				<button type="submit">Payer et valider la commande</button>
-
-			</form>
-
-		</section>
-
-
-	{% else %}
-
-		<div class="header-paiement color-fond2">
-
-			<h1 class="font-title">Vous devez être connecté pour valider votre commande</h1>
-
-			<div class="header-paiement-btn">
-				<a href="{{ path('app_login') }}">Connectez-vous !</a>
-				<a href="{{ path('app_register') }}">Inscrivez-vous !</a>
-			</div>
+		<div class="paiement-total">
+			<p class="font-title">
+				<strong class="font-title">Nombre d'articles :</strong>
+				{{ nombreArticles ?? 0 }}</p>
+			<p>
+				<strong class="font-title">Total du panier TTC:</strong>
+				{{ totalPanier ?? 0 }}€</p>
 		</div>
 
-	{% endif %}
+	</section>
+
+	<section class="section-paiement-btn-annulation">
+		<a class="cancel-btn color-erreur" href="{{ path('app_panier')}}">Annuler le paiement et revenir au panier</a>
+
+	</section>
+	<section class="section-paiement-btn-paiement">
+		<form action="{{ path('app_paiement_valider') }}" method="post" id="form-paiement">
+
+			<input type="hidden" name="_token" value="{{ csrf_token('authenticate') }}">
+			<label for="cgv">Veuillez accepter les conditions générales de vente</label>
+			<input type="checkbox" name="cgv" id="form-cgv">
+			<button type="submit">Payer et valider la commande</button>
+
+		</form>
+
+	</section>
 
 
-{% endblock %}
+{% else %}
+
+	<div class="header-paiement color-fond2">
+
+		<h1 class="font-title">Vous devez être connecté pour valider votre commande</h1>
+
+		<div class="header-paiement-btn">
+			<a href="{{ path('app_login') }}">Connectez-vous !</a>
+			<a href="{{ path('app_register') }}">Inscrivez-vous !</a>
+		</div>
+	</div>
+
+{% endif %}{% endblock %}

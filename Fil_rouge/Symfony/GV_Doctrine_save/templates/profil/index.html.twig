@@ -2,19 +2,130 @@
 
 {% block title %}
 	{{ parent() }}Profil
+{% endblock %}
 
+{% block page_specific_stylesheets %}
+	{{ encore_entry_link_tags('profil-style') }}
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('form-adresse-react') }}
 {% endblock %}
 
 {% block body %}
 	<div class="header-title color-fond2 font-title">
-		<h1>
-			Profil
-		</h1>
+		<h1>Profil</h1>
 	</div>
 
 	<div class="header-title color-fond2 font-title">
-		<h1>
-			Modifier ses informations
-		</h1>
+		<h1>Historique des commandes</h1>
+	</div>
+
+	<section id="profil-section-commande">
+		{% for commande in commande %}
+			<div class="profil-card-commande">
+				<h1>Commande numéro :
+					{{ commande.id }}</h1>
+
+				<div class="profil-card-commande-produit">
+					{% for detail in commande.detailCommandes %}
+						<div class="profil-card-commande-img">
+							<a href="{{ path('app_produit', {'id': detail.produit.id}) }}">
+								<img src="/{{ detail.produit.image }}" alt="{{ detail.produit.libelleCourt }}">
+							</a>
+						</div>
+
+					{% endfor %}
+				</div>
+				<div class="profil-card-commande-info">
+					<p>Date :
+						{{ commande.dateCommande|date('d/m/Y H:i') }}</p>
+					<p>Statut :
+						{{ commande.statu|replace({'_': ' '}) }}</p>
+
+					<p>Prix total HT :
+						{{ commande.totalHt }}</p>
+
+					<p>Prix total TTC :
+						{{ commande.total }}</p>
+					<a class="app-button color-btnCom" href="{{ path('app_detail_commande', {'id': commande.id}) }}">Détail de la commande</a>
+				</div>
+
+			</div>
+
+			<hr class="profil-hr">
+
+		{% else %}
+
+			<h1 class="color-erreur-text">Erreur dans le chargement des commandes</h1>
+		{% endfor %}
+
+		<div class="profil-card-commande-info">
+
+			<a class="app-button color-btnCta" href="{{path('app_profil_commande')}}">Voir l'historique complet des commandes</a>
+
+		</div>
+	</section>
+
+	<div class="header-title color-fond2 font-title">
+		<h1>Modifier ses informations</h1>
+	</div>
+
+	<section class="profil-form-cards">
+		<div class="profil-card-adresse">
+			<h3>Adresse de livraison</h3>
+			{{ form_start(formLivraison) }}
+			{{ form_row(formLivraison.adresseLivraison) }}
+			<button class="app-button color-btnCta">Mettre à jour la livraison</button>
+			{{ form_end(formLivraison) }}
+		</div>
+
+		<div class="profil-card-adresse">
+			<h3>Adresse de facturation</h3>
+			{{ form_start(formFacturation) }}
+			{{ form_row(formFacturation.adresseFacturation) }}
+			<button class="app-button color-btnCta">Mettre à jour la facturation</button>
+			{{ form_end(formFacturation) }}
+		</div>
+	</section>
+
+	<section id="profil-section-password">
+		<h1 class="font-title">Modifier son mot de passe</h1>
+		<div class="profil-form-password">
+			{{ form_start(formPassword) }}
+			{{ form_label(formPassword.currentPassword) }}
+			{{ form_widget(formPassword.currentPassword, {'attr': {'class': 'app-input'}}) }}
+			{{ form_errors(formPassword.currentPassword) }}
+
+			{{ form_label(formPassword.newPassword.first) }}
+			{{ form_widget(formPassword.newPassword.first, {'attr': {'class': 'app-input'}}) }}
+
+			{{ form_label(formPassword.newPassword.second) }}
+			{{ form_widget(formPassword.newPassword.second, {'attr': {'class': 'app-input'}}) }}
+			{{ form_errors(formPassword.newPassword.first) }}
+
+			{{ form_errors(formPassword) }}
+
+			<button type="submit" class="app-button color-btnCta">Changer le mot de passe</button>
+			{{ form_end(formPassword) }}
+		</div>
+	</section>
+
+	<section id="profil-section-email">
+		<h1 class="font-title">Changement d'adresse email</h1>
+		<div class="profil-form-email">
+			{{ form_start(formEmail) }}
+			{{ form_label(formEmail.currentPassword) }}
+			{{ form_widget(formEmail.currentPassword, {'attr': {'class': 'app-input'}}) }}
+			{{ form_label(formEmail.email) }}
+			{{ form_widget(formEmail.email, {'attr': {'class': 'app-input'}}) }}
+			{{ form_errors(formEmail) }}
+			<button type="submit" class="app-button color-btnCta">Changer l'email</button>
+			{{ form_end(formEmail) }}
+		</div>
+	</section>
+	<div class="profil-btn-deco">
+		<a class="app-button color-erreur" href="{{ path('app_logout') }}">Se déconnecter</a>
 	</div>
 {% endblock %}

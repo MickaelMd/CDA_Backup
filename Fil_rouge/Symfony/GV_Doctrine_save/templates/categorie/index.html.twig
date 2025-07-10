@@ -11,10 +11,10 @@
 
 
 	<div class="fil-ariane">
-		<a href="/"><img src="/image/logo/interface/home.svg" alt="Logo Accueil"></a>
+		<a href="{{ path('app_accueil') }}"><img src="/image/logo/interface/home.svg" alt="Logo Accueil"></a>
 		<ul>
 			<li>
-				<a class="color-secondLien" href="/">Accueil</a>
+				<a class="color-secondLien" href="{{ path('app_accueil') }}">Accueil</a>
 			</li>
 			<li>
 				<span>>&nbsp;&nbsp;</span>
@@ -32,14 +32,19 @@
 	<section class="section-categorie">
 
 		{% for categorie in categorie %}
-			<a href="/categorie/{{categorie.id}}" class="card-categorie-link">
+			<a href="{{ path('app_sous-categorie', {'id': categorie.id}) }}" class="card-categorie-link">
 				<div class="card-categorie color-fond2">
 					<div class="card-categorie-img">
-						<img src="{{ categorie.image }}" alt="{{ categorie.nom }}">
+						<img src="{{ categorie.image|e('html_attr') }}" alt="{{ categorie.nom|e('html_attr') }}">
 					</div>
-					<h2 class="font-title">{{ categorie.nom }}</h2>
+					<h2 class="font-title">{{ categorie.nom|e('html_attr') }}</h2>
 				</div>
 			</a>
+
+		{% else %}
+
+			<h1 class="color-erreur-text">Erreur dans le chargement des catégories</h1>
+
 		{% endfor %}
 	</section>
 

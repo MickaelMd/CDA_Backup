@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ parent() }}Commande validée !
+{% endblock %}
+
+{% block page_specific_stylesheets %}
+	{{ encore_entry_link_tags('paiement-style') }}
+{% endblock %}
+
+
+{% block body %}
+	<section id="section-commande-valide">
+
+
+		<h1>Votre commande a bien été validée !</h1>
+
+		<div id="section-commande-valide-img">
+			<img src="/image/logo/paiement/valide.svg" alt="Commande validée">
+		</div>
+
+		<p>
+			Vous allez recevoir un e-mail de confirmation avec votre facture en pièce jointe.<br>
+			<br>
+			Vous pouvez également retrouver l’historique et le suivi de vos commandes dans votre
+			<a href="{{ path('app_profil') }}">profil</a>.<br>
+			<br>
+			Vous serez également averti(e) du début de la livraison.
+		</p>
+
+
+	</section>
+{% endblock %}

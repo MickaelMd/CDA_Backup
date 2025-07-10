@@ -82,50 +82,55 @@
 		</div>
 
 		<div class="profil-card-adresse">
-			<h3>Adresse de facturation</h3>
-			{{ form_start(formFacturation) }}
-			{{ form_row(formFacturation.adresseFacturation) }}
-			<button class="app-button color-btnCta">Mettre à jour la facturation</button>
-			{{ form_end(formFacturation) }}
-		</div>
-	</section>
-
-	<section id="profil-section-password">
-		<h1 class="font-title">Modifier son mot de passe</h1>
-		<div class="profil-form-password">
-			{{ form_start(formPassword) }}
-			{{ form_label(formPassword.currentPassword) }}
-			{{ form_widget(formPassword.currentPassword, {'attr': {'class': 'app-input'}}) }}
-			{{ form_errors(formPassword.currentPassword) }}
-
-			{{ form_label(formPassword.newPassword.first) }}
-			{{ form_widget(formPassword.newPassword.first, {'attr': {'class': 'app-input'}}) }}
-
-			{{ form_label(formPassword.newPassword.second) }}
-			{{ form_widget(formPassword.newPassword.second, {'attr': {'class': 'app-input'}}) }}
-			{{ form_errors(formPassword.newPassword.first) }}
-
-			{{ form_errors(formPassword) }}
-
-			<button type="submit" class="app-button color-btnCta">Changer le mot de passe</button>
-			{{ form_end(formPassword) }}
-		</div>
-	</section>
-
-	<section id="profil-section-email">
-		<h1 class="font-title">Changement d'adresse email</h1>
-		<div class="profil-form-email">
-			{{ form_start(formEmail) }}
-			{{ form_label(formEmail.currentPassword) }}
-			{{ form_widget(formEmail.currentPassword, {'attr': {'class': 'app-input'}}) }}
-			{{ form_label(formEmail.email) }}
-			{{ form_widget(formEmail.email, {'attr': {'class': 'app-input'}}) }}
-			{{ form_errors(formEmail) }}
-			<button type="submit" class="app-button color-btnCta">Changer l'email</button>
-			{{ form_end(formEmail) }}
-		</div>
-	</section>
-	<div class="profil-btn-deco">
-		<a class="app-button color-erreur" href="{{ path('app_logout') }}">Se déconnecter</a>
+			<h3>Adresse de facturation
+				<span class="app-tooltip">
+					?
+					<span class="app-tooltip-text">Si aucune adresse de facturation,</br>
+					l'adresse de livraison sera utilisée</span>
+			</span>
+		</h3>
+		{{ form_start(formFacturation) }}
+		{{ form_row(formFacturation.adresseFacturation) }}
+		<button class="app-button color-btnCta">Mettre à jour la facturation</button>
+		{{ form_end(formFacturation) }}
 	</div>
-{% endblock %}
+</section>
+
+<section id="profil-section-password">
+	<h1 class="font-title">Modifier son mot de passe</h1>
+	<div class="profil-form-password">
+		{{ form_start(formPassword) }}
+		{{ form_label(formPassword.currentPassword) }}
+		{{ form_widget(formPassword.currentPassword, {'attr': {'class': 'app-input'}}) }}
+		{{ form_errors(formPassword.currentPassword) }}
+
+		{{ form_label(formPassword.newPassword.first) }}
+		{{ form_widget(formPassword.newPassword.first, {'attr': {'class': 'app-input'}}) }}
+
+		{{ form_label(formPassword.newPassword.second) }}
+		{{ form_widget(formPassword.newPassword.second, {'attr': {'class': 'app-input'}}) }}
+		{{ form_errors(formPassword.newPassword.first) }}
+
+		{{ form_errors(formPassword) }}
+
+		<button type="submit" class="app-button color-btnCta">Changer le mot de passe</button>
+		{{ form_end(formPassword) }}
+	</div>
+</section>
+
+<section id="profil-section-email">
+	<h1 class="font-title">Changement d'adresse email</h1>
+	<div class="profil-form-email">
+		{{ form_start(formEmail) }}
+		{{ form_label(formEmail.currentPassword) }}
+		{{ form_widget(formEmail.currentPassword, {'attr': {'class': 'app-input'}}) }}
+		{{ form_label(formEmail.email) }}
+		{{ form_widget(formEmail.email, {'attr': {'class': 'app-input'}}) }}
+		{{ form_errors(formEmail) }}
+		<button type="submit" class="app-button color-btnCta">Changer l'email</button>
+		{{ form_end(formEmail) }}
+	</div>
+</section>
+<div class="profil-btn-deco">
+	<a class="app-button color-erreur" href="{{ path('app_logout') }}">Se déconnecter</a>
+</div>{% endblock %}

@@ -161,7 +161,7 @@ const FormInscription = ({ token_csrf }) => {
         <div className="form-group">
           <div>
             <label htmlFor="registration_form_nom" className="required">
-              Nom
+              Nom <span className="color-erreur-text">*</span>
             </label>
             <input
               type="text"
@@ -180,7 +180,7 @@ const FormInscription = ({ token_csrf }) => {
         <div className="form-group">
           <div>
             <label htmlFor="registration_form_prenom" className="required">
-              Prénom
+              Prénom <span className="color-erreur-text">*</span>
             </label>
             <input
               type="text"
@@ -199,7 +199,7 @@ const FormInscription = ({ token_csrf }) => {
         <div className="form-group">
           <div>
             <label htmlFor="registration_form_email" className="required">
-              Adresse email
+              Adresse email <span className="color-erreur-text">*</span>
             </label>
             <input
               type="email"
@@ -283,7 +283,7 @@ const FormInscription = ({ token_csrf }) => {
               htmlFor="registration_form_plainPassword"
               className="required"
             >
-              Mot de passe
+              Mot de passe <span className="color-erreur-text">*</span>
             </label>
             <input
               type="password"
@@ -316,7 +316,8 @@ const FormInscription = ({ token_csrf }) => {
               required
               value="1"
             />
-            J'accepte les conditions d'utilisation
+            J'accepte les conditions d'utilisation{" "}
+            <span className="color-erreur-text">*</span>
           </label>
           {errors.agreeTerms && (
             <div className="form-error">{errors.agreeTerms}</div>

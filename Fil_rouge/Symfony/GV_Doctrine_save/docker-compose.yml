@@ -33,6 +33,16 @@ services:
     networks:
       - mariadb_network
 
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: mailhog_container
+    restart: unless-stopped
+    ports:
+      - "8025:8025"
+      - "1025:1025"
+    networks:
+      - mariadb_network
+
 volumes:
   mariadb_data:
     driver: local

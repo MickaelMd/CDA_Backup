@@ -102,6 +102,11 @@ final class PaiementController extends AbstractController
             throw new \Exception('Jeton CSRF invalide.');
         }
 
+        if ($request->request->get('cgv') == false) {
+            $this->addFlash('error', 'Vous devez acepter les conditions général de vente');
+            return $this->redirectToRoute('app_paiement');
+        }
+
         /** @var \App\Entity\Utilisateur $user */
         $user = $this->getUser();
    

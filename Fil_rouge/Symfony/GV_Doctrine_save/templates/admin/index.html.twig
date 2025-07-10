@@ -1,0 +1,135 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ parent() }}Administration
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	{{ encore_entry_link_tags('admin-style') }}
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('admin-js') }}
+{% endblock %}
+
+
+{% block body %}
+	<div class="header-title color-fond2 font-title">
+		<h1>Administration</h1>
+	</div>
+
+	<div class="header-title color-fond2 font-title">
+		<h1>Gestion des commandes</h1>
+	</div>
+
+	<div class="header-title color-fond2 font-title">
+		<h1>Gestion des fournisseurs</h1>
+	</div>
+
+	<div class="admin-form">
+		<select class="admin-select font-title" name="" id="">
+			<option value="" selected>Ajouter un fournisseur</option>
+			{% for fournisseur in fournisseur %}
+				<option value="{{fournisseur.id}}" data-user-id="{{fournisseur.id}}" data-user-commercial="{{ fournisseur.Commercial.id }}" data-user-nom="{{fournisseur.nom}}" data-user-email="{{fournisseur.email}}" data-user-telephone="{{fournisseur.telephone}}" data-user-adresse="{{fournisseur.adresse}}">{{fournisseur.nom}}</option>
+			{% endfor %}
+
+		</select>
+	</div>
+	<form class="admin-form" action="{{path("app_admin_update_fournisseur")}}" method="post">
+
+		<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+		<input type="hidden" name="fourni-id" id="fourni-id">
+		<label for="nom">Nom du fournisseur</label>
+		<input class="app-input" type="text" name="fourni-nom" id="fourni-nom">
+		<label for="email">E-mail du fournisseur</label>
+		<input class="app-input" type="email" name="fourni-email" id="fourni-email">
+		<label for="telephone">Téléphone du fournisseur</label>
+		<input class="app-input" type="text" name="fourni-telephone" id="fourni-telephone">
+		<label for="adresse">Adresse du fournisseur</label>
+		<input class="app-input" type="text" name="fourni-adresse" id="fourni-adresse">
+		<label for="commercial">Commercial en charge</label>
+		<select class="admin-select" name="commercial-id" id="select-commercial">
+			{% for commercial in commercial %}
+				<option value="{{commercial.id}}">{{commercial.email}}</option>
+			{% endfor %}
+		</select>
+
+		<button class="app-button color-btnCta" type="submit">Modifier ou Ajouter le fournisseur</button>
+
+	</form>
+
+	<div class="header-title color-fond2 font-title">
+		<h1>Gestion des produits</h1>
+	</div>
+
+	<form class="admin-form" action="" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+		<input type="hidden" name="produit-id" id="produit-id">
+
+		<label for="produit-libelle_court">Nom du produit</label>
+		<input class="app-input" type="text" name="produit-libelle_court" id="produit-libelle_court">
+
+		<label for="produit_libelle_long">Description du produit</label>
+		<textarea name="produit_libelle_long" id="produit_libelle_long" col="10" row="10"></textarea>
+
+		<label for="produit-stock">Stock</label>
+		<input class="app-input-number" type="number" min="0" name="produit-stock" id="produit-stock">
+
+		<label for="produit-prixht">Prix Hors taxe</label>
+		<input class="app-input-number" type="number" min="0" name="produit-prixht" id="produit-prixht">
+
+		<label for="produit-promotion">Prix fournisseur</label>
+		<input class="app-input-number" type="number" min="0" name="produit-promotion" id="produit-promotion">
+
+		<label for="produit-prixFournisseur">Promotion</label>
+		<input class="app-input-number" type="number" min="0" name="produit-prixFournisseur" id="produit-prixFournisseur">
+
+		<label for="produit-fournisseur">Nom du fournisseur</label>
+		<select class="admin-select" name="" id="produit-select-fournisseur">
+			{% for fournisseur in fournisseur %}
+				<option value="{{fournisseur.id}}">{{fournisseur.nom}}</option>
+			{% endfor %}
+		</select>
+
+
+		<label for="produit-categorie">Catégorie du produit</label>
+		<select class="admin-select" name="produit-categorie" id="produit-categorie">
+			<option value="">Choisir une catégorie</option>
+			{% for categorie in categorie %}
+				{% set sousCategories = [] %}
+				{% for sousCategorie in categorie.sousCategories %}
+					{% if sousCategorie.active %}
+						{% set sousCategories = sousCategories|merge([{
+                    'id': sousCategorie.id,
+                    'nom': sousCategorie.nom
+                }]) %}
+					{% endif %}
+				{% endfor %}
+				<option value="{{ categorie.id }}" data-sous-categories='{{ sousCategories|json_encode|e('html_attr') }}'>
+					{{ categorie.nom }}
+				</option>
+			{% endfor %}
+		</select>
+
+		<label for="produit-sous-categorie">Sous-catégorie du produit</label>
+		<select class="admin-select" name="produit-sous-categorie" id="produit-sous-categorie" disabled>
+			<option value="">Choisir d'abord une catégorie</option>
+		</select>
+
+		<label for="produit-image">Image du produit</label>
+		<input class="" type="file" id="produit-image" name="produit-image" accept="image/*">
+
+		<label for="preview-image">Prévisualisation de l'image</label>
+		<div id="div-produit-image-preview">
+			<img id="produit-image-preview" src="./image/logo/interface/placeholder.svg" alt="Prévisualisation de l'image"></div>
+
+		<label for="produit-active">Rendre visible le produit dans le catalogue</label>
+		<input type="checkbox" name="produit-active" id="produit-active">
+
+		<button class="app-button color-btnCta" type="submit">Modifier ou Ajouter le produit</button>
+	</form>
+
+
+{% endblock %}

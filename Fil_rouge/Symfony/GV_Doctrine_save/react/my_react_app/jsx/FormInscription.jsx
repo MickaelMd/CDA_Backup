@@ -23,7 +23,6 @@ const FormInscription = ({ token_csrf }) => {
       [name]: type === "checkbox" ? checked : value,
     }));
 
-    // Clear error when user starts typing
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,
@@ -35,13 +34,18 @@ const FormInscription = ({ token_csrf }) => {
   const validateForm = () => {
     const newErrors = {};
 
-    // Validation des champs requis
     if (!formData.nom.trim()) {
       newErrors.nom = "Le nom est requis";
+    } else if (!/^[a-zA-ZÀ-ÿ\s'-]+$/.test(formData.nom.trim())) {
+      newErrors.nom =
+        "Le nom ne peut contenir que des lettres, espaces, apostrophes et tirets";
     }
 
     if (!formData.prenom.trim()) {
       newErrors.prenom = "Le prénom est requis";
+    } else if (!/^[a-zA-ZÀ-ÿ\s'-]+$/.test(formData.prenom.trim())) {
+      newErrors.prenom =
+        "Le prénom ne peut contenir que des lettres, espaces, apostrophes et tirets";
     }
 
     if (!formData.email.trim()) {
@@ -50,11 +54,55 @@ const FormInscription = ({ token_csrf }) => {
       newErrors.email = "Format d'email invalide";
     }
 
+    if (formData.telephone.trim()) {
+      const phoneRegex =
+        /^(?:(?:\+33|0)[1-9](?:[0-9]{8}))$|^(?:0[1-9](?:[-.\s]?[0-9]{2}){4})$/;
+      const cleanPhone = formData.telephone.replace(/[-.\s]/g, "");
+
+      if (
+        !phoneRegex.test(cleanPhone) &&
+        !/^0[1-9][0-9]{8}$/.test(cleanPhone)
+      ) {
+        newErrors.telephone =
+          "Format de téléphone invalide (ex: 01 23 45 67 89)";
+      }
+    }
+
+    // Validation adresse de livraison avec nouveaux caractères autorisés
+    if (formData.adresseLivraison.trim()) {
+      const adresseLivraison = formData.adresseLivraison.trim();
+
+      if (adresseLivraison.length < 10) {
+        newErrors.adresseLivraison =
+          "L'adresse de livraison doit contenir au moins 10 caractères";
+      } else if (!/\d/.test(adresseLivraison)) {
+        newErrors.adresseLivraison = "L'adresse doit contenir un numéro";
+      } else if (!/^[a-zA-Z0-9À-ÿ\s,.''-]+$/.test(adresseLivraison)) {
+        newErrors.adresseLivraison =
+          "Seuls les lettres, chiffres, espaces et les caractères , . ' - sont autorisés";
+      }
+    }
+
+    // Validation adresse de facturation avec nouveaux caractères autorisés
+    if (formData.adresseFacturation.trim()) {
+      const adresseFacturation = formData.adresseFacturation.trim();
+
+      if (adresseFacturation.length < 10) {
+        newErrors.adresseFacturation =
+          "L'adresse de facturation doit contenir au moins 10 caractères";
+      } else if (!/\d/.test(adresseFacturation)) {
+        newErrors.adresseFacturation = "L'adresse doit contenir un numéro";
+      } else if (!/^[a-zA-Z0-9À-ÿ\s,.''-]+$/.test(adresseFacturation)) {
+        newErrors.adresseFacturation =
+          "Seuls les lettres, chiffres, espaces et les caractères , . ' - sont autorisés";
+      }
+    }
+
     if (!formData.plainPassword) {
       newErrors.plainPassword = "Le mot de passe est requis";
-    } else if (formData.plainPassword.length < 6) {
+    } else if (formData.plainPassword.length < 8) {
       newErrors.plainPassword =
-        "Le mot de passe doit contenir au moins 6 caractères";
+        "Le mot de passe doit contenir au moins 8 caractères";
     }
 
     if (!formData.agreeTerms) {
@@ -72,29 +120,34 @@ const FormInscription = ({ token_csrf }) => {
       return;
     }
 
-    // Créer un formulaire HTML et le soumettre
+    setIsSubmitting(true);
+
+    const dataToSubmit = { ...formData };
+
+    if (
+      !dataToSubmit.adresseFacturation.trim() &&
+      dataToSubmit.adresseLivraison.trim()
+    ) {
+      dataToSubmit.adresseFacturation = dataToSubmit.adresseLivraison;
+    }
+
     const form = document.createElement("form");
     form.method = "POST";
-    form.action = window.location.href; // Soumet à la même URL (route d'inscription)
+    form.action = window.location.href;
 
-    // Ajouter tous les champs comme inputs cachés
-    Object.keys(formData).forEach((key) => {
+    Object.keys(dataToSubmit).forEach((key) => {
       const input = document.createElement("input");
       input.type = "hidden";
       input.name = `registration_form[${key}]`;
-      input.value = formData[key];
+      input.value = dataToSubmit[key];
       form.appendChild(input);
     });
 
-    // Ajouter le token CSRF (vous devrez le récupérer de votre template Twig)
-    const csrfToken = document
-      .querySelector('meta[name="csrf-token"]')
-      ?.getAttribute("content");
-    if (csrfToken) {
+    if (token_csrf) {
       const tokenInput = document.createElement("input");
       tokenInput.type = "hidden";
       tokenInput.name = "registration_form[_token]";
-      tokenInput.value = csrfToken;
+      tokenInput.value = token_csrf;
       form.appendChild(tokenInput);
     }
 
@@ -104,11 +157,7 @@ const FormInscription = ({ token_csrf }) => {
 
   return (
     <div className="form-inscription-container">
-      <div className="header-title color-fond2 font-title">
-        <h1>Inscription</h1>
-      </div>
-
-      <div onSubmit={handleSubmit} className="registration-form">
+      <div className="registration-form">
         <div className="form-group">
           <div>
             <label htmlFor="registration_form_nom" className="required">
@@ -176,7 +225,11 @@ const FormInscription = ({ token_csrf }) => {
               value={formData.telephone}
               onChange={handleChange}
               placeholder="01 23 45 67 89"
+              className={errors.telephone ? "error" : ""}
             />
+            {errors.telephone && (
+              <div className="form-error">{errors.telephone}</div>
+            )}
           </div>
         </div>
 
@@ -192,9 +245,13 @@ const FormInscription = ({ token_csrf }) => {
               onChange={handleChange}
               placeholder="Adresse complète de livraison"
               rows="3"
+              className={errors.adresseLivraison ? "error" : ""}
             />
+            {errors.adresseLivraison && (
+              <div className="form-error">{errors.adresseLivraison}</div>
+            )}
           </div>
-          <small>Optionnel - Adresse où seront livrées vos commandes</small>
+          <small>Exemple : 8 boulevard des Instruments, 69007 Lyon</small>
         </div>
 
         <div className="form-group">
@@ -209,11 +266,14 @@ const FormInscription = ({ token_csrf }) => {
               onChange={handleChange}
               placeholder="Adresse complète de facturation"
               rows="3"
+              className={errors.adresseFacturation ? "error" : ""}
             />
+            {errors.adresseFacturation && (
+              <div className="form-error">{errors.adresseFacturation}</div>
+            )}
           </div>
           <small>
-            Optionnel - Adresse pour la facturation (si différente de la
-            livraison)
+            Optionnel - Si vide, l'adresse de livraison sera utilisée
           </small>
         </div>
 
@@ -245,6 +305,7 @@ const FormInscription = ({ token_csrf }) => {
           <label
             htmlFor="registration_form_agreeTerms"
             className="required checkbox-label"
+            style={{ textAlign: "center" }}
           >
             <input
               type="checkbox"
@@ -265,24 +326,15 @@ const FormInscription = ({ token_csrf }) => {
         <button
           type="button"
           onClick={handleSubmit}
-          className="submit-btn"
+          className="login-btn"
           disabled={isSubmitting}
         >
-          S'inscrire
+          {isSubmitting ? "Inscription en cours..." : "S'inscrire"}
         </button>
       </div>
 
       <p className="login-link">
-        Déjà inscrit ?{" "}
-        <a
-          href="#"
-          onClick={(e) => {
-            e.preventDefault();
-            alert("Redirection vers connexion");
-          }}
-        >
-          Se connecter
-        </a>
+        Déjà inscrit ? <a href="/connexion">Se connecter</a>
       </p>
     </div>
   );

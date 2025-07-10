@@ -12,43 +12,47 @@
 
 
 	<div class="fil-ariane">
-		<a href="/"><img src="/image/logo/interface/home.svg" alt="Logo Accueil"></a>
+		<a href="{{ path('app_accueil') }}"><img src="/image/logo/interface/home.svg" alt="Logo Accueil"></a>
 		<ul>
 			<li>
-				<a class="color-secondLien" href="/">Accueil</a>
+				<a class="color-secondLien" href="{{ path('app_accueil') }}">Accueil</a>
 			</li>
 			<li>
 				<span>></span>
 			</li>
 			<li>
-				<a class="color-secondLien" href="/categorie">Catégorie</a>
+				<a class="color-secondLien" href="{{ path('app_categorie') }}">Catégorie</a>
 			</li>
 			<li>
-				<span>></span>
+				<span>>&nbsp;</span>
 			</li>
 			<li>
-				<a href="/categorie/{{categorie.id}}">{{categorie.nom}}</a>
+				<p>
+					{{categorie.nom|e('html_attr')}}</p>
 			</li>
 		</ul>
 	</div>
 
 	<div class="header-title color-fond2 font-title">
 		<h1>Catégorie :
-			{{categorie.nom}}
+			{{categorie.nom|e('html_attr')}}
 		</h1>
 	</div>
 
 	<section class="section-categorie">
 
 		{% for souscat in souscat %}
-			<a href="/sous-categorie/{{souscat.id}}" class="card-categorie-link">
+			<a href="{{ path('app_sous_categorie', {'id': souscat.id}) }}" class="card-categorie-link">
 				<div class="card-categorie color-fond2">
 					<div class="card-categorie-img">
-						<img src="/{{ souscat.image }}" alt="{{ souscat.nom }}">
+						<img src="/{{ souscat.image|e('html_attr') }}" alt="{{ souscat.nom|e('html_attr') }}">
 					</div>
-					<h2 class="font-title">{{ souscat.nom }}</h2>
+					<h2 class="font-title">{{ souscat.nom|e('html_attr') }}</h2>
 				</div>
 			</a>
+		{% else %}
+
+			<h1 class="color-erreur-text">Erreur dans le chargement des catégories</h1>
 		{% endfor %}
 	</section>
 
@@ -59,17 +63,20 @@
 
 	<section class="section-autre-categorie">
 		{% for autresCategories in autresCategories %}
-			<a href="/categorie/{{autresCategories.id}}" class="card-autre-categorie-link">
+			<a href="{{ path('app_sous-categorie', {'id': autresCategories.id}) }}" class="card-autre-categorie-link">
 				<div class="card-autre-categorie color-fond2">
 
 					<div class="card-autre-categorie-img">
-						<img src="/{{ autresCategories.image }}" alt="{{ autresCategories.nom }}">
+						<img src="/{{ autresCategories.image|e('html_attr') }}" alt="{{ autresCategories.nom|e('html_attr') }}">
 					</div>
 
-					<h2 class="font-title">{{ autresCategories.nom }}</h2>
+					<h2 class="font-title">{{ autresCategories.nom|e('html_attr') }}</h2>
 
 				</div>
 			</a>
+		{% else %}
+
+			<h1 class="color-erreur-text">Erreur dans le chargement des catégories</h1>
 		{% endfor %}
 	</section>
 

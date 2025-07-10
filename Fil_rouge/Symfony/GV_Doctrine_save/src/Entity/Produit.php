@@ -74,6 +74,9 @@ class Produit
     #[ORM\ManyToOne(inversedBy: 'produits')]
     private ?Fournisseur $Fournisseur = null;
 
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 5, nullable: true)]
+    private ?string $promotion = null;
+
 
     public function getId(): ?int
     {
@@ -214,6 +217,18 @@ class Produit
     public function setFournisseur(?Fournisseur $Fournisseur): static
     {
         $this->Fournisseur = $Fournisseur;
+
+        return $this;
+    }
+
+    public function getPromotion(): ?string
+    {
+        return $this->promotion;
+    }
+
+    public function setPromotion(?string $promotion): static
+    {
+        $this->promotion = $promotion;
 
         return $this;
     }

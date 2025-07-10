@@ -24,7 +24,13 @@ footer {
 
 .footer-info a {
   color: white;
+  transition: 200ms;
 }
+
+.footer-info a:hover {
+  color: #369354;
+}
+
 .footer-info p {
   margin: 3px 0;
 }

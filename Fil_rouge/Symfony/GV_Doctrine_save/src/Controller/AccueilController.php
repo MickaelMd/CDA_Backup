@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\Produit;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -16,7 +15,10 @@ final class AccueilController extends AbstractController
     {
 
        $categorie = $categorieRepository->findBy(['active' => 1]);
-       $produit = $produitRepository->findBy(['active' => 1]); // A modifier pour avoir le top produit vendu
+    //    $produit = $produitRepository->findBy(['active' => 1]); 
+
+       $produit = $produitRepository->produitpopulaire(4);
+      
 
         return $this->render('accueil/index.html.twig', [
             'controller_name' => 'AccueilController',

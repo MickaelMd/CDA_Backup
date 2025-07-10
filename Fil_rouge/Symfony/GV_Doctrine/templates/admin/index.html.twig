@@ -37,7 +37,7 @@
 
 		</select>
 	</div>
-	<form class="admin-form" action="{{path("app_admin_update_fournisseur")}}" method="post">
+	<form id="fournisseur-form" class="admin-form" action="{{path("app_admin_update_fournisseur")}}" method="post">
 
 		<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 		<input type="hidden" name="fourni-id" id="fourni-id">
@@ -56,7 +56,7 @@
 			{% endfor %}
 		</select>
 
-		<button class="app-button color-btnCta" type="submit">Modifier ou Ajouter le fournisseur</button>
+		<button id="submit_btn_fournisseur" class="app-button color-btnCta" type="submit">Modifier ou Ajouter le fournisseur</button>
 
 	</form>
 
@@ -64,7 +64,7 @@
 		<h1>Gestion des produits</h1>
 	</div>
 
-	<form class="admin-form" action="" method="post" enctype="multipart/form-data">
+	<form id="formProduit" class="admin-form" action="" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 		<input type="hidden" name="produit-id" id="produit-id">
 
@@ -80,14 +80,20 @@
 		<label for="produit-prixht">Prix Hors taxe</label>
 		<input class="app-input-number" type="number" min="0" name="produit-prixht" id="produit-prixht">
 
-		<label for="produit-promotion">Prix fournisseur</label>
-		<input class="app-input-number" type="number" min="0" name="produit-promotion" id="produit-promotion">
-
-		<label for="produit-prixFournisseur">Promotion</label>
+		<label for="produit-prixFournisseur">Prix fournisseur</label>
 		<input class="app-input-number" type="number" min="0" name="produit-prixFournisseur" id="produit-prixFournisseur">
 
+		<label for="produit-promotion">Promotion
+			<span class="app-tooltip">
+				?
+				<span class="app-tooltip-text">Promotion calculer en %</span>
+			</span>
+
+		</label>
+		<input class="app-input-number" type="number" min="0" name="produit-promotion" id="produit-promotion">
+
 		<label for="produit-fournisseur">Nom du fournisseur</label>
-		<select class="admin-select" name="" id="produit-select-fournisseur">
+		<select class="admin-select" name="produit-fourni" id="produit-select-fournisseur">
 			{% for fournisseur in fournisseur %}
 				<option value="{{fournisseur.id}}">{{fournisseur.nom}}</option>
 			{% endfor %}
@@ -128,7 +134,7 @@
 		<label for="produit-active">Rendre visible le produit dans le catalogue</label>
 		<input type="checkbox" name="produit-active" id="produit-active">
 
-		<button class="app-button color-btnCta" type="submit">Modifier ou Ajouter le produit</button>
+		<button id="submitProduit" class="app-button color-btnCta" type="submit">Modifier ou Ajouter le produit</button>
 	</form>
 
 
