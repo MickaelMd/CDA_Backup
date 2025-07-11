@@ -88,58 +88,58 @@
 								<span>Quantité :
 									{{ detail.quantite|e('html_attr') }}</span>
 							</div>
-							<p>Prix TTC Unitaire :
-								{{ detail.prixTTC|number_format(2, ',', ' ') }}€</p>
-							<p>Prix Total TTC :
-								{{ detail.sousTotal|number_format(2, ',', ' ') }}€</p>
-						</div>
+							{% if detail.produit.promotion is not null and detail.produit.promotion > 0 %}
+								<p>Prix sans promotion TTC Unitaire:
+									{{ detail.prixBase|number_format(2, ',', ' ') }}€</p>
+							</p>
+						{% endif %}
+						<p>Prix TTC Unitaire :
+							{{ detail.prixTTC|number_format(2, ',', ' ') }}€</p>
+						<p>Prix Total TTC :
+							{{ detail.sousTotal|number_format(2, ',', ' ') }}€</p>
 					</div>
 				</div>
 			</div>
-
-		{% else %}
-
-			<h1 class="color-erreur-text">Erreur dans le chargement des produits</h1>
-		{% endfor %}
-
-		<div class="paiement-total">
-			<p class="font-title">
-				<strong class="font-title">Nombre d'articles :</strong>
-				{{ nombreArticles ?? 0 }}</p>
-			<p>
-				<strong class="font-title">Total du panier TTC:</strong>
-				{{ totalPanier ?? 0 }}€</p>
 		</div>
 
-	</section>
+	{% else %}
 
-	<section class="section-paiement-btn-annulation">
-		<a class="cancel-btn color-erreur" href="{{ path('app_panier')}}">Annuler le paiement et revenir au panier</a>
+		<h1 class="color-erreur-text">Erreur dans le chargement des produits</h1>
+	{% endfor %}
 
-	</section>
-	<section class="section-paiement-btn-paiement">
-		<form action="{{ path('app_paiement_valider') }}" method="post" id="form-paiement">
-
-			<input type="hidden" name="_token" value="{{ csrf_token('authenticate') }}">
-			<label for="cgv">Veuillez accepter les conditions générales de vente</label>
-			<input type="checkbox" name="cgv" id="form-cgv">
-			<button type="submit">Payer et valider la commande</button>
-
-		</form>
-
-	</section>
-
-
-{% else %}
-
-	<div class="header-paiement color-fond2">
-
-		<h1 class="font-title">Vous devez être connecté pour valider votre commande</h1>
-
-		<div class="header-paiement-btn">
-			<a href="{{ path('app_login') }}">Connectez-vous !</a>
-			<a href="{{ path('app_register') }}">Inscrivez-vous !</a>
-		</div>
+	<div class="paiement-total">
+		<p class="font-title">
+			<strong class="font-title">Nombre d'articles :</strong>
+			{{ nombreArticles ?? 0 }}</p>
+		<p>
+			<strong class="font-title">Total du panier TTC:</strong>
+			{{ totalPanier ?? 0 }}€</p>
 	</div>
 
-{% endif %}{% endblock %}
+</section>
+
+<section class="section-paiement-btn-annulation">
+	<a class="cancel-btn color-erreur" href="{{ path('app_panier')}}">Annuler le paiement et revenir au panier</a>
+
+</section>
+<section class="section-paiement-btn-paiement">
+	<form action="{{ path('app_paiement_valider') }}" method="post" id="form-paiement">
+
+		<input type="hidden" name="_token" value="{{ csrf_token('authenticate') }}">
+		<label for="cgv">Veuillez accepter les conditions générales de vente</label>
+		<input type="checkbox" name="cgv" id="form-cgv">
+		<button type="submit">Payer et valider la commande</button>
+
+	</form>
+
+</section>{% else %}
+
+<div class="header-paiement color-fond2">
+
+	<h1 class="font-title">Vous devez être connecté pour valider votre commande</h1>
+
+	<div class="header-paiement-btn">
+		<a href="{{ path('app_login') }}">Connectez-vous !</a>
+		<a href="{{ path('app_register') }}">Inscrivez-vous !</a>
+	</div>
+</div>{% endif %}{% endblock %}

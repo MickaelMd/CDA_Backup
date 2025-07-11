@@ -41,6 +41,9 @@
   max-width: 300px;
   height: 30px;
   cursor: pointer;
+  background-color: #62626269;
+  backdrop-filter: blur(2.2px);
+  -webkit-backdrop-filter: blur(2.2px);
 }
 
 #div-produit-image-preview {

@@ -51,22 +51,32 @@ final class PaiementController extends AbstractController
             $coefficient = (float) $user->getCoefficient();
         }
         
-        foreach ($panier as $produitId => $quantite) {
-            $produit = $produitRepository->find($produitId);
+            foreach ($panier as $produitId => $quantite) {
 
-            if ($produit) {
-                $prixTTC = $produit->getPrixHt() * $coefficient;
+    $produit = $produitRepository->find($produitId);
+
+        if ($produit) {
+                $prixBase = $produit->getPrixHt() * $coefficient;
+
+                $prixTTC = $prixBase;
+
+                if ($produit->getPromotion() !== null && $produit->getPromotion() > 0) {
+                    $prixTTC = $prixBase * (1 - $produit->getPromotion());
+                }
+
                 $sousTotal = $prixTTC * $quantite;
+
                 $detailsPanier[] = [
                     'produit' => $produit,
                     'quantite' => $quantite,
+                    'prixBase' => $prixBase,
                     'prixTTC' => $prixTTC,
                     'sousTotal' => $sousTotal
                 ];
-                
+
                 $totalPanier += $sousTotal;
+                }
             }
-        }
 
         return $this->render('paiement/index.html.twig', [
             'controller_name' => 'PaiementController',
@@ -211,27 +221,34 @@ private function ajouterDetailsCommande(Commande $commande, array $panier, Produ
     $totalHT = 0;
     $totalTTC = 0;
     
-    foreach ($panier as $produitId => $quantite) {
-        $produit = $produitRepository->find($produitId);
-        
-        if ($produit) {
-            $detailCommande = new DetailCommande();
-            $detailCommande->setProduit($produit);
-            $detailCommande->setQuantite($quantite);
-         
-            $prixHT = $produit->getPrixHt();
-         
-            $prixTTC = $prixHT * $coefficient;
-            
-            $detailCommande->setPrix((string) $prixTTC);
-            
-            $detailCommande->setCommande($commande);
-            $commande->addDetailCommande($detailCommande);
-       
-            $totalHT += $prixHT * $quantite;
-            $totalTTC += $prixTTC * $quantite;
+   foreach ($panier as $produitId => $quantite) {
+    $produit = $produitRepository->find($produitId);
+
+    if ($produit) {
+        $detailCommande = new DetailCommande();
+        $detailCommande->setProduit($produit);
+        $detailCommande->setQuantite($quantite);
+
+        $prixHT = $produit->getPrixHt();
+        $prixBase = $prixHT * $coefficient;
+
+        if ($produit->getPromotion() !== null && $produit->getPromotion() > 0) {
+            $prixTTC = $prixBase * (1 - $produit->getPromotion());
+        } else {
+            $prixTTC = $prixBase;
         }
+
+        $detailCommande->setPrix((string) $prixTTC);
+        $detailCommande->setPromotion($produit->getPromotion());
+
+        $detailCommande->setCommande($commande);
+        $commande->addDetailCommande($detailCommande);
+
+        $totalHT += $prixHT * $quantite;
+        $totalTTC += $prixTTC * $quantite;
     }
+}
+
     
 
     $commande->setTotalHt((string) $totalHT);

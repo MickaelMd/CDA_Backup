@@ -95,11 +95,29 @@
 				<h2 class="font-title">{{produit.libellecourt|e('html_attr')}}</h2>
 				<a class="color-secondLien" href="{{ path('app_sous_categorie', {'id': produit.sousCategorie.id}) }}">{{produit.souscategorie.nom|e('html_attr')}}</a>
 				<p>
-					{% if app.user %}
-						{{produit.prixHt * app.user.coefficient}}
+					{% if produit.promotion is not null and produit.promotion > 0 %}
+						{% if app.user %}
+							<span class="card-produit-promotion color-secondLien">
+								{{ produit.prixHt * app.user.coefficient | number_format(2, '.', ' ') }}</span>
+
+
+							{{ produit.prixHt * app.user.coefficient * (1 - produit.promotion) | number_format(2, '.', ' ') }}
+						{% else %}
+							<span class="card-produit-promotion color-secondLien">{{ produit.prixHt * 1.2 | number_format(2, '.', ' ') }}</span>
+							{{ produit.prixHt * 1.2 * (1 - produit.promotion) | number_format(2, '.', ' ') }}
+						{% endif %}
+						€
 					{% else %}
-						{{produit.prixHt * 1.2}}
-					{% endif %}€</p>
+						{% if app.user %}
+							{{ produit.prixHt * app.user.coefficient | number_format(2, '.', ' ') }}
+						{% else %}
+							{{ produit.prixHt * 1.2 | number_format(2, '.', ' ') }}
+						{% endif %}
+						€
+					{% endif %}
+
+				</p>
+
 				<a class="card-produit-btn" href="{{ path('app_produit', {'id': produit.id}) }} ">Voir le produit</a>
 
 			</div>

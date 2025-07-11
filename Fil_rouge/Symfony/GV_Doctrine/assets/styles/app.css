@@ -220,6 +220,11 @@ body {
   width: 320px;
   padding: 20px;
 }
+
+.card-produit-promotion {
+  text-decoration: line-through;
+}
+
 .card-produit h2 {
   font-size: 16pt;
 }

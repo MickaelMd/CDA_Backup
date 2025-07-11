@@ -60,28 +60,31 @@
 								</div>
 							</form>
 						</div>
-						<p>Prix TTC Unitaire :
-							{{ detail.prixTTC|number_format(2, ',', ' ') }}€</p>
-						<p>Prix Total TTC :
-							{{ detail.sousTotal|number_format(2, ',', ' ') }}€</p>
-					</div>
+						{% if detail.produit.promotion is not null and detail.produit.promotion > 0 %}
+							<p>Prix sans promotion TTC Unitaire:
+								{{ detail.prixBase|number_format(2, ',', ' ') }}€</p>
+						</p>
+					{% endif %}
+					<p>Prix TTC Unitaire :
+						{{ detail.prixTTC|number_format(2, ',', ' ') }}€</p>
+					<p>Prix Total TTC :
+						{{ detail.sousTotal|number_format(2, ',', ' ') }}€</p>
 				</div>
 			</div>
-		{% else %}
-
-			<h1 class="color-erreur-text">Erreur dans le chargement du panier</h1>
-		{% endfor %}
-
-		<div class="panier-total">
-			<p>
-				<strong>Nombre d'articles :</strong>
-				{{ nombreArticles ?? 0 }}</p>
-			<p>
-				<strong>Total du panier TTC:</strong>
-				{{ totalPanier ?? 0 }}€</p>
-
 		</div>
-		<a class="panier-commande-btn" href="{{ path('app_paiement') }}">Valider la commande</a>
-	</section>
+	{% else %}
 
-{% endblock %}
+		<h1 class="color-erreur-text">Erreur dans le chargement du panier</h1>
+	{% endfor %}
+
+	<div class="panier-total">
+		<p>
+			<strong>Nombre d'articles :</strong>
+			{{ nombreArticles ?? 0 }}</p>
+		<p>
+			<strong>Total du panier TTC:</strong>
+			{{ totalPanier ?? 0 }}€</p>
+
+	</div>
+	<a class="panier-commande-btn" href="{{ path('app_paiement') }}">Valider la commande</a>
+</section>{% endblock %}
