@@ -365,6 +365,7 @@ body {
   font-size: 13pt;
   border: none;
   cursor: pointer;
+  margin: 4px 0px;
 }
 
 .app-button:hover {

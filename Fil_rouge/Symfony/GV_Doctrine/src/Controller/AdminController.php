@@ -162,6 +162,53 @@ final class AdminController extends AbstractController
 
     try {
 
+        $lib_court = $request->request->get('produit-libelle_court');
+        $lib_long = $request->request->get('produit_libelle_long');
+        $stock = $request->request->get('produit-stock');
+        $prixHt = $request->request->get('produit-prixht');
+        $prixFourni = $request->request->get('produit-prixFournisseur');
+        $promotion = $request->request->get('produit-promotion');
+        $fournisseur = $request->request->get('produit-fourni');
+        $souscat = $request->request->get('produit-sous_categorie');
+        $image = $request->request->get('produit-image');
+        $active = $request->request->get('produit-active');
+
+        $errors = [];
+
+         if (empty(trim($lib_court))) {
+                    $errors[] = 'Le nom du produit est obligatoire.';
+                }
+        
+         if (empty(trim($lib_long))) {
+                    $errors[] = 'La description du produit est obligatoire.';
+                }
+         if (empty(trim($stock))) {
+                    $errors[] = 'Le nombre de produit en stock est obligatoire.';
+                }
+         if (empty(trim($prixHt))) {
+                    $errors[] = 'Le prix hors taxe du produit est obligatoire.';
+                }
+        if (empty(trim($prixFourni))) {
+                    $errors[] = 'Le prix fournisseur du produit est obligatoire.';
+                }
+        if (empty(trim($fournisseur))) {
+            $errors[] = 'Le nom du fournisseur du produit est obligatoire.';
+        }
+        if (empty(trim($souscat))) {
+            $errors[] = 'La catégorie du produit est obligatoire.';
+        }
+
+        if (empty(trim($souscat))) {
+            $errors[] = 'L\'image du produit est obligatoire.';
+        }
+               
+        if (!empty($errors)) {
+                            foreach ($errors as $error) {
+                                $this->addFlash('error', $error);
+                            }
+                            return $this->redirectToRoute('app_admin');
+                        }
+
         $this->addFlash('success', 'Le produit a été ajouté ou mis à jour avec succès.');
         return $this->redirectToRoute('app_admin');
     } catch (\Exception $e) {

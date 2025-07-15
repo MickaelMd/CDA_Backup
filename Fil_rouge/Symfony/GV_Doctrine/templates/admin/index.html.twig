@@ -64,9 +64,18 @@
 		<h1>Gestion des produits</h1>
 	</div>
 
-	<form id="formProduit" class="admin-form" action="" method="post" enctype="multipart/form-data">
+	<form id="formProduit" class="admin-form" action="{{path("app_admin_update_produit")}}" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 		<input type="hidden" name="produit-id" id="produit-id">
+
+		<select class="admin-select font-title" name="" id="produit-select">
+			<option value="" selected>Ajouter un produit</option>
+			{% for produit in produit %}
+				<option value="{{ produit.id }}" data-user-nom="{{ produit.libelleCourt }}" data-user-desc="{{ produit.libelleLong }}" data-user-stock="{{ produit.stock }}" data-user-prixht="{{ produit.prixHt }}" data-user-prixfourni="{{ produit.prixFournisseur }}" data-user-promo="{{ produit.promotion ?? '' }}" data-user-fourni="{{ produit.fournisseur.id }}" data-user-cat="{{ produit.sousCategorie.id }}" data-user-active="{{ produit.active ? '1' : '0' }}" data-user-image="{{ produit.image ?? '' }}">
+					{{ produit.libelleCourt }}
+				</option>
+			{% endfor %}
+		</select>
 
 		<label for="produit-libelle_court">Nom du produit</label>
 		<input class="app-input" type="text" name="produit-libelle_court" id="produit-libelle_court">
@@ -86,9 +95,8 @@
 		<label for="produit-promotion">Promotion
 			<span class="app-tooltip">
 				?
-				<span class="app-tooltip-text">Promotion calculer en %</span>
+				<span class="app-tooltip-text">Promotion calculer en % (optionnel)</span>
 			</span>
-
 		</label>
 		<input class="app-input-number" type="number" min="0" name="produit-promotion" id="produit-promotion">
 
@@ -99,7 +107,6 @@
 			{% endfor %}
 		</select>
 
-
 		<label for="produit-categorie">Catégorie du produit</label>
 		<select class="admin-select" name="produit-categorie" id="produit-categorie">
 			<option value="">Choisir une catégorie</option>
@@ -108,9 +115,9 @@
 				{% for sousCategorie in categorie.sousCategories %}
 					{% if sousCategorie.active %}
 						{% set sousCategories = sousCategories|merge([{
-                    'id': sousCategorie.id,
-                    'nom': sousCategorie.nom
-                }]) %}
+                'id': sousCategorie.id,
+                'nom': sousCategorie.nom
+            }]) %}
 					{% endif %}
 				{% endfor %}
 				<option value="{{ categorie.id }}" data-sous-categories='{{ sousCategories|json_encode|e('html_attr') }}'>
@@ -120,7 +127,7 @@
 		</select>
 
 		<label for="produit-sous-categorie">Sous-catégorie du produit</label>
-		<select class="admin-select" name="produit-sous-categorie" id="produit-sous-categorie" disabled>
+		<select class="admin-select" name="produit-sous_categorie" id="produit-sous-categorie" disabled>
 			<option value="">Choisir d'abord une catégorie</option>
 		</select>
 
@@ -129,7 +136,8 @@
 
 		<label for="preview-image">Prévisualisation de l'image</label>
 		<div id="div-produit-image-preview">
-			<img id="produit-image-preview" src="./image/logo/interface/placeholder.svg" alt="Prévisualisation de l'image"></div>
+			<img id="produit-image-preview" src="./image/logo/interface/placeholder.svg" alt="Prévisualisation de l'image">
+		</div>
 
 		<label for="produit-active">Rendre visible le produit dans le catalogue</label>
 		<input type="checkbox" name="produit-active" id="produit-active">

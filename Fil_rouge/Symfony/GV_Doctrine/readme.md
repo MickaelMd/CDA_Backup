@@ -89,9 +89,10 @@
 
 #### Back Office :
 
-- [ ] Interface d'administration
+- [x] Interface d'administration
 - [ ] Gestion des produits
 - [ ] Gestion des commandes
+- [x] Gestion des fournisseurs
 
 ### Scripts clients (JavaScript) :
 
@@ -105,10 +106,10 @@
 
 #### Front Office :
 
-- [ ] Création de commande (panier + inscription + validation)
+- [x] Création de commande (panier + inscription + validation)
 - [x] Ajout de produits au panier
 - [x] Processus d'inscription et connexion
-- [ ] Validation et enregistrement de commande
+- [x] Validation et enregistrement de commande
 
 #### Back Office :
 
@@ -133,7 +134,7 @@
 - [ ] Génération des bons de livraison (multiples possibles par commande)
 - [ ] Archivage des documents (conservation 3 ans minimum)
 
-## Application mobile
+<!-- ## Application mobile
 
 ### Fonctionnalités :
 
@@ -141,7 +142,7 @@
 - [ ] Navigation dans les rubriques
 - [ ] Consultation des produits
 - [ ] Connexion via API
-- [ ] Package distribuable de l'application
+- [ ] Package distribuable de l'application -->
 
 ## Tests et déploiement
 
