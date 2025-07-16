@@ -68,14 +68,16 @@
 		<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 		<input type="hidden" name="produit-id" id="produit-id">
 
-		<select class="admin-select font-title" name="" id="produit-select">
+		<select class="admin-select font-title" name="produit-select" id="produit-select">
 			<option value="" selected>Ajouter un produit</option>
 			{% for produit in produit %}
-				<option value="{{ produit.id }}" data-user-nom="{{ produit.libelleCourt }}" data-user-desc="{{ produit.libelleLong }}" data-user-stock="{{ produit.stock }}" data-user-prixht="{{ produit.prixHt }}" data-user-prixfourni="{{ produit.prixFournisseur }}" data-user-promo="{{ produit.promotion ?? '' }}" data-user-fourni="{{ produit.fournisseur.id }}" data-user-cat="{{ produit.sousCategorie.id }}" data-user-active="{{ produit.active ? '1' : '0' }}" data-user-image="{{ produit.image ?? '' }}">
+				<option value="{{ produit.id }}" data-user-nom="{{ produit.libelleCourt }}" data-user-desc="{{ produit.libelleLong }}" data-user-stock="{{ produit.stock }}" data-user-prixht="{{ produit.prixHt }}" data-user-prixfourni="{{ produit.prixFournisseur }}" data-user-promo="{{ (produit.promotion ?? 0) * 100 }}" data-user-fourni="{{ produit.fournisseur.id }}" data-user-cat="{{ produit.sousCategorie.id }}" data-user-active="{{ produit.active ? '1' : '0' }}" data-user-image="{{ produit.image ?? '' }}">
 					{{ produit.libelleCourt }}
 				</option>
 			{% endfor %}
 		</select>
+
+		<input type="hidden" name="produit-id" value="" id="produit-id">
 
 		<label for="produit-libelle_court">Nom du produit</label>
 		<input class="app-input" type="text" name="produit-libelle_court" id="produit-libelle_court">
@@ -87,10 +89,10 @@
 		<input class="app-input-number" type="number" min="0" name="produit-stock" id="produit-stock">
 
 		<label for="produit-prixht">Prix Hors taxe</label>
-		<input class="app-input-number" type="number" min="0" name="produit-prixht" id="produit-prixht">
+		<input class="app-input-number" type="number" min="0" step="0.01" name="produit-prixht" id="produit-prixht">
 
 		<label for="produit-prixFournisseur">Prix fournisseur</label>
-		<input class="app-input-number" type="number" min="0" name="produit-prixFournisseur" id="produit-prixFournisseur">
+		<input class="app-input-number" type="number" min="0" step="0.01" name="produit-prixFournisseur" id="produit-prixFournisseur">
 
 		<label for="produit-promotion">Promotion
 			<span class="app-tooltip">
@@ -140,9 +142,15 @@
 		</div>
 
 		<label for="produit-active">Rendre visible le produit dans le catalogue</label>
-		<input type="checkbox" name="produit-active" id="produit-active">
+		<input type="hidden" name="produit-active" value="0">
+		<input type="checkbox" name="produit-active" id="produit-active" value="1">
 
-		<button id="submitProduit" class="app-button color-btnCta" type="submit">Modifier ou Ajouter le produit</button>
+		<button id="submitProduit" action="update" class="app-button color-btnCta" type="submit">Modifier ou Ajouter le produit</button>
+
+		<button id="submitDeleteProduit" action="delete" class="app-button color-erreur" type="submit" name="action" value="delete">
+			Supprimer le produit sélectionné</button>
+		<br>
+		<p class="color-secondLien">Le produit ne sera pas supprimé si utilisé dans une commande</p>
 	</form>
 
 

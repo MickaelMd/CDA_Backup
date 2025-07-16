@@ -15,6 +15,9 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Fournisseur;
+use app\Entity\Produit;
+use app\Entity\SousCategorie;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 
 
@@ -29,10 +32,10 @@ final class AdminController extends AbstractController
             return $this->redirectToRoute('app_accueil');
         }
 
-        $fournisseur = $fournisseurRepository->findAll();
-        $produit = $produitRepository->findAll();
+        $fournisseur = $fournisseurRepository->findBy([], ['nom' => 'ASC']);
+        $produit = $produitRepository->findBy([], ['libelleCourt' => 'ASC']);
         $commande = $commandeRepository->findAll();
-         $categorie = $categorieRepository->findBy(['active' => true]);
+         $categorie = $categorieRepository->findBy(['active' => true], ['nom' => 'ASC']);
         foreach ($categorie as $cat) {
             $cat->getSousCategories()->count(); 
         }
@@ -63,6 +66,11 @@ final class AdminController extends AbstractController
         EntityManagerInterface $entityManager,
         CsrfTokenManagerInterface $csrfTokenManager
     ): Response {
+
+         if (!$this->isGranted('ROLE_COMMERCIAL') && !$this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('error', 'Vous n\'avez pas les droits pour accéder à cette page.');
+            return $this->redirectToRoute('app_accueil');
+        }
         
         $token = new CsrfToken('authenticate', $request->request->get('_csrf_token'));
         if (!$csrfTokenManager->isTokenValid($token)) {
@@ -146,87 +154,213 @@ final class AdminController extends AbstractController
                 }
     }
 
-    #[Route('/admin-update-produit', name: 'app_admin_update_produit', methods: ['POST'])]
-    public function updateProduit(
-        Request $request,
-        ProduitRepository $produitRepository,
-        UtilisateurRepository $utilisateurRepository,
-        EntityManagerInterface $entityManager,
-        CsrfTokenManagerInterface $csrfTokenManager
-    ): Response { 
 
-          $token = new CsrfToken('authenticate', $request->request->get('_csrf_token'));
+
+#[Route('/admin-update-produit', name: 'app_admin_update_produit', methods: ['POST'])]
+public function updateProduit(
+    Request $request,
+    ProduitRepository $produitRepository,
+    UtilisateurRepository $utilisateurRepository,
+    EntityManagerInterface $entityManager,
+    CsrfTokenManagerInterface $csrfTokenManager
+): Response { 
+
+        if (!$this->isGranted('ROLE_COMMERCIAL') && !$this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('error', 'Vous n\'avez pas les droits pour accéder à cette page.');
+            return $this->redirectToRoute('app_accueil');
+        }
+        
+        $token = new CsrfToken('authenticate', $request->request->get('_csrf_token'));
         if (!$csrfTokenManager->isTokenValid($token)) {
             throw new \Exception('Jeton CSRF invalide.');
         }
 
-    try {
+        try {
 
-        $lib_court = $request->request->get('produit-libelle_court');
-        $lib_long = $request->request->get('produit_libelle_long');
-        $stock = $request->request->get('produit-stock');
-        $prixHt = $request->request->get('produit-prixht');
-        $prixFourni = $request->request->get('produit-prixFournisseur');
-        $promotion = $request->request->get('produit-promotion');
-        $fournisseur = $request->request->get('produit-fourni');
-        $souscat = $request->request->get('produit-sous_categorie');
-        $image = $request->request->get('produit-image');
-        $active = $request->request->get('produit-active');
+            $action = $request->get('action');
+            $id = $request->request->get('produit-select');
+            $lib_court = $request->request->get('produit-libelle_court');
+            $lib_long = $request->request->get('produit_libelle_long');
+            $stock = $request->request->get('produit-stock');
+            $prixHt = $request->request->get('produit-prixht');
+            $prixFourni = $request->request->get('produit-prixFournisseur');
+            $promotion = $request->request->get('produit-promotion');
+            $fournisseurId = $request->request->get('produit-fourni');
+            $souscatId = $request->request->get('produit-sous_categorie');
+            $image = $request->files->get('produit-image');
+            $active = $request->request->get('produit-active');
 
-        $errors = [];
 
-         if (empty(trim($lib_court))) {
-                    $errors[] = 'Le nom du produit est obligatoire.';
-                }
-        
-         if (empty(trim($lib_long))) {
-                    $errors[] = 'La description du produit est obligatoire.';
-                }
-         if (empty(trim($stock))) {
-                    $errors[] = 'Le nombre de produit en stock est obligatoire.';
-                }
-         if (empty(trim($prixHt))) {
-                    $errors[] = 'Le prix hors taxe du produit est obligatoire.';
-                }
-        if (empty(trim($prixFourni))) {
-                    $errors[] = 'Le prix fournisseur du produit est obligatoire.';
-                }
-        if (empty(trim($fournisseur))) {
-            $errors[] = 'Le nom du fournisseur du produit est obligatoire.';
-        }
-        if (empty(trim($souscat))) {
-            $errors[] = 'La catégorie du produit est obligatoire.';
-        }
+            // dd($request);
 
-        if (empty(trim($souscat))) {
-            $errors[] = 'L\'image du produit est obligatoire.';
-        }
-               
-        if (!empty($errors)) {
-                            foreach ($errors as $error) {
-                                $this->addFlash('error', $error);
-                            }
-                            return $this->redirectToRoute('app_admin');
-                        }
-
-        $this->addFlash('success', 'Le produit a été ajouté ou mis à jour avec succès.');
-        return $this->redirectToRoute('app_admin');
-    } catch (\Exception $e) {
-                    $this->addFlash('error', 'Une erreur s\'est produite, veuillez réessayer.');
+            if ($action === 'delete') {
+                if (!$id) {
+                    $this->addFlash('error', 'Aucun produit sélectionné.');
                     return $this->redirectToRoute('app_admin');
+                }
+
+                    $produit = $produitRepository->find($id);
+                    if (!$produit) {
+                        $this->addFlash('error', 'Produit introuvable.');
+                        return $this->redirectToRoute('app_admin');
+                }
+                
+                $entityManager->remove($produit);
+                $entityManager->flush();
+
+                $this->addFlash('success', 'Produit supprimé avec succès.');
+                return $this->redirectToRoute('app_admin');
+            }
+            
+            $errors = [];
+
+        
+            if (empty(trim($lib_court))) {
+                $errors[] = 'Le nom du produit est obligatoire.';
+            }
+            
+            if (empty(trim($lib_long))) {
+                $errors[] = 'La description du produit est obligatoire.';
+            }
+            
+            if (empty(trim($stock))) {
+                    $errors[] = 'Le nombre de produits en stock est obligatoire.';
+                } elseif (!ctype_digit($stock)) {
+                        $errors[] = 'Le stock doit être un nombre entier positif.';
+                    } else {
+                        $stock = (int) $stock;
+                }
+
+            
+            if (empty(trim($prixHt))) {
+                $errors[] = 'Le prix hors taxe du produit est obligatoire.';
+            }
+            
+            if (empty(trim($prixFourni))) {
+                $errors[] = 'Le prix fournisseur du produit est obligatoire.';
+            }
+            
+            if (empty(trim($fournisseurId))) {
+                $errors[] = 'Le nom du fournisseur du produit est obligatoire.';
+            }
+            
+            if (empty(trim($souscatId))) {
+                $errors[] = 'La catégorie du produit est obligatoire.';
+            }
+
+            if (!empty(trim($promotion))) {
+                if (is_numeric($promotion)) {
+                    $promotion = ((int) $promotion) / 100;
+                } else {
+                    $errors[] = 'La promotion doit être un nombre entier.';
+                }
+            } else {
+                $promotion = 0; 
+            }
+
+        
+            if ($id) {
+                $produit = $produitRepository->find($id);
+                if (!$produit) {
+                    throw $this->createNotFoundException('Produit introuvable.');
+                }
+            } else {
+                $produit = new Produit();
+            }
+
+            
+            if (!$id && !$image) {
+                $errors[] = 'L\'image du produit est obligatoire.';
+            }
+
+            
+            $fournisseur = $entityManager->getRepository(Fournisseur::class)->find($fournisseurId);
+            $sousCategorie = $entityManager->getRepository(SousCategorie::class)->find(trim($souscatId));
+
+           
+            if (!$fournisseur) {
+                $errors[] = 'Fournisseur introuvable.';
+            }
+            
+            if (!$sousCategorie) {
+                $errors[] = 'Sous-catégorie introuvable.';
+            }
+
+
+            $imagePath = null;
+
+                if ($image) {
+                    $allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+                    if (!in_array($image->getMimeType(), $allowedMimeTypes)) {
+                        $errors[] = 'Le fichier doit être une image (JPEG, PNG, GIF ou WebP).';
+                    }
+                }
+
+         if (!empty($errors)) {
+            foreach ($errors as $error) {
+                $this->addFlash('error', $error);
+            }
+            return $this->redirectToRoute('app_admin');
         }
-    
+
+                if ($image) {
+                $extension = $image->guessExtension();
+                $cleanLibelleCourt = preg_replace('/[^a-zA-Z0-9_-]/', '_', trim($lib_court));
+                $cleanLibelleCourt = preg_replace('/_+/', '_', $cleanLibelleCourt);
+                $cleanLibelleCourt = trim($cleanLibelleCourt, '_');
+                $timestamp = time();
+                $newFilename = $cleanLibelleCourt . '_' . $timestamp . '.' . $extension;
+
+                $uploadDir = $this->getParameter('kernel.project_dir') . '/public/image/produit/';
+
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0755, true);
+                }
+
+                try {
+                    if ($id && $produit->getImage()) {
+                        $oldImagePath = $this->getParameter('kernel.project_dir') . '/public/' . $produit->getImage();
+                        if (file_exists($oldImagePath)) {
+                            unlink($oldImagePath);
+                        }
+                    }
+
+                    $image->move($uploadDir, $newFilename);
+                    $imagePath = 'image/produit/' . $newFilename;
+
+                } catch (FileException $e) {
+                    $this->addFlash('error', 'Erreur lors de l\'upload de l\'image.');
+                    return $this->redirectToRoute('app_admin');
+                }
+            }
 
 
-   
+         
+            $produit->setLibelleCourt(trim($lib_court));
+            $produit->setLibelleLong(trim($lib_long));
+            $produit->setStock(trim($stock));
+            $produit->setPrixHt(trim($prixHt));
+            $produit->setPrixFournisseur(trim($prixFourni));
+            $produit->setPromotion($promotion);
+            $produit->setFournisseur($fournisseur);
+            $produit->setSousCategorie($sousCategorie); 
+            $produit->setActive($active);
+            
+            if ($imagePath) {
+                $produit->setImage($imagePath);
+            } elseif (!$id) {
+                $produit->setImage(null);
+            }
+            
+            $entityManager->persist($produit);
+            $entityManager->flush();
 
+            $this->addFlash('success', 'Le produit a été ajouté ou mis à jour avec succès.');
+            return $this->redirectToRoute('app_admin');
+            
+        } catch (\Exception $e) {
+            $this->addFlash('error', 'Une erreur s\'est produite, veuillez réessayer.');
+            return $this->redirectToRoute('app_admin');
+        }
     }
-
 }
-
-
-
-//   $token = new CsrfToken('authenticate', $request->request->get('_csrf_token'));
-        // if (!$csrfTokenManager->isTokenValid($token)) {
-            // throw new \Exception('Jeton CSRF invalide.');
-        // }

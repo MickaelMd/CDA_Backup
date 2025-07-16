@@ -348,12 +348,12 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   const regexProduit = {
-    nom: /^[\p{L}0-9\s'*.,\-/:’()«»°&@€$%?!+="]+$/u,
-    description: /^[\p{L}0-9\s'*.,\-/:’()«»°&@€$%?!+="]+$/u,
+    nom: /^[\p{L}0-9\s'*.,\-_/:'()«»°&@€$%?!+="\[\]{}|\\`~#^]+$/u,
+    description: /^[\p{L}0-9\s'*.,\-_/:'()«»°&@€$%?!+="\[\]{}|\\`~#^]+$/u,
     stock: /^[0-9]+$/,
     prixHt: /^[0-9]+(\.[0-9]{1,2})?$/,
     prixFourni: /^[0-9]+(\.[0-9]{1,2})?$/,
-    promotion: /^[0-9]+$/,
+    promotion: /^[0-9]+[.,]?[0-9]*$/,
     nomFourni: /^[0-9]+$/,
     categorie: /^[0-9]+$/,
     sousCat: /^[0-9]+$/,
