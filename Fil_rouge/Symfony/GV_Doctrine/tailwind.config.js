@@ -9,6 +9,7 @@ module.exports = {
       fontFamily: {
         title: ["Lato", "sans-serif"],
         body: ["Raleway", "sans-serif"],
+        sans: ["Raleway", "sans-serif"],
       },
     },
   },

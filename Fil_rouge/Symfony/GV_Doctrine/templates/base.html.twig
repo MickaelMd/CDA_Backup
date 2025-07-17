@@ -34,7 +34,7 @@
 			{% endblock %}
 		{% endblock %}
 	</head>
-	<body>
+	<body class="font-sans">
 		<div id="navbar-react" {% if app.session.get('panier') is not empty %} data-panier='{{ app.session.get('panier')|json_encode|e('html_attr') }}' {% endif %}></div>
 
 		<div class="error-section">

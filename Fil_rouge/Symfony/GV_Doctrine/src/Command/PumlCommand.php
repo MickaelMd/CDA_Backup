@@ -165,4 +165,3 @@ class PumlCommand extends Command
         return Command::SUCCESS;
     }
 }
-
