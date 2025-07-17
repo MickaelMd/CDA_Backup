@@ -78,9 +78,26 @@ Encore
 
   // uncomment if you use TypeScript
   //.enableTypeScriptLoader()
-
+  .enablePostCssLoader((options) => {
+    options.postcssOptions = {
+      config: "./postcss.config.cjs",
+    };
+  })
   // uncomment if you use React
-  .enableReactPreset();
+  .enableReactPreset()
+
+  .configureWatchOptions((watchOptions) => {
+    watchOptions.ignored = [
+      "**/node_modules/**",
+      "**/public/build/**",
+      "**/var/**",
+      "**/vendor/**",
+      "**/.git/**",
+      "**/.symfony/**",
+    ];
+    watchOptions.aggregateTimeout = 300;
+    watchOptions.poll = false;
+  });
 
 // uncomment to get integrity="..." attributes on your script & link tags
 // requires WebpackEncoreBundle 1.4 or higher
