@@ -1,13 +1,16 @@
 /** @type {import('tailwindcss').Config} */
-export default {
-  content: ["./assets/**/*.{js,ts,jsx,tsx,twig}"],
-
+module.exports = {
+  content: ["./assets/**/*.{js,ts,jsx,tsx}", "./templates/**/*.twig"],
   corePlugins: {
     preflight: false,
   },
-
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        title: ["Lato", "sans-serif"],
+        body: ["Raleway", "sans-serif"],
+      },
+    },
   },
   plugins: [],
 };
