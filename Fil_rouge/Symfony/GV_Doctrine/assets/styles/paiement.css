@@ -172,28 +172,6 @@
     inset 0px 0px 16px 5px rgba(0, 0, 0, 0.25);
 }
 
-#section-commande-valide {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  text-align: center;
-  height: 50vh;
-}
-
-#section-commande-valide-img {
-  width: 100%;
-  max-width: 200px;
-  height: 200px;
-  border-radius: 10px;
-}
-
-#section-commande-valide-img img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 #form-paiement {
   display: flex;
   flex-direction: column;

@@ -26,7 +26,6 @@ Encore
   .addEntry("index", "./assets/index.js")
   .addEntry("footer-react", "./react/my_react_app/footer.js")
   .addEntry("style-produit", "./assets/styles/produit.css")
-  .addEntry("testsession-react", "./react/my_react_app/testsession.js")
   .addEntry("panier-style", "./assets/styles/panier.css")
   .addEntry("login-style", "./assets/styles/login.css")
   .addEntry(
