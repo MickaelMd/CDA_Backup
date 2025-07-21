@@ -22,7 +22,7 @@
 		<h1>Historique des commandes</h1>
 	</div>
 
-	<section id="profil-section-commande">
+	<section class="flex flex-col items-center overflow-hidden">
 		{% for commande in commande %}
 			<div class="profil-card-commande">
 				<h1>Commande numéro :
@@ -131,6 +131,6 @@
 		{{ form_end(formEmail) }}
 	</div>
 </section>
-<div class="profil-btn-deco">
+<div class="flex flex-col items-center mt-8">
 	<a class="app-button color-erreur" href="{{ path('app_logout') }}">Se déconnecter</a>
 </div>{% endblock %}

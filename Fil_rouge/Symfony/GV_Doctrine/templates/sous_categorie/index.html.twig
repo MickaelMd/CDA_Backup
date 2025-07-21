@@ -4,9 +4,7 @@
 	{{ parent() }}Sous catégorie
 	{{souscat.nom}}
 {% endblock %}
-{% block page_specific_stylesheets %}
-	{{ encore_entry_link_tags('index') }}
-{% endblock %}
+
 
 {% block body %}
 	<div class="fil-ariane">
@@ -43,7 +41,7 @@
 	</h1>
 </div>
 
-<section class="section-produit">
+<section class="flex flex-wrap items-center justify-center gap-5 max-w-screen-2xl mx-auto">
 
 	{% for produit in produits %}
 

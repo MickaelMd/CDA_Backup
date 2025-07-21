@@ -90,7 +90,7 @@
 #### Back Office :
 
 - [x] Interface d'administration
-- [ ] Gestion des produits
+- [x] Gestion des produits
 - [ ] Gestion des commandes
 - [x] Gestion des fournisseurs
 
@@ -113,8 +113,8 @@
 
 #### Back Office :
 
-- [ ] Gestion CRUD sur la table produit
-- [ ] Interface liste/ajout/modification/suppression
+- [x] Gestion CRUD sur la table produit
+- [x] Interface liste/ajout/modification/suppression
 - [ ] Menu d'accueil administrateur
 
 ### Architecture :
@@ -127,7 +127,7 @@
 ### Fonctionnalités métier spécifiques :
 
 - [x] Calcul automatique des prix selon coefficient client
-- [ ] Gestion des réductions commerciales
+- [x] Gestion des réductions commerciales
 - [ ] Système de paiement différencié (immédiat/différé)
 - [ ] Workflow de validation des commandes
 - [x] Génération automatique des factures (une facture par commande, même expédiée partiellement)

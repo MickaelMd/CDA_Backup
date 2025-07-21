@@ -23,16 +23,11 @@ Encore
   .addEntry("app", "./assets/app.js")
   .addEntry("nav-react", "./react/my_react_app/navbar.js")
   .addEntry("style", "./assets/styles/app.css")
-  .addEntry("index", "./assets/index.js")
   .addEntry("footer-react", "./react/my_react_app/footer.js")
-  .addEntry("style-produit", "./assets/styles/produit.css")
-  .addEntry("panier-style", "./assets/styles/panier.css")
-  .addEntry("login-style", "./assets/styles/login.css")
   .addEntry(
     "form-inscription-react",
     "./react/my_react_app/form_inscription.js"
   )
-  .addEntry("paiement-style", "./assets/styles/paiement.css")
   .addEntry("profil-style", "./assets/styles/profil.css")
   .addEntry("form-adresse-react", "./react/my_react_app/form_adresse.js")
   .addEntry("admin-style", "./assets/styles/admin.css")

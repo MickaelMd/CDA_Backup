@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./forminscription.css";
 
 const FormInscription = ({ token_csrf }) => {
   const [formData, setFormData] = useState({
@@ -68,7 +67,6 @@ const FormInscription = ({ token_csrf }) => {
       }
     }
 
-    // Validation adresse de livraison avec nouveaux caractères autorisés
     if (formData.adresseLivraison.trim()) {
       const adresseLivraison = formData.adresseLivraison.trim();
 
@@ -83,7 +81,6 @@ const FormInscription = ({ token_csrf }) => {
       }
     }
 
-    // Validation adresse de facturation avec nouveaux caractères autorisés
     if (formData.adresseFacturation.trim()) {
       const adresseFacturation = formData.adresseFacturation.trim();
 
@@ -156,156 +153,196 @@ const FormInscription = ({ token_csrf }) => {
   };
 
   return (
-    <div className="form-inscription-container">
-      <div className="registration-form">
-        <div className="form-group">
-          <div>
-            <label htmlFor="registration_form_nom" className="required">
-              Nom <span className="color-erreur-text">*</span>
-            </label>
-            <input
-              type="text"
-              id="registration_form_nom"
-              name="nom"
-              value={formData.nom}
-              onChange={handleChange}
-              required
-              placeholder="Votre nom"
-              className={errors.nom ? "error" : ""}
-            />
-            {errors.nom && <div className="form-error">{errors.nom}</div>}
-          </div>
+    <div className="flex flex-col items-center w-full p-4">
+      <div className="flex flex-col items-center w-full max-w-[300px]">
+        <div className="w-full mb-[15px]">
+          <label
+            htmlFor="registration_form_nom"
+            className="block text-left w-full mt-[10px] mb-[5px]"
+          >
+            Nom <span className="text-[#ff0000]">*</span>
+          </label>
+          <input
+            type="text"
+            id="registration_form_nom"
+            name="nom"
+            value={formData.nom}
+            onChange={handleChange}
+            required
+            placeholder="Votre nom"
+            className={`w-full bg-white border border-black rounded-[16px] py-[5px] px-[15px] text-[12pt] transition-[border] duration-200 focus:border-[#4caf50] focus:outline-none ${
+              errors.nom ? "border-[#ff0000]" : ""
+            }`}
+          />
+          {errors.nom && (
+            <div className="text-[#ff0000] text-[11pt] mt-[3px]">
+              {errors.nom}
+            </div>
+          )}
+        </div>
+        <div className="w-full mb-[15px]">
+          <label
+            htmlFor="registration_form_prenom"
+            className="block text-left w-full mt-[10px] mb-[5px]"
+          >
+            Prénom <span className="text-[#ff0000]">*</span>
+          </label>
+          <input
+            type="text"
+            id="registration_form_prenom"
+            name="prenom"
+            value={formData.prenom}
+            onChange={handleChange}
+            required
+            placeholder="Votre prénom"
+            className={`w-full bg-white border border-black rounded-[16px] py-[5px] px-[15px] text-[12pt] transition-[border] duration-200 focus:border-[#4caf50] focus:outline-none ${
+              errors.prenom ? "border-[#ff0000]" : ""
+            }`}
+          />
+          {errors.prenom && (
+            <div className="text-[#ff0000] text-[11pt] mt-[3px]">
+              {errors.prenom}
+            </div>
+          )}
         </div>
 
-        <div className="form-group">
-          <div>
-            <label htmlFor="registration_form_prenom" className="required">
-              Prénom <span className="color-erreur-text">*</span>
-            </label>
-            <input
-              type="text"
-              id="registration_form_prenom"
-              name="prenom"
-              value={formData.prenom}
-              onChange={handleChange}
-              required
-              placeholder="Votre prénom"
-              className={errors.prenom ? "error" : ""}
-            />
-            {errors.prenom && <div className="form-error">{errors.prenom}</div>}
-          </div>
+        <div className="w-full mb-[15px]">
+          <label
+            htmlFor="registration_form_email"
+            className="block text-left w-full mt-[10px] mb-[5px]"
+          >
+            Adresse email <span className="text-[#ff0000]">*</span>
+          </label>
+          <input
+            type="email"
+            id="registration_form_email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            placeholder="exemple@email.com"
+            className={`w-full bg-white border border-black rounded-[16px] py-[5px] px-[15px] text-[12pt] transition-[border] duration-200 focus:border-[#4caf50] focus:outline-none ${
+              errors.email ? "border-[#ff0000]" : ""
+            }`}
+          />
+          {errors.email && (
+            <div className="text-[#ff0000] text-[11pt] mt-[3px]">
+              {errors.email}
+            </div>
+          )}
         </div>
 
-        <div className="form-group">
-          <div>
-            <label htmlFor="registration_form_email" className="required">
-              Adresse email <span className="color-erreur-text">*</span>
-            </label>
-            <input
-              type="email"
-              id="registration_form_email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-              placeholder="exemple@email.com"
-              className={errors.email ? "error" : ""}
-            />
-            {errors.email && <div className="form-error">{errors.email}</div>}
-          </div>
+        <div className="w-full mb-[15px]">
+          <label
+            htmlFor="registration_form_telephone"
+            className="block text-left w-full mt-[10px] mb-[5px]"
+          >
+            Téléphone
+          </label>
+          <input
+            type="tel"
+            id="registration_form_telephone"
+            name="telephone"
+            value={formData.telephone}
+            onChange={handleChange}
+            placeholder="01 23 45 67 89"
+            className={`w-full bg-white border border-black rounded-[16px] py-[5px] px-[15px] text-[12pt] transition-[border] duration-200 focus:border-[#4caf50] focus:outline-none ${
+              errors.telephone ? "border-[#ff0000]" : ""
+            }`}
+          />
+          {errors.telephone && (
+            <div className="text-[#ff0000] text-[11pt] mt-[3px]">
+              {errors.telephone}
+            </div>
+          )}
         </div>
 
-        <div className="form-group">
-          <div>
-            <label htmlFor="registration_form_telephone">Téléphone</label>
-            <input
-              type="tel"
-              id="registration_form_telephone"
-              name="telephone"
-              value={formData.telephone}
-              onChange={handleChange}
-              placeholder="01 23 45 67 89"
-              className={errors.telephone ? "error" : ""}
-            />
-            {errors.telephone && (
-              <div className="form-error">{errors.telephone}</div>
-            )}
-          </div>
+        <div className="w-full mb-[15px]">
+          <label
+            htmlFor="registration_form_adresseLivraison"
+            className="block text-left w-full mt-[10px] mb-[5px]"
+          >
+            Adresse de livraison
+          </label>
+          <textarea
+            id="registration_form_adresseLivraison"
+            name="adresseLivraison"
+            value={formData.adresseLivraison}
+            onChange={handleChange}
+            placeholder="Adresse complète de livraison"
+            rows={3}
+            className={`w-full bg-white border border-black rounded-[16px] py-[5px] px-[15px] text-[12pt] transition-[border] duration-200 focus:border-[#4caf50] focus:outline-none ${
+              errors.adresseLivraison ? "border-[#ff0000]" : ""
+            }`}
+          />
+          {errors.adresseLivraison && (
+            <div className="text-[#ff0000] text-[11pt] mt-[3px]">
+              {errors.adresseLivraison}
+            </div>
+          )}
+          <small className="text-[#555] text-[10pt] mt-[5px] block">
+            Exemple : 8 boulevard des Instruments, 69007 Lyon
+          </small>
         </div>
 
-        <div className="form-group">
-          <div>
-            <label htmlFor="registration_form_adresseLivraison">
-              Adresse de livraison
-            </label>
-            <textarea
-              id="registration_form_adresseLivraison"
-              name="adresseLivraison"
-              value={formData.adresseLivraison}
-              onChange={handleChange}
-              placeholder="Adresse complète de livraison"
-              rows="3"
-              className={errors.adresseLivraison ? "error" : ""}
-            />
-            {errors.adresseLivraison && (
-              <div className="form-error">{errors.adresseLivraison}</div>
-            )}
-          </div>
-          <small>Exemple : 8 boulevard des Instruments, 69007 Lyon</small>
-        </div>
-
-        <div className="form-group">
-          <div>
-            <label htmlFor="registration_form_adresseFacturation">
-              Adresse de facturation
-            </label>
-            <textarea
-              id="registration_form_adresseFacturation"
-              name="adresseFacturation"
-              value={formData.adresseFacturation}
-              onChange={handleChange}
-              placeholder="Adresse complète de facturation"
-              rows="3"
-              className={errors.adresseFacturation ? "error" : ""}
-            />
-            {errors.adresseFacturation && (
-              <div className="form-error">{errors.adresseFacturation}</div>
-            )}
-          </div>
-          <small>
+        <div className="w-full mb-[15px]">
+          <label
+            htmlFor="registration_form_adresseFacturation"
+            className="block text-left w-full mt-[10px] mb-[5px]"
+          >
+            Adresse de facturation
+          </label>
+          <textarea
+            id="registration_form_adresseFacturation"
+            name="adresseFacturation"
+            value={formData.adresseFacturation}
+            onChange={handleChange}
+            placeholder="Adresse complète de facturation"
+            rows={3}
+            className={`w-full bg-white border border-black rounded-[16px] py-[5px] px-[15px] text-[12pt] transition-[border] duration-200 focus:border-[#4caf50] focus:outline-none ${
+              errors.adresseFacturation ? "border-[#ff0000]" : ""
+            }`}
+          />
+          {errors.adresseFacturation && (
+            <div className="text-[#ff0000] text-[11pt] mt-[3px]">
+              {errors.adresseFacturation}
+            </div>
+          )}
+          <small className="text-[#555] text-[10pt] mt-[5px] block">
             Optionnel - Si vide, l'adresse de livraison sera utilisée
           </small>
         </div>
 
-        <div className="form-group">
-          <div>
-            <label
-              htmlFor="registration_form_plainPassword"
-              className="required"
-            >
-              Mot de passe <span className="color-erreur-text">*</span>
-            </label>
-            <input
-              type="password"
-              id="registration_form_plainPassword"
-              name="plainPassword"
-              value={formData.plainPassword}
-              onChange={handleChange}
-              required
-              autoComplete="new-password"
-              className={errors.plainPassword ? "error" : ""}
-            />
-            {errors.plainPassword && (
-              <div className="form-error">{errors.plainPassword}</div>
-            )}
-          </div>
+        <div className="w-full mb-[15px]">
+          <label
+            htmlFor="registration_form_plainPassword"
+            className="block text-left w-full mt-[10px] mb-[5px]"
+          >
+            Mot de passe <span className="text-[#ff0000]">*</span>
+          </label>
+          <input
+            type="password"
+            id="registration_form_plainPassword"
+            name="plainPassword"
+            value={formData.plainPassword}
+            onChange={handleChange}
+            required
+            autoComplete="new-password"
+            className={`w-full bg-white border border-black rounded-[16px] py-[5px] px-[15px] text-[12pt] transition-[border] duration-200 focus:border-[#4caf50] focus:outline-none ${
+              errors.plainPassword ? "border-[#ff0000]" : ""
+            }`}
+          />
+          {errors.plainPassword && (
+            <div className="text-[#ff0000] text-[11pt] mt-[3px]">
+              {errors.plainPassword}
+            </div>
+          )}
         </div>
 
-        <div className="form-group checkbox-group">
+        <div className="w-full mb-[15px] text-center">
           <label
             htmlFor="registration_form_agreeTerms"
-            className="required checkbox-label"
-            style={{ textAlign: "center" }}
+            className="flex items-center justify-center"
           >
             <input
               type="checkbox"
@@ -315,28 +352,41 @@ const FormInscription = ({ token_csrf }) => {
               onChange={handleChange}
               required
               value="1"
+              className="mr-2"
             />
             J'accepte les conditions d'utilisation{" "}
-            <span className="color-erreur-text">*</span>
+            <span className="text-[#ff0000]">*</span>
           </label>
           {errors.agreeTerms && (
-            <div className="form-error">{errors.agreeTerms}</div>
+            <div className="text-[#ff0000] text-[11pt] mt-[3px]">
+              {errors.agreeTerms}
+            </div>
           )}
         </div>
 
         <button
           type="button"
           onClick={handleSubmit}
-          className="login-btn"
+          className={`py-[5px] px-[40px] bg-[#369354] text-white rounded-[25px] shadow-[0_4px_4px_rgba(0,0,0,0.25)] mt-[20px] text-[13pt] border-none cursor-pointer transition-[box-shadow] duration-200 ease-in-out ${
+            isSubmitting
+              ? "opacity-50 cursor-not-allowed"
+              : "hover:shadow-[0_4px_4px_rgba(0,0,0,0.25),inset_0_0_16px_5px_rgba(0,0,0,0.25)]"
+          }`}
           disabled={isSubmitting}
         >
           {isSubmitting ? "Inscription en cours..." : "S'inscrire"}
         </button>
       </div>
 
-      <p className="login-link">
-        Déjà inscrit ? <a href="/connexion">Se connecter</a>
-      </p>
+      <div className="flex flex-col items-center mt-[30px]">
+        <p>Déjà inscrit ?</p>
+        <a
+          href="/connexion"
+          className="py-[5px] px-[40px] bg-[#369354] text-white rounded-[25px] shadow-[0_4px_4px_rgba(0,0,0,0.25)] mt-[20px] text-[13pt] no-underline transition-[box-shadow] duration-200 ease-in-out hover:shadow-[0_4px_4px_rgba(0,0,0,0.25),inset_0_0_16px_5px_rgba(0,0,0,0.25)]"
+        >
+          Se connecter
+        </a>
+      </div>
     </div>
   );
 };

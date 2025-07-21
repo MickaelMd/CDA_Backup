@@ -4,42 +4,41 @@
 	{{ parent() }}Accueil
 {% endblock %}
 
-{% block page_specific_stylesheets %}
-	{{ encore_entry_link_tags('index') }}
-{% endblock %}
-
 {% block body %}
 
-	<header class="color-fond2">
+<header class="flex flex-col justify-center items-center text-center color-fond2 py-20 px-4">
+  <div>
+    <h2 class="m-0 text-[36pt] md:text-[48pt]">Bienvenue chez,</h2>
+    <h1 class="color-logo-text font-title m-0 text-[42pt] md:text-[64pt]">Green Village</h1>
+    {% if app.user %}
+      <h2 class="m-0 text-[36pt] md:text-[48pt]">{{ app.user.prenom|e('html_attr') }}</h2>
+    {% endif %}
+  </div>
 
-		<h2 class="">Bienvenue chez,</h2>
-		<h1 class="color-logo-text font-title">Green Village</h1>
-		<h2>
-			{% if app.user %}
-				{{ app.user.prenom|e('html_attr') }}
-			{% endif %}
-		</h2>
-
-		<div class="header-btn">
-			{% if app.user %}
-
-				<a href="{{ path('app_categorie') }}">Voir nos catégories</a>
-				<a href="{{ path('app_profil') }}">Accéder a votre profil</a>
-
-			{% else %}
-				<a href="{{ path('app_login') }}">Connectez-vous !</a>
-				<a href="{{ path('app_register') }}">Inscrivez-vous !</a>
-			{% endif %}
-
-		</div>
-
-	</header>
+  <div class="flex flex-wrap justify-center gap-4 mt-6">
+    {% if app.user %}
+      <a href="{{ path('app_categorie') }}" class="px-[40px] py-[11px] bg-[#369354] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] rounded-[25px] text-white no-underline mx-[5px] text-center transition-shadow duration-200 ease-[ease] hover:shadow-[0px_4px_4px_rgba(0,0,0,0.25),inset_0px_0px_16px_5px_rgba(0,0,0,0.25)]">
+        Voir nos catégories
+      </a>
+      <a href="{{ path('app_profil') }}" class="px-[40px] py-[11px] bg-[#369354] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] rounded-[25px] text-white no-underline mx-[5px] text-center transition-shadow duration-200 ease-[ease] hover:shadow-[0px_4px_4px_rgba(0,0,0,0.25),inset_0px_0px_16px_5px_rgba(0,0,0,0.25)]">
+        Accéder à votre profil
+      </a>
+    {% else %}
+      <a href="{{ path('app_login') }}" class="px-[40px] py-[11px] bg-[#369354] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] rounded-[25px] text-white no-underline mx-[5px] text-center transition-shadow duration-200 ease-[ease] hover:shadow-[0px_4px_4px_rgba(0,0,0,0.25),inset_0px_0px_16px_5px_rgba(0,0,0,0.25)]">
+        Connectez-vous !
+      </a>
+      <a href="{{ path('app_register') }}" class="px-[40px] py-[11px] bg-[#369354] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] rounded-[25px] text-white no-underline mx-[5px] text-center transition-shadow duration-200 ease-[ease] hover:shadow-[0px_4px_4px_rgba(0,0,0,0.25),inset_0px_0px_16px_5px_rgba(0,0,0,0.25)]">
+        Inscrivez-vous !
+      </a>
+    {% endif %}
+  </div>
+</header>
 
 	<div class="header-title color-fond2 font-title">
 		<h1>Nos Catégorie Populaires</h1>
 	</div>
 
-	<section class="section-categorie">
+<section class="flex flex-wrap items-center justify-center gap-5 max-w-[1400px] mx-auto">
 
 		{% for categorie in categorie|slice(0, 4) %}
 			<a href="{{ path('app_sous-categorie', {'id': categorie.id}) }}" class="card-categorie-link">
@@ -60,7 +59,7 @@
 		<h1>Toutes nos catégories</h1>
 	</div>
 
-	<section class="section-autre-categorie">
+	<section class="flex flex-wrap items-center justify-center gap-5 max-w-[1920px] mx-auto">
 		{% for categorie in categorie%}
 			<a href="{{ path('app_sous-categorie', {'id': categorie.id}) }}" class="card-autre-categorie-link">
 				<div class="card-autre-categorie color-fond2">
@@ -83,7 +82,8 @@
 		<h1>Nos Produits Populaires</h1>
 	</div>
 
-	<section class="section-produit">
+	<section class="flex flex-wrap items-center justify-center gap-5 max-w-screen-2xl mx-auto">
+
 
 		{% for produit in produit|slice(0, 4) %}
 
