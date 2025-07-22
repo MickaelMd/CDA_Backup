@@ -97,7 +97,7 @@
 | commercial_id       | Référence utilisateur commercial | int(11) DEFAULT NULL, FK vers utilisateur(id)  |
 | date_commande       | Date commande                    | datetime NOT NULL (DC2Type:datetime_immutable) |
 | mode_paiement       | Mode de paiement                 | varchar(50) NOT NULL                           |
-| statu               | Statut de la commande            | varchar(50) NOT NULL                           |
+| statut              | Statut de la commande            | varchar(50) NOT NULL                           |
 | tva                 | Pourcentage TVA                  | decimal(5,2) NOT NULL                          |
 | reduction           | Réduction / promo                | decimal(5,2) DEFAULT NULL                      |
 | total               | Total TTC                        | decimal(15,2) NOT NULL                         |

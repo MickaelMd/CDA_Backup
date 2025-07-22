@@ -28,7 +28,6 @@ Encore
     "form-inscription-react",
     "./react/my_react_app/form_inscription.js"
   )
-  .addEntry("profil-style", "./assets/styles/profil.css")
   .addEntry("form-adresse-react", "./react/my_react_app/form_adresse.js")
   .addEntry("admin-style", "./assets/styles/admin.css")
   .addEntry("admin-js", "./assets/js/admin.js")

@@ -24,13 +24,54 @@
 		<h1>Gestion des commandes</h1>
 	</div>
 
+	<p class="text-center italic color-erreur-text">Commandes à traiter en priorité*</p>
+
+
+	<div class="flex flex-col items-center mt-[10px]">
+		<select id="commande-select" class="rounded-[16px] text-center border-none text-[12pt] w-full max-w-[300px] h-[30px] cursor-pointer bg-[#62626269] backdrop-blur-[2.2px] font-title" name="" id="">
+			{% for commande in commande %}
+
+				<option value="{{commande.id}}" data-user-id="{{commande.id}}" data-user-email="{{commande.client.email}}" data-user-adresse="{{commande.adresseLivraison}}" data-user-modepaiement="{{commande.modePaiement}}" data-user-tva="{{commande.tva}}" data-user-total="{{commande.total}}" data-user-totalht="{{commande.totalHt}}" data-user-statut="{{commande.statu}}">Commande
+					{{commande.id}}
+					{{commande.client.email}}</option>
+			{% endfor %}
+		</select>
+	</div>
+
+	<div>
+
+		<table class=" border-collapse border border-slate-500 table-auto">
+
+			<thead>
+
+				<tr>
+
+					<th scope="col">Numero commande</th>
+					<th scope="col">Email</th>
+					<th scope="col">Adresse de livraison</th>
+					<th scope="col">Mode de paiement</th>
+					<th scope="col">TVA appliquée</th>
+					<th scope="col"></th>
+					<th scope="col"></th>
+					<th scope="col"></th>
+					<th scope="col"></th>
+
+
+				</tr>
+
+			</thead>
+
+		</table>
+
+	</div>
+
 
 	<div class="header-title color-fond2 font-title">
 		<h1>Gestion des fournisseurs</h1>
 	</div>
 
-	<div class="admin-form">
-		<select class="admin-select font-title" name="" id="">
+	<div class="flex flex-col items-center mt-[10px]">
+		<select id="fournisseur-select" class="rounded-[16px] text-center border-none text-[12pt] w-full max-w-[300px] h-[30px] cursor-pointer bg-[#62626269] backdrop-blur-[2.2px] font-title" name="" id="">
 			<option value="" selected>Ajouter un fournisseur</option>
 			{% for fournisseur in fournisseur %}
 				<option value="{{fournisseur.id}}" data-user-id="{{fournisseur.id}}" data-user-commercial="{{ fournisseur.Commercial.id }}" data-user-nom="{{fournisseur.nom}}" data-user-email="{{fournisseur.email}}" data-user-telephone="{{fournisseur.telephone}}" data-user-adresse="{{fournisseur.adresse}}">{{fournisseur.nom}}</option>
@@ -38,41 +79,41 @@
 
 		</select>
 	</div>
-	<form id="fournisseur-form" class="admin-form" action="{{path("app_admin_update_fournisseur")}}" method="post">
+	<form id="fournisseur-form" class="flex flex-col items-center mt-[10px]" action="{{path("app_admin_update_fournisseur")}}" method="post">
 
 		<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 		<input type="hidden" name="fourni-id" id="fourni-id">
-		<label for="nom">Nom du fournisseur</label>
+		<label class="my-[5px]" for="nom">Nom du fournisseur</label>
 		<input class="app-input" type="text" name="fourni-nom" id="fourni-nom">
-		<label for="email">E-mail du fournisseur</label>
+		<label class="my-[5px]" for="email">E-mail du fournisseur</label>
 		<input class="app-input" type="email" name="fourni-email" id="fourni-email">
-		<label for="telephone">Téléphone du fournisseur</label>
+		<label class="my-[5px]" for="telephone">Téléphone du fournisseur</label>
 		<input class="app-input" type="text" name="fourni-telephone" id="fourni-telephone">
-		<label for="adresse">Adresse du fournisseur</label>
+		<label class="my-[5px]" for="adresse">Adresse du fournisseur</label>
 		<input class="app-input" type="text" name="fourni-adresse" id="fourni-adresse">
-		<label for="commercial">Commercial en charge</label>
-		<select class="admin-select" name="commercial-id" id="select-commercial">
+		<label class="my-[5px]" for="commercial">Commercial en charge</label>
+		<select class="rounded-[16px] text-center border-none text-[12pt] w-full max-w-[300px] h-[30px] cursor-pointer bg-[#62626269] backdrop-blur-[2.2px]" name="commercial-id" id="select-commercial">
 			{% for commercial in commercial %}
 				<option value="{{commercial.id}}">{{commercial.email}}</option>
 			{% endfor %}
 		</select>
-
-		<button id="submit_btn_fournisseur" class="app-button color-btnCta" type="submit">Modifier ou Ajouter le fournisseur</button>
-
+		<div class="mt-[35px]">
+			<button id="submit_btn_fournisseur" class="app-button color-btnCta " type="submit">Modifier ou Ajouter le fournisseur</button>
+		</div>
 	</form>
 
 	<div class="header-title color-fond2 font-title">
 		<h1>Gestion des produits</h1>
 	</div>
 
-	<form id="formProduit" class="admin-form" action="{{path("app_admin_update_produit")}}" method="post" enctype="multipart/form-data">
+	<form id="formProduit" class="flex flex-col items-center mt-[10px]" action="{{path("app_admin_update_produit")}}" method="post" enctype="multipart/form-data">
 		<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 		<input type="hidden" name="produit-id" id="produit-id">
 
-		<select class="admin-select font-title" name="produit-select" id="produit-select">
+		<select id="produit-select" class="rounded-[16px] text-center border-none text-[12pt] w-full max-w-[300px] h-[30px] cursor-pointer bg-[#62626269] backdrop-blur-[2.2px] font-title" name="produit-select" id="produit-select">
 			<option value="" selected>Ajouter un produit</option>
 			{% for produit in produit %}
-				<option value="{{ produit.id }}" data-user-nom="{{ produit.libelleCourt }}" data-user-desc="{{ produit.libelleLong }}" data-user-stock="{{ produit.stock }}" data-user-prixht="{{ produit.prixHt }}" data-user-prixfourni="{{ produit.prixFournisseur }}" data-user-promo="{{ (produit.promotion ?? 0) * 100 }}" data-user-fourni="{{ produit.fournisseur.id }}" data-user-cat="{{ produit.sousCategorie.id }}" data-user-active="{{ produit.active ? '1' : '0' }}" data-user-image="{{ produit.image ?? '' }}">
+				<option value="{{ produit.id }}" data-user-nom="{{ produit.libelleCourt }}" data-user-desc="{{ produit.libelleLong }}" data-user-stock="{{ produit.stock }}" data-user-prixht="{{ produit.prixHt }}" data-user-prixfourni="{{ produit.prixFournisseur }}" data-user-promo="{{ (produit.promotion ?? 0) * 100 }}" data-user-fourni="{{ produit.fournisseur.id }}" data-user-cat="{{ produit.sousCategorie.id }}" data-user-active="{{ produit.active ? '1' '0' }}" data-user-image="{{ produit.image ?? '' }}">
 					{{ produit.libelleCourt }}
 				</option>
 			{% endfor %}
@@ -80,22 +121,22 @@
 
 		<input type="hidden" name="produit-id" value="" id="produit-id">
 
-		<label for="produit-libelle_court">Nom du produit</label>
+		<label class="my-[5px]" for="produit-libelle_court">Nom du produit</label>
 		<input class="app-input" type="text" name="produit-libelle_court" id="produit-libelle_court">
 
-		<label for="produit_libelle_long">Description du produit</label>
-		<textarea name="produit_libelle_long" id="produit_libelle_long" col="10" row="10"></textarea>
+		<label class="my-[5px]" for="produit_libelle_long">Description du produit</label>
+		<textarea class="bg-white border border-black rounded-[16px] w-[300px] h-[100px] py-[5px] px-[15px] mb-[15px] text-[12pt] resize-none overflow-auto transition-[border] duration-200 focuborder-green-600 focuoutline-none" name="produit_libelle_long" id="produit_libelle_long" col="10" row="10"></textarea>
 
-		<label for="produit-stock">Stock</label>
+		<label class="my-[5px]" for="produit-stock">Stock</label>
 		<input class="app-input-number" type="number" min="0" name="produit-stock" id="produit-stock">
 
-		<label for="produit-prixht">Prix Hors taxe</label>
+		<label class="my-[5px]" for="produit-prixht">Prix Hors taxe</label>
 		<input class="app-input-number" type="number" min="0" step="0.01" name="produit-prixht" id="produit-prixht">
 
-		<label for="produit-prixFournisseur">Prix fournisseur</label>
+		<label class="my-[5px]" for="produit-prixFournisseur">Prix fournisseur</label>
 		<input class="app-input-number" type="number" min="0" step="0.01" name="produit-prixFournisseur" id="produit-prixFournisseur">
 
-		<label for="produit-promotion">Promotion
+		<label class="my-[5px]" for="produit-promotion">Promotion
 			<span class="app-tooltip">
 				?
 				<span class="app-tooltip-text">Promotion calculer en % (optionnel)</span>
@@ -103,23 +144,23 @@
 		</label>
 		<input class="app-input-number" type="number" min="0" name="produit-promotion" id="produit-promotion">
 
-		<label for="produit-fournisseur">Nom du fournisseur</label>
-		<select class="admin-select" name="produit-fourni" id="produit-select-fournisseur">
+		<label class="my-[5px]" for="produit-fournisseur">Nom du fournisseur</label>
+		<select class="rounded-[16px] text-center border-none text-[12pt] w-full max-w-[300px] h-[30px] cursor-pointer bg-[#62626269] backdrop-blur-[2.2px]" name="produit-fourni" id="produit-select-fournisseur">
 			{% for fournisseur in fournisseur %}
 				<option value="{{fournisseur.id}}">{{fournisseur.nom}}</option>
 			{% endfor %}
 		</select>
 
-		<label for="produit-categorie">Catégorie du produit</label>
-		<select class="admin-select" name="produit-categorie" id="produit-categorie">
+		<label class="my-[5px]" for="produit-categorie">Catégorie du produit</label>
+		<select class="rounded-[16px] text-center border-none text-[12pt] w-full max-w-[300px] h-[30px] cursor-pointer bg-[#62626269] backdrop-blur-[2.2px]" name="produit-categorie" id="produit-categorie">
 			<option value="">Choisir une catégorie</option>
 			{% for categorie in categorie %}
 				{% set sousCategories = [] %}
 				{% for sousCategorie in categorie.sousCategories %}
 					{% if sousCategorie.active %}
 						{% set sousCategories = sousCategories|merge([{
-                'id': sousCategorie.id,
-                'nom': sousCategorie.nom
+                'id sousCategorie.id,
+                'nom sousCategorie.nom
             }]) %}
 					{% endif %}
 				{% endfor %}
@@ -129,27 +170,29 @@
 			{% endfor %}
 		</select>
 
-		<label for="produit-sous-categorie">Sous-catégorie du produit</label>
-		<select class="admin-select" name="produit-sous_categorie" id="produit-sous-categorie" disabled>
+		<label class="my-[5px]" for="produit-sous-categorie">Sous-catégorie du produit</label>
+		<select class="rounded-[16px] text-center border-none text-[12pt] w-full max-w-[300px] h-[30px] cursor-pointer bg-[#62626269] backdrop-blur-[2.2px]" name="produit-sous_categorie" id="produit-sous-categorie" disabled>
 			<option value="">Choisir d'abord une catégorie</option>
 		</select>
 
-		<label for="produit-image">Image du produit</label>
+		<label class="my-[5px]" for="produit-image">Image du produit</label>
 		<input class="" type="file" id="produit-image" name="produit-image" accept="image/*">
 
-		<label for="preview-image">Prévisualisation de l'image</label>
-		<div id="div-produit-image-preview">
-			<img id="produit-image-preview" src="./image/logo/interface/placeholder.svg" alt="Prévisualisation de l'image">
+		<label class="my-[5px]" for="preview-image">Prévisualisation de l'image</label>
+		<div id="div-produit-image-preview" class="h-[200px] w-[200px] rounded-lg border border-black">
+			<img id="produit-image-preview" class="w-full h-full object-fill rounded-lg" src="./image/logo/interface/placeholder.svg" alt="Prévisualisation de l'image">
 		</div>
 
-		<label for="produit-active">Rendre visible le produit dans le catalogue</label>
+		<label class="my-[5px]" for="produit-active">Rendre visible le produit dans le catalogue</label>
 		<input type="hidden" name="produit-active" value="0">
 		<input type="checkbox" name="produit-active" id="produit-active" value="1">
-
-		<button id="submitProduit" action="update" class="app-button color-btnCta" type="submit">Modifier ou Ajouter le produit</button>
-
-		<button id="submitDeleteProduit" action="delete" class="app-button color-erreur" type="submit" name="action" value="delete">
-			Supprimer le produit sélectionné</button>
+		<div class="mt-[35px]">
+			<button id="submitProduit" action="update" class="app-button color-btnCta" type="submit">Modifier ou Ajouter le produit</button>
+		</div>
+		<div class="mt-[35px]">
+			<button id="submitDeleteProduit" action="delete" class="app-button color-erreur" type="submit" name="action" value="delete">
+				Supprimer le produit sélectionné</button>
+		</div>
 		<br>
 		<p class="color-secondLien">Le produit ne sera pas supprimé si utilisé dans une commande</p>
 	</form>

@@ -290,28 +290,6 @@ body {
   color: #369354;
 }
 
-.btn-admin {
-  position: fixed;
-  bottom: 70px;
-  z-index: 60000;
-  right: 30px;
-  padding: 5px 40px;
-  background: #369354;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 25px;
-  color: white;
-  text-decoration: none;
-  margin-top: 20px;
-  transition: box-shadow 200ms ease;
-  font-size: 13pt;
-  cursor: pointer;
-}
-
-.btn-admin:hover {
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25),
-    inset 0px 0px 16px 5px rgba(0, 0, 0, 0.25);
-}
-
 .app-input {
   background: #ffffff;
   border: 1px solid #000000;
@@ -390,14 +368,6 @@ body {
 
 /* ----------------- MDP Perdu ----------------- */
 
-.reset-pass-page-section {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
 .reset-pass-page-section ul {
   display: flex;
   flex-direction: column;
@@ -405,16 +375,6 @@ body {
 .reset-pass-page-section ul li {
   color: #ff624d;
   margin: 0 auto;
-}
-
-.reset-pass-page-section p {
-  max-width: 600px;
-  margin: 20px;
-}
-
-.reset-pass-page-section input,
-.reset-pass-page-section button {
-  margin-top: 20px;
 }
 
 /* -------------- Tooltip  */
@@ -451,4 +411,19 @@ body {
 .app-tooltip:hover .app-tooltip-text {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
+}
+
+/* -------------- Profil  */
+
+.profil-form-password ul li,
+.profil-form-email ul li {
+  color: #ff624d;
+}
+
+.profil-card-commande-img {
+  border: 1px solid transparent;
+}
+
+.profil-card-commande-img:hover {
+  border: 1px solid green;
 }

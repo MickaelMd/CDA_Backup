@@ -34,11 +34,19 @@ final class AdminController extends AbstractController
 
         $fournisseur = $fournisseurRepository->findBy([], ['nom' => 'ASC']);
         $produit = $produitRepository->findBy([], ['libelleCourt' => 'ASC']);
-        $commande = $commandeRepository->findAll();
          $categorie = $categorieRepository->findBy(['active' => true], ['nom' => 'ASC']);
         foreach ($categorie as $cat) {
             $cat->getSousCategories()->count(); 
         }
+
+
+        $commande = $commandeRepository->createQueryBuilder('c')
+            ->where('c.statu != :statu')
+            ->setParameter('statu', 'Livrée')
+            ->orderBy('c.dateCommande', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult();
 
 
         $qb = $utilisateurRepository->createQueryBuilder('u');

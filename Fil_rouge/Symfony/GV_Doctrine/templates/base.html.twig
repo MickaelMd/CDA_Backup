@@ -52,7 +52,7 @@
 		{% block body %}{% endblock %}
 
 		{% if is_granted('ROLE_COMMERCIAL') or is_granted('ROLE_ADMIN') %}
-			<a class="btn-admin" href="{{ path('app_admin') }}">GESTION</a>
+			<a class="fixed bottom-[70px] right-[30px] z-50 mt-5 px-10 py-1 bg-[#369354] text-white rounded-full no-underline cursor-pointer text-[13pt] transition-shadow duration-200 ease-in-out shadow hover:shadow-[0_4px_10px_rgba(54,147,84,0.7)]" href="{{ path('app_admin') }}">GESTION</a>
 		{% endif %}
 
 		{% for message in app.flashes('panier') %}

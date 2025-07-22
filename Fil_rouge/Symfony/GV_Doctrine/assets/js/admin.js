@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // ---------------- Fournisseur -----------------
 
-  const selectFournisseur = document.querySelector(".admin-select.font-title");
+  const selectFournisseur = document.getElementById("fournisseur-select");
   const selectCommercial = document.querySelector("select#select-commercial");
 
   if (selectFournisseur) {
@@ -65,9 +65,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // ---------------- Produit Select -----------------
 
-  const selectProduit = document.querySelector(
-    "#formProduit .admin-select.font-title"
-  );
+  const selectProduit = document.getElementById("produit-select");
 
   if (selectProduit) {
     selectProduit.addEventListener("change", function () {
@@ -459,4 +457,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   realTimeCheckProduit();
+
+  // ---------------- Commande -----------------
 });
