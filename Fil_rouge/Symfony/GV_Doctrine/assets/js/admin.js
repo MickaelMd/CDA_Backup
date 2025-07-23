@@ -459,4 +459,35 @@ document.addEventListener("DOMContentLoaded", function () {
   realTimeCheckProduit();
 
   // ---------------- Commande -----------------
+
+  const select = document.getElementById("commande-select");
+  const statutSelect = document.getElementById("form-statut-select");
+
+  function updateTable() {
+    const selected = select.options[select.selectedIndex];
+
+    document.getElementById("com-id").textContent =
+      selected.dataset.userId || "";
+    document.getElementById("com-email").textContent =
+      selected.dataset.userEmail || "";
+    document.getElementById("com-adresse").textContent =
+      selected.dataset.userAdresse || "";
+    document.getElementById("com-modepaiement").textContent =
+      selected.dataset.userModepaiement || "";
+    document.getElementById("com-tva").textContent =
+      selected.dataset.userTva || "";
+    document.getElementById("com-total").textContent =
+      selected.dataset.userTotal + " €" || "";
+    document.getElementById("com-totalht").textContent =
+      selected.dataset.userTotalht + " €" || "";
+    document.getElementById("commande-id-hidden").value =
+      selected.dataset.userId;
+
+    if (statutSelect) {
+      statutSelect.value = selected.dataset.userStatut || "en_attente";
+    }
+  }
+
+  window.addEventListener("DOMContentLoaded", updateTable);
+  select.addEventListener("change", updateTable);
 });

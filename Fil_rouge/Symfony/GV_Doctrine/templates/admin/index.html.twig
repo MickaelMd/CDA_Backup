@@ -30,42 +30,103 @@
 	<div class="flex flex-col items-center mt-[10px]">
 		<select id="commande-select" class="rounded-[16px] text-center border-none text-[12pt] w-full max-w-[300px] h-[30px] cursor-pointer bg-[#62626269] backdrop-blur-[2.2px] font-title" name="" id="">
 			{% for commande in commande %}
-
-				<option value="{{commande.id}}" data-user-id="{{commande.id}}" data-user-email="{{commande.client.email}}" data-user-adresse="{{commande.adresseLivraison}}" data-user-modepaiement="{{commande.modePaiement}}" data-user-tva="{{commande.tva}}" data-user-total="{{commande.total}}" data-user-totalht="{{commande.totalHt}}" data-user-statut="{{commande.statu}}">Commande
+				<option value="{{commande.id}}" data-user-id="{{commande.id}}" data-user-email="{{commande.client.email}}" data-user-adresse="{{commande.adresseLivraison}}" data-user-modepaiement="{{commande.modePaiement}}" data-user-tva="{{commande.tva}}" data-user-total="{{commande.total}}" data-user-totalht="{{commande.totalHt}}" data-user-statut="{{commande.statu}}" data-produits="{{commande.detailCommandes|json_encode|e('html_attr')}}">
+					Commande
 					{{commande.id}}
-					{{commande.client.email}}</option>
+					{{commande.client.email}}
+				</option>
 			{% endfor %}
 		</select>
 	</div>
 
-	<div>
+	<div class="mt-[20px] flex flex-col justify-center border-2 border-solid">
 
-		<table class=" border-collapse border border-slate-500 table-auto">
-
-			<thead>
-
+		<table class="table-auto border-collapse border border-slate-500 w-full max-w-4xl mx-auto text-sm text-left text-gray-700">
+			<tbody class="bg-white">
 				<tr>
-
-					<th scope="col">Numero commande</th>
-					<th scope="col">Email</th>
-					<th scope="col">Adresse de livraison</th>
-					<th scope="col">Mode de paiement</th>
-					<th scope="col">TVA appliquée</th>
-					<th scope="col"></th>
-					<th scope="col"></th>
-					<th scope="col"></th>
-					<th scope="col"></th>
-
-
+					<th class="border border-slate-400 px-4 py-2 bg-gray-100 w-1/3 font-medium">Numéro de commande</th>
+					<td id="com-id" class="border border-slate-400 px-4 py-2"></td>
 				</tr>
-
-			</thead>
-
+				<tr>
+					<th class="border border-slate-400 px-4 py-2 bg-gray-100 font-medium">Email</th>
+					<td id="com-email" class="border border-slate-400 px-4 py-2"></td>
+				</tr>
+				<tr>
+					<th class="border border-slate-400 px-4 py-2 bg-gray-100 font-medium">Adresse de livraison</th>
+					<td id="com-adresse" class="border border-slate-400 px-4 py-2"></td>
+				</tr>
+				<tr>
+					<th class="border border-slate-400 px-4 py-2 bg-gray-100 font-medium">Mode de paiement</th>
+					<td id="com-modepaiement" class="border border-slate-400 px-4 py-2"></td>
+				</tr>
+				<tr>
+					<th class="border border-slate-400 px-4 py-2 bg-gray-100 font-medium">TVA appliquée</th>
+					<td id="com-tva" class="border border-slate-400 px-4 py-2"></td>
+				</tr>
+				<tr>
+					<th class="border border-slate-400 px-4 py-2 bg-gray-100 font-medium">Total TTC</th>
+					<td id="com-total" class="border border-slate-400 px-4 py-2"></td>
+				</tr>
+				<tr>
+					<th class="border border-slate-400 px-4 py-2 bg-gray-100 font-medium">Total HT</th>
+					<td id="com-totalht" class="border border-slate-400 px-4 py-2"></td>
+				</tr>
+				<tr>
+					<th class="border border-slate-400 px-4 py-2 bg-gray-100 font-medium">Statut</th>
+					<td id="com-statut" class="border border-slate-400 px-4 py-2">
+						<form action="">
+							<input type="hidden" value="" name="" id="commande-id-hidden">
+							<select name="statut" id="form-statut-select" class="rounded-[16px] text-center border-none text-[12pt] w-full max-w-[200px] h-[30px] cursor-pointer bg-[#62626269] backdrop-blur-[2.2px] font-title">
+								<option value="en_attente">En attente</option>
+								<option value="en_préparation">En préparation</option>
+								<option value="expédiée">Expédiée</option>
+								<option value="livrée">Livrée</option>
+							</select>
+							<button type="submit" class="app-button color-btnCta">Modifier</button>
+						</form>
+					</td>
+				</tr>
+			</tbody>
 		</table>
-
 	</div>
+	<div class="mt-[20px] flex flex-col justify-center border-2 border-solid">
 
-
+		<table class="table-auto border-collapse border border-slate-500 w-full max-w-4xl mx-auto text-sm text-left text-gray-700">
+			<tbody class="bg-white">
+				<tr>
+					<th class="border border-slate-400 px-4 py-2 bg-gray-100 w-1/3 font-medium">Nom du produit</th>
+					<td id="com-produit-nom" class="border border-slate-400 px-4 py-2"></td>
+				</tr>
+				<tr>
+					<th class="border border-slate-400 px-4 py-2 bg-gray-100 w-1/3 font-medium">Quantité</th>
+					<td id="com-produit-qauntite" class="border border-slate-400 px-4 py-2"></td>
+				</tr>
+				<tr>
+					<th class="border border-slate-400 px-4 py-2 bg-gray-100 w-1/3 font-medium">Prix</th>
+					<td id="com-produit-prix" class="border border-slate-400 px-4 py-2"></td>
+				</tr>
+				<tr>
+					<th class="border border-slate-400 px-4 py-2 bg-gray-100 w-1/3 font-medium">Promotion</th>
+					<td id="com-produit-promo" class="border border-slate-400 px-4 py-2"></td>
+				</tr>
+				<tr>
+					<th class="border border-slate-400 px-4 py-2 bg-gray-100 font-medium">Statut</th>
+					<td id="com-produit-statut" class="border border-slate-400 px-4 py-2">
+						<form action="">
+							<input type="hidden" value="" name="" id="commande_produit-id-hidden">
+							<select name="statut" id="form-statut-produit-select" class="rounded-[16px] text-center border-none text-[12pt] w-full max-w-[200px] h-[30px] cursor-pointer bg-[#62626269] backdrop-blur-[2.2px] font-title">
+								<option value="en_attente">En attente</option>
+								<option value="en_préparation">En préparation</option>
+								<option value="expédiée">Expédiée</option>
+								<option value="livrée">Livrée</option>
+							</select>
+							<button type="submit" class="app-button color-btnCta">Modifier</button>
+						</form>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 	<div class="header-title color-fond2 font-title">
 		<h1>Gestion des fournisseurs</h1>
 	</div>
@@ -113,7 +174,7 @@
 		<select id="produit-select" class="rounded-[16px] text-center border-none text-[12pt] w-full max-w-[300px] h-[30px] cursor-pointer bg-[#62626269] backdrop-blur-[2.2px] font-title" name="produit-select" id="produit-select">
 			<option value="" selected>Ajouter un produit</option>
 			{% for produit in produit %}
-				<option value="{{ produit.id }}" data-user-nom="{{ produit.libelleCourt }}" data-user-desc="{{ produit.libelleLong }}" data-user-stock="{{ produit.stock }}" data-user-prixht="{{ produit.prixHt }}" data-user-prixfourni="{{ produit.prixFournisseur }}" data-user-promo="{{ (produit.promotion ?? 0) * 100 }}" data-user-fourni="{{ produit.fournisseur.id }}" data-user-cat="{{ produit.sousCategorie.id }}" data-user-active="{{ produit.active ? '1' '0' }}" data-user-image="{{ produit.image ?? '' }}">
+				<option value="{{ produit.id }}" data-user-nom="{{ produit.libelleCourt }}" data-user-desc="{{ produit.libelleLong }}" data-user-stock="{{ produit.stock }}" data-user-prixht="{{ produit.prixHt }}" data-user-prixfourni="{{ produit.prixFournisseur }}" data-user-promo="{{ (produit.promotion ?? 0) * 100 }}" data-user-fourni="{{ produit.fournisseur.id }}" data-user-cat="{{ produit.sousCategorie.id }}" data-user-active="{{ produit.active ? '1' : '0' }}" data-user-image="{{ produit.image ?? '' }}">
 					{{ produit.libelleCourt }}
 				</option>
 			{% endfor %}
@@ -159,9 +220,9 @@
 				{% for sousCategorie in categorie.sousCategories %}
 					{% if sousCategorie.active %}
 						{% set sousCategories = sousCategories|merge([{
-                'id sousCategorie.id,
-                'nom sousCategorie.nom
-            }]) %}
+							'id': sousCategorie.id,
+							'nom': sousCategorie.nom
+						}]) %}
 					{% endif %}
 				{% endfor %}
 				<option value="{{ categorie.id }}" data-sous-categories='{{ sousCategories|json_encode|e('html_attr') }}'>

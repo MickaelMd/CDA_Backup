@@ -40,6 +40,26 @@ final class AdminController extends AbstractController
         }
 
 
+        // $commande = $commandeRepository->createQueryBuilder('c')
+        //     ->where('c.statu != :statu')
+        //     ->setParameter('statu', 'Livrée')
+        //     ->orderBy('c.dateCommande', 'ASC')
+        //     ->setMaxResults(10)
+        //     ->getQuery()
+        //     ->getResult();
+
+            // $commandes = $commandeRepository->createQueryBuilder('c')
+            // ->leftJoin('c.detailCommandes', 'dc')
+            // ->leftJoin('dc.Produit', 'p')
+            // ->addSelect('dc', 'p')
+            // ->where('c.statu != :statu')
+            // ->setParameter('statu', 'Livrée')
+            // ->orderBy('c.dateCommande', 'ASC')
+            // ->setMaxResults(10)
+            // ->getQuery()
+            // ->getResult();
+
+
         $commande = $commandeRepository->createQueryBuilder('c')
             ->where('c.statu != :statu')
             ->setParameter('statu', 'Livrée')
@@ -47,6 +67,14 @@ final class AdminController extends AbstractController
             ->setMaxResults(10)
             ->getQuery()
             ->getResult();
+
+    //    foreach ($commande as $commande) {
+    //         foreach ($commande->getDetailCommandes() as $detail) {
+    //             $detail->getProduit(); 
+    //         }
+    //     }
+
+
 
 
         $qb = $utilisateurRepository->createQueryBuilder('u');
