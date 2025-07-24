@@ -115,7 +115,7 @@
 
 - [x] Gestion CRUD sur la table produit
 - [x] Interface liste/ajout/modification/suppression
-- [ ] Menu d'accueil administrateur
+- [x] Menu d'accueil administrateur
 
 ### Architecture :
 
@@ -129,7 +129,7 @@
 - [x] Calcul automatique des prix selon coefficient client
 - [x] Gestion des réductions commerciales
 - [ ] Système de paiement différencié (immédiat/différé)
-- [ ] Workflow de validation des commandes
+- [x] Workflow de validation des commandes
 - [x] Génération automatique des factures (une facture par commande, même expédiée partiellement)
 - [ ] Génération des bons de livraison (multiples possibles par commande)
 - [ ] Archivage des documents (conservation 3 ans minimum)

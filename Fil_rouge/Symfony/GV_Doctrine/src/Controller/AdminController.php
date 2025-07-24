@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\DetailCommande;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -17,6 +18,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Fournisseur;
 use app\Entity\Produit;
 use app\Entity\SousCategorie;
+use App\Repository\DetailCommandeRepository;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 
 
@@ -39,27 +41,6 @@ final class AdminController extends AbstractController
             $cat->getSousCategories()->count(); 
         }
 
-
-        // $commande = $commandeRepository->createQueryBuilder('c')
-        //     ->where('c.statu != :statu')
-        //     ->setParameter('statu', 'Livrée')
-        //     ->orderBy('c.dateCommande', 'ASC')
-        //     ->setMaxResults(10)
-        //     ->getQuery()
-        //     ->getResult();
-
-            // $commandes = $commandeRepository->createQueryBuilder('c')
-            // ->leftJoin('c.detailCommandes', 'dc')
-            // ->leftJoin('dc.Produit', 'p')
-            // ->addSelect('dc', 'p')
-            // ->where('c.statu != :statu')
-            // ->setParameter('statu', 'Livrée')
-            // ->orderBy('c.dateCommande', 'ASC')
-            // ->setMaxResults(10)
-            // ->getQuery()
-            // ->getResult();
-
-
         $commande = $commandeRepository->createQueryBuilder('c')
             ->where('c.statu != :statu')
             ->setParameter('statu', 'Livrée')
@@ -68,13 +49,12 @@ final class AdminController extends AbstractController
             ->getQuery()
             ->getResult();
 
-    //    foreach ($commande as $commande) {
-    //         foreach ($commande->getDetailCommandes() as $detail) {
-    //             $detail->getProduit(); 
-    //         }
-    //     }
-
-
+                
+            foreach ($commande as $cmd) {
+                foreach ($cmd->getDetailCommandes() as $detail) {
+                    $produit = $detail->getProduit(); 
+                }
+            }
 
 
         $qb = $utilisateurRepository->createQueryBuilder('u');
@@ -399,4 +379,108 @@ public function updateProduit(
             return $this->redirectToRoute('app_admin');
         }
     }
+
+
+
+    #[Route('/admin-update-commande', name: 'app_admin_update_commande', methods: ['POST'])]
+    public function adminUpdateCom(CsrfTokenManagerInterface $csrfTokenManager, Request $request, CommandeRepository $commandeRepository, DetailCommandeRepository $detailComRepo,  EntityManagerInterface $entityManager): Response
+    {
+
+         if (!$this->isGranted('ROLE_COMMERCIAL') && !$this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('error', 'Vous n\'avez pas les droits pour accéder à cette page.');
+            return $this->redirectToRoute('app_accueil');
+        }
+        
+        $token = new CsrfToken('authenticate_commande', $request->request->get('_csrf_token'));
+        if (!$csrfTokenManager->isTokenValid($token)) {
+            throw new \Exception('Jeton CSRF invalide.');
+        }
+
+            $tabValue = ['en_attente', 'en_préparation', 'expédiée', 'livrée'];
+            
+            $id  = $request->request->get('com_id');
+            $select = $request->request->get('statut');
+            $commande = $commandeRepository->find($id);
+            $detailCommande = $detailComRepo->findBy(['Commande' => $commande]);
+
+            if (!$commande) {
+                $this->addFlash('error', 'Commande introuvable.');
+                return $this->redirectToRoute('app_admin');
+            }
+
+            if (!in_array($select, $tabValue, true)) {
+                    $this->addFlash('error', 'Erreur dans le formulaire.');
+                    return $this->redirectToRoute('app_admin');
+                }
+ 
+        try {
+
+          foreach ($detailCommande as $key) {
+            
+            $key->setStatut($select);
+            $entityManager->persist($key);
+            $entityManager->flush();
+
+          }
+                $commande->setStatu($select);
+                $entityManager->persist($commande);
+                $entityManager->flush();
+
+         } catch(\Exception $e) {
+            $this->addFlash('error', 'Une erreur s\'est produite, veuillez réessayer.');
+            return $this->redirectToRoute('app_admin');
+         }
+         
+        return $this->redirectToRoute('app_admin');
+        
+    }
+
+    // --------------------
+
+        #[Route('/admin-update-det_com', name: 'app_admin_update_det_com', methods: ['POST'])]
+    public function adminUpdateDetCom(CsrfTokenManagerInterface $csrfTokenManager, Request $request, CommandeRepository $commandeRepository, DetailCommandeRepository $detailComRepo,  EntityManagerInterface $entityManager): Response
+    {
+
+         if (!$this->isGranted('ROLE_COMMERCIAL') && !$this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('error', 'Vous n\'avez pas les droits pour accéder à cette page.');
+            return $this->redirectToRoute('app_accueil');
+        }
+        
+        $token = new CsrfToken('authenticate_commande', $request->request->get('_csrf_token'));
+        if (!$csrfTokenManager->isTokenValid($token)) {
+            throw new \Exception('Jeton CSRF invalide.');
+        }
+
+            $tabValue = ['en_attente', 'en_préparation', 'expédiée', 'livrée'];
+            
+            $id  = $request->request->get('com_id');
+            $select = $request->request->get('statut');
+            $commande = $detailComRepo->find($id);
+            
+
+            if (!$commande) {
+                $this->addFlash('error', 'Commande introuvable.');
+                return $this->redirectToRoute('app_admin');
+            }
+
+            if (!in_array($select, $tabValue, true)) {
+                    $this->addFlash('error', 'Erreur dans le formulaire.');
+                    return $this->redirectToRoute('app_admin');
+                }
+ 
+        try {
+
+                $commande->setStatu($select);
+                $entityManager->persist($commande);
+                $entityManager->flush();
+
+         } catch(\Exception $e) {
+            $this->addFlash('error', 'Une erreur s\'est produite, veuillez réessayer.');
+            return $this->redirectToRoute('app_admin');
+         }
+         
+        return $this->redirectToRoute('app_admin');
+        
+    }
+
 }

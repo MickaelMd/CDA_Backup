@@ -462,6 +462,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const select = document.getElementById("commande-select");
   const statutSelect = document.getElementById("form-statut-select");
+  const statutProduitSelect = document.getElementById(
+    "form-statut-produit-select"
+  );
 
   function updateTable() {
     const selected = select.options[select.selectedIndex];
@@ -486,8 +489,110 @@ document.addEventListener("DOMContentLoaded", function () {
     if (statutSelect) {
       statutSelect.value = selected.dataset.userStatut || "en_attente";
     }
+
+    updateProductsTable(selected);
   }
 
+  function updateProductsTable(selectedOption) {
+    try {
+      const produitsData = selectedOption.dataset.produits;
+
+      if (!produitsData) {
+        clearProductsTable();
+        return;
+      }
+
+      const produits = JSON.parse(produitsData);
+
+      if (produits.length === 0) {
+        clearProductsTable();
+        return;
+      }
+      generateProductTables(produits);
+    } catch (error) {
+      console.error("Erreur lors du parsing des données produits:", error);
+      clearProductsTable();
+    }
+  }
+
+  function generateProductTables(produits) {
+    const commandeTable = document.getElementById("table_com");
+    const container = commandeTable.parentNode;
+
+    const oldProductTables = container.querySelectorAll(".produit-table");
+    oldProductTables.forEach((table) => table.remove());
+
+    produits.forEach((produit, index) => {
+      const tableDiv = document.createElement("div");
+      tableDiv.className =
+        "mt-[20px] flex flex-col justify-center produit-table";
+
+      tableDiv.innerHTML = `
+
+      <table class="table-auto border-collapse border border-slate-500 w-full max-w-4xl mx-auto text-sm text-left text-gray-700">
+        <tbody class="bg-white">
+          <tr>
+            <th class="border border-slate-400 px-4 py-2 bg-gray-100 w-1/3 font-medium">Nom du produit</th>
+            <td class="border border-slate-400 px-4 py-2">${
+              produit.produit?.libelleCourt ||
+              produit.produit?.nom ||
+              "Produit non trouvé"
+            }</td>
+          </tr>
+          <tr>
+            <th class="border border-slate-400 px-4 py-2 bg-gray-100 w-1/3 font-medium">Quantité</th>
+            <td class="border border-slate-400 px-4 py-2">${
+              produit.quantite || "0"
+            }</td>
+          </tr>
+          <tr>
+            <th class="border border-slate-400 px-4 py-2 bg-gray-100 w-1/3 font-medium">Prix</th>
+            <td class="border border-slate-400 px-4 py-2">${
+              produit.prix || "0"
+            } €</td>
+          </tr>
+          <tr>
+            <th class="border border-slate-400 px-4 py-2 bg-gray-100 w-1/3 font-medium">Promotion</th>
+            <td class="border border-slate-400 px-4 py-2">${
+              produit.promotion ? produit.promotion * 100 + "%" : "Aucune"
+            }</td>
+          </tr>
+          <tr>
+            <th class="border border-slate-400 px-4 py-2 bg-gray-100 font-medium">Statut</th>
+            <td class="border border-slate-400 px-4 py-2">
+              <form action="">
+                <input type="hidden" value="${
+                  produit.id || ""
+                }" name="com-commande-produit-id" class="produit-id-hidden">
+                <select name="statut-produit" class="produit-statut-select rounded-[16px] text-center border-none text-[12pt] w-full max-w-[200px] h-[30px] cursor-pointer bg-[#62626269] backdrop-blur-[2.2px] font-title">
+                  <option value="en_attente" ${
+                    produit.statut === "en_attente" ? "selected" : ""
+                  }>En attente</option>
+                  <option value="en_préparation" ${
+                    produit.statut === "en_préparation" ? "selected" : ""
+                  }>En préparation</option>
+                  <option value="expédiée" ${
+                    produit.statut === "expédiée" ? "selected" : ""
+                  }>Expédiée</option>
+                  <option value="livrée" ${
+                    produit.statut === "livrée" ? "selected" : ""
+                  }>Livrée</option>
+                </select>
+                <button type="submit" class="app-button color-btnCta">Modifier</button>
+              </form>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    `;
+      commandeTable.insertAdjacentElement("afterend", tableDiv);
+    });
+  }
+
+  function clearProductsTable() {
+    const productTables = document.querySelectorAll(".produit-table");
+    productTables.forEach((table) => table.remove());
+  }
   window.addEventListener("DOMContentLoaded", updateTable);
   select.addEventListener("change", updateTable);
 });
