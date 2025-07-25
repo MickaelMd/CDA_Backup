@@ -24,7 +24,7 @@
 		<h1>Gestion des commandes</h1>
 	</div>
 
-	<p class="text-center italic color-erreur-text">Commandes à traiter en priorité*</p>
+	<p class="text-center italic color-erreur-text">Commandes à traiter en priorité</p>
 
 
 	<div class="flex flex-col items-center mt-[10px]">
@@ -91,6 +91,7 @@
 			</tbody>
 		</table>
 	</div>
+	<input type="hidden" id="csrf-token-det-com" value="{{ csrf_token('update_detail_commande') }}">
 
 
 	<div class="header-title color-fond2 font-title">

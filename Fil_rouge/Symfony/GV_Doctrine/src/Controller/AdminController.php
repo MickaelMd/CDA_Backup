@@ -446,19 +446,22 @@ public function updateProduit(
             return $this->redirectToRoute('app_accueil');
         }
         
-        $token = new CsrfToken('authenticate_commande', $request->request->get('_csrf_token'));
+        $token = new CsrfToken('update_detail_commande', $request->request->get('update_detail_commande'));
         if (!$csrfTokenManager->isTokenValid($token)) {
             throw new \Exception('Jeton CSRF invalide.');
         }
 
             $tabValue = ['en_attente', 'en_préparation', 'expédiée', 'livrée'];
-            
-            $id  = $request->request->get('com_id');
-            $select = $request->request->get('statut');
-            $commande = $detailComRepo->find($id);
-            
 
-            if (!$commande) {
+            $id  = $request->request->get('com-commande-produit-id');
+            $select = $request->request->get('statut-produit');
+            $detCommande = $detailComRepo->find($id);
+            
+            $commande = $detCommande->getCommande();
+
+
+
+            if (!$detCommande) {
                 $this->addFlash('error', 'Commande introuvable.');
                 return $this->redirectToRoute('app_admin');
             }
@@ -470,8 +473,8 @@ public function updateProduit(
  
         try {
 
-                $commande->setStatu($select);
-                $entityManager->persist($commande);
+                $detCommande->setStatut($select);
+                $entityManager->persist($detCommande);
                 $entityManager->flush();
 
          } catch(\Exception $e) {
@@ -482,5 +485,6 @@ public function updateProduit(
         return $this->redirectToRoute('app_admin');
         
     }
+
 
 }

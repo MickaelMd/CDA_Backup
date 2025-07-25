@@ -102,7 +102,6 @@ document.addEventListener("DOMContentLoaded", function () {
       const active = selectedOption.dataset.userActive;
       const imageUrl = selectedOption.dataset.userImage;
 
-      // Remplir les champs du formulaire
       document.getElementById("produit-id").value = id || "";
       document.getElementById("produit-libelle_court").value = nom || "";
       document.getElementById("produit_libelle_long").value = description || "";
@@ -516,6 +515,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function generateProductTables(produits) {
+    const csrfToken =
+      document.getElementById("csrf-token-det-com")?.value || "";
     const commandeTable = document.getElementById("table_com");
     const container = commandeTable.parentNode;
 
@@ -560,7 +561,8 @@ document.addEventListener("DOMContentLoaded", function () {
           <tr>
             <th class="border border-slate-400 px-4 py-2 bg-gray-100 font-medium">Statut</th>
             <td class="border border-slate-400 px-4 py-2">
-              <form action="">
+              <form action="/admin-update-det_com" method="post"">
+              <input type="hidden" name="update_detail_commande" value="${csrfToken}">
                 <input type="hidden" value="${
                   produit.id || ""
                 }" name="com-commande-produit-id" class="produit-id-hidden">
