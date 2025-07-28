@@ -40,7 +40,7 @@
 		</select>
 	</div>
 
-	<div class="mt-[20px] flex flex-col justify-center" id="table_com">
+	<section class="mt-[20px] flex flex-col justify-center" id="table_com">
 		<table class="table-auto border-collapse w-full max-w-4xl mx-auto text-sm text-left text-gray-700">
 			<tbody class="bg-white">
 				<tr>
@@ -90,9 +90,15 @@
 				</tr>
 			</tbody>
 		</table>
-	</div>
+	</section>
 	<input type="hidden" id="csrf-token-det-com" value="{{ csrf_token('update_detail_commande') }}">
 
+
+	<div class="flex flex-wrap justify-evenly mt-[20px]">
+
+		<a class="app-button color-btnCta" href="{{path('app_admin_pagination')}}">Voir toutes les commandes</a>
+
+	</div>
 
 	<div class="header-title color-fond2 font-title">
 		<h1>Gestion des fournisseurs</h1>

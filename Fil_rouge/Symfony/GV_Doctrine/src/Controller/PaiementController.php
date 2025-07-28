@@ -155,7 +155,7 @@ final class PaiementController extends AbstractController
                 ->from(new Address('noreply@greenvillage.com', 'Green Village'))
                 ->to((string) $user->getEmail())
                 ->subject('Green Village - Votre commande # ' . $commande->getId())
-                ->htmlTemplate('paiement/mail.html.twig')
+                ->htmlTemplate('mail/paiement_mail.html.twig')
                 ->context([
                     'commande' => $commande,
                 ])

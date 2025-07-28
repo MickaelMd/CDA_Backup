@@ -29,5 +29,14 @@ final class LegalController extends AbstractController
         return $this->render('legal/pdc.html.twig', [
             'controller_name' => 'LegalController',
         ]);
+        
+    }
+
+        #[Route('/cgv', name: 'app_cgv')]
+    public function cgv(): Response
+    {
+        return $this->render('legal/cgv.html.twig', [
+            'controller_name' => 'LegalController',
+        ]);
     }
 }

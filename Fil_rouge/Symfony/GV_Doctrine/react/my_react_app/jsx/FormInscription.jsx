@@ -153,8 +153,8 @@ const FormInscription = ({ token_csrf }) => {
   };
 
   return (
-    <div className="flex flex-col items-center w-full p-4">
-      <div className="flex flex-col items-center w-full max-w-[300px]">
+    <div className="flex flex-col items-center w-full px-6 py-4 box-border overflow-x-hidden">
+      <div className="flex flex-col items-center w-full max-w-[360px] mx-auto">
         <div className="w-full mb-[15px]">
           <label
             htmlFor="registration_form_nom"
