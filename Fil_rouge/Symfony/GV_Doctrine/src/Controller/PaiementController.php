@@ -31,7 +31,7 @@ final class PaiementController extends AbstractController
     {
         if (!$this->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             $this->addFlash('error', 'Vous devez être <a href="/connexion">connecté</a> pour valider votre commande.');
-            return $this->redirectToRoute('app_panier');
+            return $this->redirectToRoute('app_login');
         }
 
         $panier = $panierService->getPanier(); 

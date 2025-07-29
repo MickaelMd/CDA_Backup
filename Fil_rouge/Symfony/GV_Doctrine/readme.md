@@ -91,7 +91,7 @@
 
 - [x] Interface d'administration
 - [x] Gestion des produits
-- [ ] Gestion des commandes
+- [x] Gestion des commandes
 - [x] Gestion des fournisseurs
 
 ### Scripts clients (JavaScript) :
@@ -148,8 +148,8 @@
 
 ### Tests :
 
-- [ ] Mise en place des tests unitaires
-- [ ] Exécution des plans de tests
+- [x] Mise en place des tests unitaires
+- [x] Exécution des plans de tests
 
 ### Déploiement :
 
