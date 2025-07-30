@@ -31,7 +31,7 @@ final class PaiementController extends AbstractController
     {
         if (!$this->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             $this->addFlash('error', 'Vous devez être <a href="/connexion">connecté</a> pour valider votre commande.');
-            return $this->redirectToRoute('app_panier');
+            return $this->redirectToRoute('app_login');
         }
 
         $panier = $panierService->getPanier(); 
@@ -51,22 +51,32 @@ final class PaiementController extends AbstractController
             $coefficient = (float) $user->getCoefficient();
         }
         
-        foreach ($panier as $produitId => $quantite) {
-            $produit = $produitRepository->find($produitId);
+            foreach ($panier as $produitId => $quantite) {
 
-            if ($produit) {
-                $prixTTC = $produit->getPrixHt() * $coefficient;
+    $produit = $produitRepository->find($produitId);
+
+        if ($produit) {
+                $prixBase = $produit->getPrixHt() * $coefficient;
+
+                $prixTTC = $prixBase;
+
+                if ($produit->getPromotion() !== null && $produit->getPromotion() > 0) {
+                    $prixTTC = $prixBase * (1 - $produit->getPromotion());
+                }
+
                 $sousTotal = $prixTTC * $quantite;
+
                 $detailsPanier[] = [
                     'produit' => $produit,
                     'quantite' => $quantite,
+                    'prixBase' => $prixBase,
                     'prixTTC' => $prixTTC,
                     'sousTotal' => $sousTotal
                 ];
-                
+
                 $totalPanier += $sousTotal;
+                }
             }
-        }
 
         return $this->render('paiement/index.html.twig', [
             'controller_name' => 'PaiementController',
@@ -100,6 +110,11 @@ final class PaiementController extends AbstractController
         $token = new CsrfToken('authenticate', $request->request->get('_token'));
         if (!$csrfTokenManager->isTokenValid($token)) {
             throw new \Exception('Jeton CSRF invalide.');
+        }
+
+        if ($request->request->get('cgv') == false) {
+            $this->addFlash('error', 'Vous devez acepter les conditions général de vente');
+            return $this->redirectToRoute('app_paiement');
         }
 
         /** @var \App\Entity\Utilisateur $user */
@@ -140,7 +155,7 @@ final class PaiementController extends AbstractController
                 ->from(new Address('noreply@greenvillage.com', 'Green Village'))
                 ->to((string) $user->getEmail())
                 ->subject('Green Village - Votre commande # ' . $commande->getId())
-                ->htmlTemplate('paiement/mail.html.twig')
+                ->htmlTemplate('mail/paiement_mail.html.twig')
                 ->context([
                     'commande' => $commande,
                 ])
@@ -206,27 +221,34 @@ private function ajouterDetailsCommande(Commande $commande, array $panier, Produ
     $totalHT = 0;
     $totalTTC = 0;
     
-    foreach ($panier as $produitId => $quantite) {
-        $produit = $produitRepository->find($produitId);
-        
-        if ($produit) {
-            $detailCommande = new DetailCommande();
-            $detailCommande->setProduit($produit);
-            $detailCommande->setQuantite($quantite);
-         
-            $prixHT = $produit->getPrixHt();
-         
-            $prixTTC = $prixHT * $coefficient;
-            
-            $detailCommande->setPrix((string) $prixTTC);
-            
-            $detailCommande->setCommande($commande);
-            $commande->addDetailCommande($detailCommande);
-       
-            $totalHT += $prixHT * $quantite;
-            $totalTTC += $prixTTC * $quantite;
+   foreach ($panier as $produitId => $quantite) {
+    $produit = $produitRepository->find($produitId);
+
+    if ($produit) {
+        $detailCommande = new DetailCommande();
+        $detailCommande->setProduit($produit);
+        $detailCommande->setQuantite($quantite);
+
+        $prixHT = $produit->getPrixHt();
+        $prixBase = $prixHT * $coefficient;
+
+        if ($produit->getPromotion() !== null && $produit->getPromotion() > 0) {
+            $prixTTC = $prixBase * (1 - $produit->getPromotion());
+        } else {
+            $prixTTC = $prixBase;
         }
+
+        $detailCommande->setPrix((string) $prixTTC);
+        $detailCommande->setPromotion($produit->getPromotion());
+
+        $detailCommande->setCommande($commande);
+        $commande->addDetailCommande($detailCommande);
+
+        $totalHT += $prixHT * $quantite;
+        $totalTTC += $prixTTC * $quantite;
     }
+}
+
     
 
     $commande->setTotalHt((string) $totalHT);

@@ -6,9 +6,6 @@
 	{{commande.id}}
 {% endblock %}
 
-{% block page_specific_stylesheets %}
-	{{ encore_entry_link_tags('profil-style') }}
-{% endblock %}
 
 {% block body %}
 
@@ -19,63 +16,75 @@
 		</h1>
 	</div>
 
-	<section class="profil-detail-commande-section">
+	<section class="flex flex-col p-4 md:p-8 bg-white rounded-lg justify-center items-stretch border border-gray-200 max-w-7xl mx-auto">
 
-		<p>Adresse de livraison :
+		<p class="bg-gray-50 px-4 py-3 my-2 font-sans  leading-6 rounded text-sm md:">Adresse de livraison :
 			{{commande.AdresseLivraison}}</p>
-		<p>Adresse de facturation :
+		<p class="bg-gray-50 px-4 py-3 my-2 font-sans  leading-6 rounded text-sm md:">Adresse de facturation :
 			{{commande.AdresseFacturation}}</p>
-		<p>Date de la commande :
+		<p class="bg-gray-50 px-4 py-3 my-2 font-sans  leading-6 rounded text-sm md:">Date de la commande :
 			{{ commande.dateCommande|date('d/m/Y') }}</p>
-		<p>Mode de paiement :
+		<p class="bg-gray-50 px-4 py-3 my-2 font-sans  leading-6 rounded text-sm md:">Mode de paiement :
 			{{commande.modePaiement}}</p>
-		<p>Total HT :
+		<p class="bg-gray-50 px-4 py-3 my-2 font-sans  leading-6 rounded text-sm md:">Total HT :
 			{{commande.totalHT}}</p>
-		<p>Total TTC :
+		<p class="bg-gray-50 px-4 py-3 my-2 font-sans  leading-6 rounded text-sm md:">Total TTC :
 			{{commande.total}}</p>
-		<p>TVA appliquée :
+		<p class="bg-gray-50 px-4 py-3 my-2 font-sans  leading-6 rounded text-sm md:">TVA appliquée :
 			{{ ((commande.TVA - 1) * 100)|number_format(2, '.', '') }}
 			%
 		</p>
-		<p>Statut de la commande :
+		<p class="bg-gray-50 px-4 py-3 my-2 font-sans  leading-6 rounded text-sm md:">Statut de la commande :
 			{{ commande.statu|replace({'_': ' '}) }}</p>
 
-		<h1>Produit</h1>
-		<table class="color-logo">
-			<thead>
-				<tr>
-					<th scope="col">Nom</th>
-					<th scope="col">Prix TTC Unitaire</th>
-					<th scope="col">Quantité</th>
-					<th scope="col">Statut du produit</th>
-					<th scope="col">Page du produit</th>
+		<h1 class="mb-8 text-xl md:text-2xl">Produit</h1>
+		<table class="w-full border-collapse mt-8 font-sans rounded-lg max-w-7xl block md:table">
+			<thead class="hidden md:table-header-group bg-green-600 text-white">
+				<tr class="md:table-row">
+					<th scope="col" class="p-4 text-left font-bold md:table-cell">Nom</th>
+					<th scope="col" class="p-4 text-left font-bold md:table-cell">Prix TTC Unitaire</th>
+					<th scope="col" class="p-4 text-left font-bold md:table-cell">Quantité</th>
+					<th scope="col" class="p-4 text-left font-bold md:table-cell">Statut du produit</th>
+					<th scope="col" class="p-4 text-left font-bold md:table-cell">Page du produit</th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody class="block md:table-row-group">
 				{% for detail in commande.detailCommandes %}
-					<tr>
-						<th data-label="Nom">{{detail.produit.libelleCourt}}</th>
-						<td data-label="Prix TTC Unitaire">{{detail.prix}}</td>
-						<td data-label="Quantité">{{detail.quantite}}</td>
-						<td data-label="Statut">{{detail.statut|replace({'_': ' '})}}</td>
-						<td data-label="Page du produit">
-							<a href="{{ path('app_produit', {'id': detail.produit.id}) }}">Voir le produit</a>
+					<tr class="block mb-4 border border-gray-200 rounded-md overflow-hidden md:table-row md:mb-0 md:border-0 md:rounded-none md:odd:bg-white md:even:bg-gray-100">
+						<th data-label="Nom" class="bg-white md:bg-transparent px-4 py-4 flex justify-between md:table-cell md:px-4 md:py-3 md:border-b md:border-gray-200 md:text-left">
+							<span class="font-bold mr-4 md:hidden">Nom:</span>
+							<span>{{detail.produit.libelleCourt}}</span>
+						</th>
+						<td data-label="Prix TTC Unitaire" class="bg-white md:bg-transparent px-4 py-4 flex justify-between md:table-cell md:px-4 md:py-3 md:border-b md:border-gray-200">
+							<span class="font-bold mr-4 md:hidden">Prix TTC Unitaire:</span>
+							<span>{{detail.prix}}</span>
+						</td>
+						<td data-label="Quantité" class="bg-white md:bg-transparent px-4 py-4 flex justify-between md:table-cell md:px-4 md:py-3 md:border-b md:border-gray-200">
+							<span class="font-bold mr-4 md:hidden">Quantité:</span>
+							<span>{{detail.quantite}}</span>
+						</td>
+						<td data-label="Statut" class="bg-white md:bg-transparent px-4 py-4 flex justify-between md:table-cell md:px-4 md:py-3 md:border-b md:border-gray-200">
+							<span class="font-bold mr-4 md:hidden">Statut:</span>
+							<span>{{detail.statut|replace({'_': ' '})}}</span>
+						</td>
+						<td data-label="Page du produit" class="bg-white md:bg-transparent px-4 py-4 flex justify-between md:table-cell md:px-4 md:py-3 md:border-b md:border-gray-200">
+							<span class="font-bold mr-4 md:hidden">Page du produit:</span>
+							<a href="{{ path('app_produit', {'id': detail.produit.id}) }}" class="text-green-600 no-underline font-bold hover:underline">Voir le produit</a>
 						</td>
 					</tr>
-
 				{% endfor %}
 			</tbody>
 		</table>
 
-		<div class="detail-commande-facture">
+
+		<div class="flex flex-wrap justify-around mt-8">
 			<form action="" method="post" target="_blank">
 				<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 				<button type="" class="app-button color-btnCom">Télécharger la facture</button>
 			</form>
-			{# <a href="" class="app-button color-btnCom">Télécharger le bon de commande</a> #}
 		</div>
 	</section>
-	<div class="detail-btp">
+	<div class="flex justify-center my-8">
 		<a class="app-button color-btnCta" href="{{path("app_profil")}}">Revenir au profil</a>
 	</div>
 {% endblock %}

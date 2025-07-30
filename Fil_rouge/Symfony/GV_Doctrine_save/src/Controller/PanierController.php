@@ -88,22 +88,32 @@ final class PanierController extends AbstractController
         $totalPanier = 0;
         
         foreach ($panier as $produitId => $quantite) {
-        
-            $produit = $produitRepository->find($produitId);
 
-            if ($produit) {
-                $prixTTC = $produit->getPrixHt() * $coefficient;
+    $produit = $produitRepository->find($produitId);
+
+        if ($produit) {
+                $prixBase = $produit->getPrixHt() * $coefficient;
+
+                $prixTTC = $prixBase;
+
+                if ($produit->getPromotion() !== null && $produit->getPromotion() > 0) {
+                    $prixTTC = $prixBase * (1 - $produit->getPromotion());
+                }
+
                 $sousTotal = $prixTTC * $quantite;
+
                 $detailsPanier[] = [
                     'produit' => $produit,
                     'quantite' => $quantite,
+                    'prixBase' => $prixBase,
                     'prixTTC' => $prixTTC,
                     'sousTotal' => $sousTotal
                 ];
-                
+
                 $totalPanier += $sousTotal;
+                }
             }
-        }
+
 
         return $this->render('panier/index.html.twig', [
             'controller_name' => 'PanierController',

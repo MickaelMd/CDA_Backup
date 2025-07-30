@@ -4,30 +4,22 @@
 	{{ parent() }}Commande validée !
 {% endblock %}
 
-{% block page_specific_stylesheets %}
-	{{ encore_entry_link_tags('paiement-style') }}
-{% endblock %}
-
 
 {% block body %}
-	<section id="section-commande-valide">
+	<section class="flex flex-col justify-around items-center text-center h-[50vh] px-4">
+		<h1 class="text-2xl font-semibold mb-4 font-title">Votre commande a bien été validée !</h1>
 
-
-		<h1>Votre commande a bien été validée !</h1>
-
-		<div id="section-commande-valide-img">
-			<img src="/image/logo/paiement/valide.svg" alt="Commande validée">
+		<div class="w-[200px] h-[200px] rounded-[10px] overflow-hidden mb-4">
+			<img src="/image/logo/paiement/valide.svg" alt="Commande validée" class="w-[150px] h-[150px] object-cover"/>
 		</div>
 
-		<p>
-			Vous allez recevoir un e-mail de confirmation avec votre facture en pièce jointe.<br>
-			<br>
+		<p class="text-base leading-relaxed">
+			Vous allez recevoir un e-mail de confirmation avec votre facture en pièce jointe.<br/><br/>
 			Vous pouvez également retrouver l’historique et le suivi de vos commandes dans votre
-			<a href="{{ path('app_profil') }}">profil</a>.<br>
-			<br>
+			<a href="{{ path('app_profil') }}" class="text-blue-600 underline hover:text-blue-800">profil</a>.<br/><br/>
 			Vous serez également averti(e) du début de la livraison.
 		</p>
-
-
 	</section>
+
+
 {% endblock %}

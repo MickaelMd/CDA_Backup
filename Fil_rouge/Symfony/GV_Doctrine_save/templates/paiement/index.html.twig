@@ -4,11 +4,6 @@
 	{{ parent() }}Validation de la commande
 {% endblock %}
 
-{% block page_specific_stylesheets %}
-	{{ encore_entry_link_tags('paiement-style') }}
-{% endblock %}
-
-
 {% block body %}
 
 	<div class="header-title color-fond2 font-title">
@@ -18,70 +13,67 @@
 		</h1>
 	</div>
 
-
 	{% if app.user %}
-
-		<section class="section-paiement-info">
-
-
-			<div class="paiement-card-info color-fond2">
-				<h1 class="font-title">Adresse de livraison</h1>
+		<section class="flex flex-wrap justify-center section-paiement-info">
+			<div class="max-w-[400px] text-center mx-[40px] my-[40px] color-fond2 px-[40px] py-[40px] rounded-[16px]">
+				<h1 class="font-title text-[15pt] mb-[16px]">Adresse de livraison</h1>
 				{% if app.user.adresselivraison is empty %}
-					<p class="paiement-adresse-error">Une adresse de livraison est requise</p>
+					<p class="text-[#ff624d] paiement-adresse-error">Une adresse de livraison est requise</p>
 				{% else %}
 					<p>Adresse :
 						{{ app.user.adresselivraison|e('html_attr') }}</p>
 				{% endif %}
-
-
-				<a class="profil-link" href="{{ path('app_profil') }}">Modifier cette information</a>
+				<a class="profil-link inline-block py-[5px] px-[40px] bg-[#369354] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] rounded-[25px] text-white no-underline mt-[30px] text-center transition duration-200 hover:shadow-[0px_4px_4px_rgba(0,0,0,0.25),inset_0px_0px_16px_5px_rgba(0,0,0,0.25)] text-[13pt] border-none cursor-pointer" href="{{ path('app_profil') }}">Modifier cette information</a>
 			</div>
 
-			<div class="paiement-card-info color-fond2">
-				<h1 class="font-title">Adresse de facturation
+			<div class="max-w-[400px] text-center mx-[40px] my-[40px] color-fond2 px-[40px] py-[40px] rounded-[16px]">
+				<h1 class="font-title text-[15pt] mb-[16px]">Adresse de facturation
+					<span class="app-tooltip">?
+						<span class="app-tooltip-text">Si aucune adresse de facturation,<br>l'adresse de livraison sera utilisée</span>
+					</span>
 				</h1>
 
 				{% if app.user.adressefacturation is empty %}
 					{% if app.user.adresselivraison is empty %}
-						<p class="paiement-adresse-error">Une adresse de facturation est requise</p>
+						<p class="text-[#ff624d] paiement-adresse-error">Une adresse de facturation est requise</p>
 					{% else %}
 						<p>Adresse :
 							{{ app.user.adresselivraison|e('html_attr') }}</p>
 					{% endif %}
 				{% else %}
-					<p>Adresse :{{ app.user.adressefacturation|e('html_attr') }}</p>
+					<p>Adresse :
+						{{ app.user.adressefacturation|e('html_attr') }}</p>
 				{% endif %}
 
-				<a class="profil-link" href="{{ path('app_profil') }}">Modifier cette information</a>
+				<a class="profil-link inline-block py-[5px] px-[40px] bg-[#369354] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] rounded-[25px] text-white no-underline mt-[30px] text-center transition duration-200 hover:shadow-[0px_4px_4px_rgba(0,0,0,0.25),inset_0px_0px_16px_5px_rgba(0,0,0,0.25)] text-[13pt] border-none cursor-pointer" href="{{ path('app_profil') }}">Modifier cette information</a>
 			</div>
 		</section>
 
-
-		<section class="section-paiement-recap-com">
-
-			<h1>Récupitulatif de la commande</h1>
+		<section class="flex flex-col items-center justify-center section-paiement-recap-com">
+			<h1 class="mb-[30px] text-[20pt]">Récapitulatif de la commande</h1>
 
 			{% for detail in detailsPanier %}
-
-				<div class="paiement-card-produit">
-
-					<div class="paiement-card-produit-img">
-						<img src="/{{ detail.produit.image|e('html_attr')}}" alt=""/>
+				<div class="flex items-center p-[5px] m-[5px] w-full max-w-[700px] min-h-[80px] box-border border-b border-black paiement-card-produit">
+					<div class="w-full max-w-[80px] h-[80px] rounded-[10px] paiement-card-produit-img">
+						<img src="/{{ detail.produit.image|e('html_attr')}}" alt="" class="w-full h-full object-cover">
 					</div>
-					<div class="paiement-card-right">
+					<div class="ml-[20px] paiement-card-right">
 						<div class="paiement-card-produit-info">
-							<a href="{{ path('app_produit', {'id': detail.produit.id}) }}">
-								<h1 class="font-title">{{ detail.produit.libelleCourt|e('html_attr') }}</h1>
+							<a href="{{ path('app_produit', {'id': detail.produit.id}) }}" class="no-underline text-black transition duration-200 hover:text-[#626262]">
+								<h1 class="font-title mb-[30px] text-[14pt]">{{ detail.produit.libelleCourt|e('html_attr') }}</h1>
 							</a>
 						</div>
 
 						<div class="paiement-card-produit-div-del-quant">
-
 							<div class="paiement-card-produit-quantite">
 								<div class="paiement-update">
 									<span>Quantité :
 										{{ detail.quantite|e('html_attr') }}</span>
 								</div>
+								{% if detail.produit.promotion is not null and detail.produit.promotion > 0 %}
+									<p>Prix sans promotion TTC Unitaire:
+										{{ detail.prixBase|number_format(2, ',', ' ') }}€</p>
+								{% endif %}
 								<p>Prix TTC Unitaire :
 									{{ detail.prixTTC|number_format(2, ',', ' ') }}€</p>
 								<p>Prix Total TTC :
@@ -90,13 +82,13 @@
 						</div>
 					</div>
 				</div>
+				<hr class="block w-[60%] h-[0.7px] mx-auto my-[10px] border-none bg-[rgba(46,46,46,0.7)]"/>
 
 			{% else %}
-
 				<h1 class="color-erreur-text">Erreur dans le chargement des produits</h1>
 			{% endfor %}
 
-			<div class="paiement-total">
+			<div class="mt-[30px] paiement-total">
 				<p class="font-title">
 					<strong class="font-title">Nombre d'articles :</strong>
 					{{ nombreArticles ?? 0 }}</p>
@@ -104,38 +96,32 @@
 					<strong class="font-title">Total du panier TTC:</strong>
 					{{ totalPanier ?? 0 }}€</p>
 			</div>
-
 		</section>
 
-		<section class="section-paiement-btn-annulation">
-			<a class="cancel-btn color-erreur" href="{{ path('app_panier')}}">Annuler le paiement et revenir au panier</a>
 
+		<section class="flex justify-center section-paiement-btn-annulation">
+			<a class="cancel-btn color-erreur inline-block py-[5px] px-[40px] bg-[#369354] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] rounded-[25px] text-white no-underline mt-[30px] text-center transition duration-200 hover:shadow-[0px_4px_4px_rgba(0,0,0,0.25),inset_0px_0px_16px_5px_rgba(0,0,0,0.25)] text-[13pt] border-none cursor-pointer" href="{{ path('app_panier')}}">Annuler le paiement et revenir au panier</a>
 		</section>
-		<section class="section-paiement-btn-paiement">
-			<form action="{{ path('app_paiement_valider') }}" method="post">
 
+		<section class="flex justify-center mt-[30px] section-paiement-btn-paiement">
+			<form action="{{ path('app_paiement_valider') }}" method="post" id="form-paiement" class="flex flex-col justify-center text-center">
 				<input type="hidden" name="_token" value="{{ csrf_token('authenticate') }}">
-
-				<button type="submit">Payer et valider la commande</button>
-
+				<label for="cgv" class="mb-[10px]">Veuillez accepter les
+					<a href="{{path('app_cgv')}}">conditions générales de vente</a>
+				</label>
+				<input type="checkbox" name="cgv" id="form-cgv">
+				<button type="submit" class="inline-block py-[5px] px-[40px] bg-[#369354] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] rounded-[25px] text-white no-underline mt-[30px] text-center transition duration-200 hover:shadow-[0px_4px_4px_rgba(0,0,0,0.25),inset_0px_0px_16px_5px_rgba(0,0,0,0.25)] text-[13pt] border-none cursor-pointer">Payer et valider la commande</button>
 			</form>
-
 		</section>
-
 
 	{% else %}
 
-		<div class="header-paiement color-fond2">
-
+		<div class="flex flex-col justify-around items-center min-h-[300px] text-center flex-wrap header-paiement color-fond2">
 			<h1 class="font-title">Vous devez être connecté pour valider votre commande</h1>
-
-			<div class="header-paiement-btn">
-				<a href="{{ path('app_login') }}">Connectez-vous !</a>
-				<a href="{{ path('app_register') }}">Inscrivez-vous !</a>
+			<div class="flex flex-wrap justify-center mt-[50px] header-paiement-btn">
+				<a class="py-[11px] px-[40px] bg-[#369354] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] rounded-[25px] text-white no-underline mx-[5px] text-center transition duration-200 hover:shadow-[0px_4px_4px_rgba(0,0,0,0.25),inset_0px_0px_16px_5px_rgba(0,0,0,0.25)]" href="{{ path('app_login') }}">Connectez-vous !</a>
+				<a class="py-[11px] px-[40px] bg-[#369354] shadow-[0px_4px_4px_rgba(0,0,0,0.25)] rounded-[25px] text-white no-underline mx-[5px] text-center transition duration-200 hover:shadow-[0px_4px_4px_rgba(0,0,0,0.25),inset_0px_0px_16px_5px_rgba(0,0,0,0.25)]" href="{{ path('app_register') }}">Inscrivez-vous !</a>
 			</div>
 		</div>
-
 	{% endif %}
-
-
 {% endblock %}

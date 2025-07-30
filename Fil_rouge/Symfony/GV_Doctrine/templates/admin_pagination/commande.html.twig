@@ -11,7 +11,7 @@
 	</div>
 
 
-<section class="mt-[20px] flex flex-col justify-center" id="table_com">
+	<section class="mt-[20px] flex flex-col justify-center" id="table_com">
 		<table class="table-auto border-collapse w-full max-w-4xl mx-auto text-sm text-left text-gray-700">
 			<tbody class="bg-white">
 				<tr>
@@ -50,11 +50,11 @@
 
 							<input type="hidden" value="{{commande.id}}" name="com_id" id="commande-id-hidden">
 							<select name="statut" id="form-statut-select" class="rounded-[16px] text-center border-none text-[12pt] w-full max-w-[200px] h-[30px] cursor-pointer bg-[#62626269] backdrop-blur-[2.2px] font-title">
-                                <option value="en_attente" {{ commande.statu == 'en_attente' ? 'selected' : '' }}>En attente</option>
-                                <option value="en_préparation" {{ commande.statu == 'en_préparation' ? 'selected' : '' }}>En préparation</option>
-                                <option value="expédiée" {{ commande.statu == 'expédiée' ? 'selected' : '' }}>Expédiée</option>
-                                <option value="livrée" {{ commande.statu == 'livrée' ? 'selected' : '' }}>Livrée</option>
-                            </select>
+								<option value="en_attente" {{ commande.statu == 'en_attente' ? 'selected' : '' }}>En attente</option>
+								<option value="en_préparation" {{ commande.statu == 'en_préparation' ? 'selected' : '' }}>En préparation</option>
+								<option value="expédiée" {{ commande.statu == 'expédiée' ? 'selected' : '' }}>Expédiée</option>
+								<option value="livrée" {{ commande.statu == 'livrée' ? 'selected' : '' }}>Livrée</option>
+							</select>
 							<button type="submit" class="app-button color-btnCta">Modifier</button>
 						</form>
 					</td>
@@ -63,62 +63,63 @@
 		</table>
 	</section>
 
-  {% for detail in commande.detailCommandes %}
-   <div class="mt-[20px] flex flex-col justify-center">
-  <table class="table-auto border-collapse border border-slate-500 w-full max-w-4xl mx-auto text-sm text-left text-gray-700">
-    <tbody class="bg-white">
-      <tr>
-        <th class="border border-slate-400 px-4 py-2 bg-gray-100 w-1/3 font-medium">Nom du produit</th>
-        <td class="border border-slate-400 px-4 py-2">
-          {{ detail.produit.libelleCourt }}
-        </td>
-      </tr>
-      <tr>
-        <th class="border border-slate-400 px-4 py-2 bg-gray-100 w-1/3 font-medium">Quantité</th>
-        <td class="border border-slate-400 px-4 py-2">
-          {{ detail.quantite ?? 0 }}
-        </td>
-      </tr>
-      <tr>
-        <th class="border border-slate-400 px-4 py-2 bg-gray-100 w-1/3 font-medium">Prix</th>
-        <td class="border border-slate-400 px-4 py-2">
-          {{ detail.prix ?? 0 }} €
-        </td>
-      </tr>
-      <tr>
-        <th class="border border-slate-400 px-4 py-2 bg-gray-100 w-1/3 font-medium">Promotion</th>
-        <td class="border border-slate-400 px-4 py-2">
-          {{ detail.promotion is defined and detail.promotion ? (detail.promotion * 100)|number_format(0, '.', '') ~ '%' : 'Aucune' }}
-        </td>
-      </tr>
-      <tr>
-        <th class="border border-slate-400 px-4 py-2 bg-gray-100 font-medium">Statut</th>
-        <td class="border border-slate-400 px-4 py-2">
-          <form action="{{path('app_admin_commande_update_det')}}" method="post">
-            <input type="hidden" name="update_detail_commande" value="{{ csrf_token('update_detail_commande') }}">
-            <input type="hidden" value="{{ detail.id }}" name="com-commande-produit-id" class="produit-id-hidden">
-            <select name="statut-produit" class="produit-statut-select rounded-[16px] text-center border-none text-[12pt] w-full max-w-[200px] h-[30px] cursor-pointer bg-[#62626269] backdrop-blur-[2.2px] font-title">
-              <option value="en_attente" {{ detail.statut == 'en_attente' ? 'selected' : '' }}>En attente</option>
-              <option value="en_préparation" {{ detail.statut == 'en_préparation' ? 'selected' : '' }}>En préparation</option>
-              <option value="expédiée" {{ detail.statut == 'expédiée' ? 'selected' : '' }}>Expédiée</option>
-              <option value="livrée" {{ detail.statut == 'livrée' ? 'selected' : '' }}>Livrée</option>
-            </select>
-            <button type="submit" class="app-button color-btnCta">Modifier</button>
-          </form>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+	{% for detail in commande.detailCommandes %}
+		<div class="mt-[20px] flex flex-col justify-center">
+			<table class="table-auto border-collapse border border-slate-500 w-full max-w-4xl mx-auto text-sm text-left text-gray-700">
+				<tbody class="bg-white">
+					<tr>
+						<th class="border border-slate-400 px-4 py-2 bg-gray-100 w-1/3 font-medium">Nom du produit</th>
+						<td class="border border-slate-400 px-4 py-2">
+							{{ detail.produit.libelleCourt }}
+						</td>
+					</tr>
+					<tr>
+						<th class="border border-slate-400 px-4 py-2 bg-gray-100 w-1/3 font-medium">Quantité</th>
+						<td class="border border-slate-400 px-4 py-2">
+							{{ detail.quantite ?? 0 }}
+						</td>
+					</tr>
+					<tr>
+						<th class="border border-slate-400 px-4 py-2 bg-gray-100 w-1/3 font-medium">Prix</th>
+						<td class="border border-slate-400 px-4 py-2">
+							{{ detail.prix ?? 0 }}
+							€
+						</td>
+					</tr>
+					<tr>
+						<th class="border border-slate-400 px-4 py-2 bg-gray-100 w-1/3 font-medium">Promotion</th>
+						<td class="border border-slate-400 px-4 py-2">
+							{{ detail.promotion is defined and detail.promotion ? (detail.promotion * 100)|number_format(0, '.', '') ~ '%' : 'Aucune' }}
+						</td>
+					</tr>
+					<tr>
+						<th class="border border-slate-400 px-4 py-2 bg-gray-100 font-medium">Statut</th>
+						<td class="border border-slate-400 px-4 py-2">
+							<form action="{{path('app_admin_commande_update_det')}}" method="post">
+								<input type="hidden" name="update_detail_commande" value="{{ csrf_token('update_detail_commande') }}">
+								<input type="hidden" value="{{ detail.id }}" name="com-commande-produit-id" class="produit-id-hidden">
+								<select name="statut-produit" class="produit-statut-select rounded-[16px] text-center border-none text-[12pt] w-full max-w-[200px] h-[30px] cursor-pointer bg-[#62626269] backdrop-blur-[2.2px] font-title">
+									<option value="en_attente" {{ detail.statut == 'en_attente' ? 'selected' : '' }}>En attente</option>
+									<option value="en_préparation" {{ detail.statut == 'en_préparation' ? 'selected' : '' }}>En préparation</option>
+									<option value="expédiée" {{ detail.statut == 'expédiée' ? 'selected' : '' }}>Expédiée</option>
+									<option value="livrée" {{ detail.statut == 'livrée' ? 'selected' : '' }}>Livrée</option>
+								</select>
+								<button type="submit" class="app-button color-btnCta">Modifier</button>
+							</form>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 
 
-  {% else %}
-    <li>Aucun produit dans cette commande.</li>
-  {% endfor %}
+	{% else %}
+		<li>Aucun produit dans cette commande.</li>
+	{% endfor %}
 
 
-    <div class="flex flex-wrap justify-evenly mt-[20px]">
-        <a class="app-button color-btnCta" href="{{path('app_admin_pagination')}}">Revenir à la liste des commandes</a>
-    </div>
+	<div class="flex flex-wrap justify-evenly mt-[20px]">
+		<a class="app-button color-btnCta" href="{{path('app_admin_pagination')}}">Revenir à la liste des commandes</a>
+	</div>
 
 {% endblock %}

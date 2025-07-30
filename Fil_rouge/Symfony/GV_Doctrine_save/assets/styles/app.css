@@ -1,23 +1,20 @@
-* {
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
   margin: 0;
   padding: 0;
 }
 
 body {
   top: 0;
-  font-family: "Raleway", sans-serif;
   font-optical-sizing: auto;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -webkit-text-size-adjust: 100%;
   -moz-osx-font-smoothing: grayscale;
-  margin: 0;
-  padding: 0;
-}
-
-.font-title {
-  font-family: "Lato", sans-serif;
 }
 
 .color-fond {
@@ -220,6 +217,11 @@ body {
   width: 320px;
   padding: 20px;
 }
+
+.card-produit-promotion {
+  text-decoration: line-through;
+}
+
 .card-produit h2 {
   font-size: 16pt;
 }
@@ -288,28 +290,6 @@ body {
   color: #369354;
 }
 
-.btn-admin {
-  position: fixed;
-  bottom: 70px;
-  z-index: 60000;
-  right: 30px;
-  padding: 5px 40px;
-  background: #369354;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 25px;
-  color: white;
-  text-decoration: none;
-  margin-top: 20px;
-  transition: box-shadow 200ms ease;
-  font-size: 13pt;
-  cursor: pointer;
-}
-
-.btn-admin:hover {
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25),
-    inset 0px 0px 16px 5px rgba(0, 0, 0, 0.25);
-}
-
 .app-input {
   background: #ffffff;
   border: 1px solid #000000;
@@ -360,6 +340,7 @@ body {
   font-size: 13pt;
   border: none;
   cursor: pointer;
+  margin: 4px 0px;
 }
 
 .app-button:hover {
@@ -387,14 +368,6 @@ body {
 
 /* ----------------- MDP Perdu ----------------- */
 
-.reset-pass-page-section {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-}
-
 .reset-pass-page-section ul {
   display: flex;
   flex-direction: column;
@@ -404,70 +377,53 @@ body {
   margin: 0 auto;
 }
 
-.reset-pass-page-section p {
-  max-width: 600px;
-  margin: 20px;
+/* -------------- Tooltip  */
+
+.app-tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  font-weight: bold;
+  border: 1px solid #363636;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
 }
 
-.reset-pass-page-section input,
-.reset-pass-page-section button {
-  margin-top: 20px;
+.app-tooltip-text {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  transform: translateX(-50%) translateY(5px);
+  background-color: #333;
+  color: #fff;
+  padding: 5px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 1;
+  pointer-events: none;
 }
 
-/* ----------------- A propos ----------------- */
-
-.section-d-f-l {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2rem;
+.app-tooltip:hover .app-tooltip-text {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
 }
 
-.section-d-f-l-content {
-  max-width: 800px;
-  width: 100%;
-  padding: 2rem;
-  line-height: 1.6;
+/* -------------- Profil  */
+
+.profil-form-password ul li,
+.profil-form-email ul li {
+  color: #ff624d;
 }
 
-.section-d-f-l-content p {
-  margin-bottom: 1.5rem;
-  text-align: justify;
+.profil-card-commande-img {
+  border: 1px solid transparent;
 }
 
-.section-d-f-l-content h3 {
-  margin-top: 2rem;
-  margin-bottom: 1rem;
-  color: #333;
-}
-
-.section-d-f-l-content h4 {
-  margin-top: 1.5rem;
-  margin-bottom: 1rem;
-  color: #555;
-}
-
-.section-d-f-l-content ul {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 1.5rem;
-  padding-left: 1.5rem;
-}
-
-.section-d-f-l-content li {
-  margin-bottom: 0.5rem;
-}
-
-.section-d-f-l-content strong {
-  font-weight: 600;
-}
-
-@media (max-width: 768px) {
-  .section-d-f-l {
-    padding: 2rem 1rem;
-  }
-
-  .section-d-f-l-content {
-    padding: 2rem;
-  }
+.profil-card-commande-img:hover {
+  border: 1px solid green;
 }

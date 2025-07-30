@@ -1,0 +1,123 @@
+@startuml
+class Produit {
+	**id : int**
+	stock : int
+	active : bool
+	libelleCourt : string
+	libelleLong : string
+	image : string
+	prixHt : string
+	prixFournisseur : string
+	<color:#0000dd>sousCategorie : SousCategorie</color>
+	<color:#0000dd>detailCommandes : DetailCommande[]</color>
+	<color:#0000dd>Fournisseur : Fournisseur</color>
+	promotion : string
+}
+
+class DetailCommande {
+	**id : int**
+	quantite : int
+	prix : string
+	<color:#0000dd>Produit : Produit</color>
+	<color:#0000dd>Commande : Commande</color>
+	statut : string
+	promotion : string
+}
+
+class SousCategorie {
+	**id : int**
+	active : bool
+	nom : string
+	image : string
+	<color:#0000dd>Categorie : Categorie</color>
+	<color:#0000dd>produits : Produit[]</color>
+}
+
+class Utilisateur {
+	**id : int**
+	email : string
+	roles : array
+	password : string
+	nom : string
+	prenom : string
+	telephone : string
+	coefficient : string
+	adresseLivraison : string
+	<color:#0000dd>commandesCommerciales : Commande[]</color>
+	adresseFacturation : string
+	<color:#0000dd>fournisseurs : Fournisseur[]</color>
+	<color:#0000dd>commandes : Commande[]</color>
+	<color:#0000dd>Commercial : self</color>
+	<color:#0000dd>clientsPros : Utilisateur[]</color>
+	isVerified : bool
+}
+
+class ResetPasswordRequest {
+	**id : int**
+	<color:#0000dd>user : Utilisateur</color>
+	selector : 
+	hashedToken : 
+	requestedAt : 
+	expiresAt : 
+}
+
+class Livraison {
+	**id : int**
+	date : DateTimeImmutable
+	etat : string
+	<color:#0000dd>Commande : Commande</color>
+}
+
+class Categorie {
+	**id : int**
+	active : bool
+	nom : string
+	image : string
+	<color:#0000dd>sousCategories : SousCategorie[]</color>
+}
+
+class Fournisseur {
+	**id : int**
+	nom : string
+	email : string
+	telephone : string
+	adresse : string
+	<color:#0000dd>Commercial : Utilisateur</color>
+	<color:#0000dd>produits : Produit[]</color>
+}
+
+class Commande {
+	**id : int**
+	dateCommande : DateTimeImmutable
+	modePaiement : string
+	statu : string
+	tva : string
+	reduction : string
+	total : string
+	totalHt : string
+	<color:#0000dd>Client : Utilisateur</color>
+	<color:#0000dd>Commercial : Utilisateur</color>
+	<color:#0000dd>detailCommandes : DetailCommande[]</color>
+	<color:#0000dd>livraisons : Livraison[]</color>
+	adresse_livraison : string
+	adresse_facturation : string
+}
+
+Produit "*"--"1" SousCategorie
+Produit "1"--"*" DetailCommande
+Produit "*"--"1" Fournisseur
+DetailCommande "*"--"1" Commande
+SousCategorie "*"--"1" Categorie
+Utilisateur "1"--"*" Commande
+Utilisateur "1"--"*" Fournisseur
+Utilisateur "1"--"*" Commande
+Utilisateur "*"--"1" Utilisateur
+ResetPasswordRequest "*"--"1" Utilisateur
+Livraison "*"--"1" Commande
+
+
+hide methods
+
+hide circle
+
+@enduml

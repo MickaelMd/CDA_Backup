@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Green Village : Commande #{{ commande.id }}
+			en cours de livraison</title>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				font-size: 14px;
+				color: #333;
+				margin: 40px;
+			}
+
+			h1 {
+				font-size: 22px;
+				margin-bottom: 20px;
+				text-align: center;
+			}
+
+			p {
+				line-height: 1.6;
+			}
+		</style>
+	</head>
+	<body>
+
+		<h1>Bonjour
+			{{ commande.client.prenom }},</h1>
+
+		<p>Nous avons le plaisir de vous informer que votre commande
+			<strong>#{{ commande.id }}</strong>
+			est en cours de livraison.</p>
+
+		<p>Vous recevrez un email dès qu'elle aura été livrée ou qu'une mise à jour sera disponible.</p>
+
+		<p>Vous pouvez consulter l’historique de vos commandes depuis votre profil.</p>
+
+		<p>Merci pour votre confiance, et à bientôt sur
+			<strong>Green Village</strong>
+			!</p>
+
+	</body>
+</html>

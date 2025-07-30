@@ -4,9 +4,6 @@
 	{{ parent() }}Profil
 {% endblock %}
 
-{% block page_specific_stylesheets %}
-	{{ encore_entry_link_tags('profil-style') }}
-{% endblock %}
 
 {% block javascripts %}
 	{{ parent() }}
@@ -22,23 +19,24 @@
 		<h1>Historique des commandes</h1>
 	</div>
 
-	<section id="profil-section-commande">
+	<section class="flex flex-col items-center overflow-hidden">
 		{% for commande in commande %}
-			<div class="profil-card-commande">
-				<h1>Commande numéro :
+			<div class="my-[20px] p-[10px] max-w-[1200px] w-full profil-card-commande">
+				<h1 class="text-center mb-[10px]">Commande numéro :
 					{{ commande.id }}</h1>
 
-				<div class="profil-card-commande-produit">
+				<div class="flex justify-center flex-wrap">
 					{% for detail in commande.detailCommandes %}
-						<div class="profil-card-commande-img">
+						<div class="profil-card-commande-img w-full max-w-[80px] h-[80px] mx-[10px] transition-all duration-200 rounded-[10px] border border-transparent">
 							<a href="{{ path('app_produit', {'id': detail.produit.id}) }}">
-								<img src="/{{ detail.produit.image }}" alt="{{ detail.produit.libelleCourt }}">
+								<img src="/{{ detail.produit.image }}" alt="{{ detail.produit.libelleCourt }}" class="w-full h-full object-cover rounded-[10px] shadow-md"/>
 							</a>
 						</div>
 
+
 					{% endfor %}
 				</div>
-				<div class="profil-card-commande-info">
+				<div class="flex flex-wrap justify-evenly mt-[20px]">
 					<p>Date :
 						{{ commande.dateCommande|date('d/m/Y H:i') }}</p>
 					<p>Statut :
@@ -49,19 +47,22 @@
 
 					<p>Prix total TTC :
 						{{ commande.total }}</p>
+
+				</div>
+				<div class="flex justify-center">
 					<a class="app-button color-btnCom" href="{{ path('app_detail_commande', {'id': commande.id}) }}">Détail de la commande</a>
 				</div>
-
 			</div>
 
-			<hr class="profil-hr">
+			<hr class="block w-3/5 h-[0.7px] my-[10px] mx-auto border-0 bg-[rgba(46,46,46,0.7)]"/>
+
 
 		{% else %}
 
 			<h1 class="color-erreur-text">Erreur dans le chargement des commandes</h1>
 		{% endfor %}
 
-		<div class="profil-card-commande-info">
+		<div class="flex flex-wrap justify-evenly mt-[20px]">
 
 			<a class="app-button color-btnCta" href="{{path('app_profil_commande')}}">Voir l'historique complet des commandes</a>
 
@@ -72,60 +73,65 @@
 		<h1>Modifier ses informations</h1>
 	</div>
 
-	<section class="profil-form-cards">
-		<div class="profil-card-adresse">
+	<section class="flex flex-row justify-center flex-wrap">
+		<div class="flex flex-col max-w-[400px] text-center m-[10px] py-[10px] px-0 rounded-[16px] overflow-hidden">
 			<h3>Adresse de livraison</h3>
-			{{ form_start(formLivraison) }}
-			{{ form_row(formLivraison.adresseLivraison) }}
-			<button class="app-button color-btnCta">Mettre à jour la livraison</button>
+			{{ form_start(formLivraison, {'attr': {'class': 'flex flex-col items-center'}}) }}
+			{{ form_row(formLivraison.adresseLivraison, {'attr': {'class': 'bg-white border border-black rounded-[16px] px-[15px] py-[5px] text-[12pt] transition-[border] duration-[200ms] resize-none focus:border-green-600 focus:outline-none'}}) }}
+			<button class="app-button color-btnCta mt-[20px]">Mettre à jour la livraison</button>
 			{{ form_end(formLivraison) }}
 		</div>
 
-		<div class="profil-card-adresse">
-			<h3>Adresse de facturation</h3>
-			{{ form_start(formFacturation) }}
-			{{ form_row(formFacturation.adresseFacturation) }}
-			<button class="app-button color-btnCta">Mettre à jour la facturation</button>
-			{{ form_end(formFacturation) }}
-		</div>
-	</section>
-
-	<section id="profil-section-password">
-		<h1 class="font-title">Modifier son mot de passe</h1>
-		<div class="profil-form-password">
-			{{ form_start(formPassword) }}
-			{{ form_label(formPassword.currentPassword) }}
-			{{ form_widget(formPassword.currentPassword, {'attr': {'class': 'app-input'}}) }}
-			{{ form_errors(formPassword.currentPassword) }}
-
-			{{ form_label(formPassword.newPassword.first) }}
-			{{ form_widget(formPassword.newPassword.first, {'attr': {'class': 'app-input'}}) }}
-
-			{{ form_label(formPassword.newPassword.second) }}
-			{{ form_widget(formPassword.newPassword.second, {'attr': {'class': 'app-input'}}) }}
-			{{ form_errors(formPassword.newPassword.first) }}
-
-			{{ form_errors(formPassword) }}
-
-			<button type="submit" class="app-button color-btnCta">Changer le mot de passe</button>
-			{{ form_end(formPassword) }}
-		</div>
-	</section>
-
-	<section id="profil-section-email">
-		<h1 class="font-title">Changement d'adresse email</h1>
-		<div class="profil-form-email">
-			{{ form_start(formEmail) }}
-			{{ form_label(formEmail.currentPassword) }}
-			{{ form_widget(formEmail.currentPassword, {'attr': {'class': 'app-input'}}) }}
-			{{ form_label(formEmail.email) }}
-			{{ form_widget(formEmail.email, {'attr': {'class': 'app-input'}}) }}
-			{{ form_errors(formEmail) }}
-			<button type="submit" class="app-button color-btnCta">Changer l'email</button>
-			{{ form_end(formEmail) }}
-		</div>
-	</section>
-	<div class="profil-btn-deco">
-		<a class="app-button color-erreur" href="{{ path('app_logout') }}">Se déconnecter</a>
+		<div class="flex flex-col max-w-[400px] text-center m-[10px] py-[10px] px-0 rounded-[16px] overflow-hidden">
+			<h3>Adresse de facturation
+				<span class="app-tooltip">
+					?
+					<span class="app-tooltip-text">Si aucune adresse de facturation,</br>
+					l'adresse de livraison sera utilisée</span>
+			</span>
+		</h3>
+		{{ form_start(formFacturation, {'attr': {'class': 'flex flex-col items-center'}}) }}
+		{{ form_row(formFacturation.adresseFacturation, {'attr': {'class': 'bg-white border border-black rounded-[16px] px-[15px] py-[5px] text-[12pt] transition-[border] duration-[200ms] resize-none focus:border-green-600 focus:outline-none'}}) }}
+		<button class="app-button color-btnCta mt-[20px]">Mettre à jour la facturation</button>
+		{{ form_end(formFacturation) }}
 	</div>
-{% endblock %}
+</section>
+
+<section id="profil-section-password" class="mt-[20px] overflow-hidden">
+	<h1 class="font-title text-center mb-[20px]">Modifier son mot de passe</h1>
+	<div class="profil-form-password">
+		{{ form_start(formPassword, {'attr': {'class': 'flex flex-col justify-center items-center gap-[10px]'}}) }}
+		{{ form_label(formPassword.currentPassword) }}
+		{{ form_widget(formPassword.currentPassword, {'attr': {'class': 'app-input'}}) }}
+		{{ form_errors(formPassword.currentPassword) }}
+
+		{{ form_label(formPassword.newPassword.first) }}
+		{{ form_widget(formPassword.newPassword.first, {'attr': {'class': 'app-input'}}) }}
+
+		{{ form_label(formPassword.newPassword.second) }}
+		{{ form_widget(formPassword.newPassword.second, {'attr': {'class': 'app-input'}}) }}
+		{{ form_errors(formPassword.newPassword.first) }}
+
+		{{ form_errors(formPassword) }}
+
+		<button type="submit" class="app-button color-btnCta">Changer le mot de passe</button>
+		{{ form_end(formPassword) }}
+	</div>
+</section>
+
+<section id="profil-section-email" class="mt-[40px]">
+	<h1 class="font-title text-center mb-[20px]">Changement d'adresse email</h1>
+	<div class="profil-form-email">
+		{{ form_start(formEmail, {'attr': {'class': 'flex flex-col justify-center items-center gap-[10px]'}}) }}
+		{{ form_label(formEmail.currentPassword) }}
+		{{ form_widget(formEmail.currentPassword, {'attr': {'class': 'app-input'}}) }}
+		{{ form_label(formEmail.email) }}
+		{{ form_widget(formEmail.email, {'attr': {'class': 'app-input'}}) }}
+		{{ form_errors(formEmail) }}
+		<button type="submit" class="app-button color-btnCta">Changer l'email</button>
+		{{ form_end(formEmail) }}
+	</div>
+</section>
+<div class="flex flex-col items-center mt-8">
+	<a class="app-button color-erreur" href="{{ path('app_logout') }}">Se déconnecter</a>
+</div>{% endblock %}

@@ -23,18 +23,11 @@ Encore
   .addEntry("app", "./assets/app.js")
   .addEntry("nav-react", "./react/my_react_app/navbar.js")
   .addEntry("style", "./assets/styles/app.css")
-  .addEntry("index", "./assets/index.js")
   .addEntry("footer-react", "./react/my_react_app/footer.js")
-  .addEntry("style-produit", "./assets/styles/produit.css")
-  .addEntry("testsession-react", "./react/my_react_app/testsession.js")
-  .addEntry("panier-style", "./assets/styles/panier.css")
-  .addEntry("login-style", "./assets/styles/login.css")
   .addEntry(
     "form-inscription-react",
     "./react/my_react_app/form_inscription.js"
   )
-  .addEntry("paiement-style", "./assets/styles/paiement.css")
-  .addEntry("profil-style", "./assets/styles/profil.css")
   .addEntry("form-adresse-react", "./react/my_react_app/form_adresse.js")
   .addEntry("admin-style", "./assets/styles/admin.css")
   .addEntry("admin-js", "./assets/js/admin.js")
@@ -78,9 +71,26 @@ Encore
 
   // uncomment if you use TypeScript
   //.enableTypeScriptLoader()
-
+  .enablePostCssLoader((options) => {
+    options.postcssOptions = {
+      config: "./postcss.config.cjs",
+    };
+  })
   // uncomment if you use React
-  .enableReactPreset();
+  .enableReactPreset()
+
+  .configureWatchOptions((watchOptions) => {
+    watchOptions.ignored = [
+      "**/node_modules/**",
+      "**/public/build/**",
+      "**/var/**",
+      "**/vendor/**",
+      "**/.git/**",
+      "**/.symfony/**",
+    ];
+    watchOptions.aggregateTimeout = 300;
+    watchOptions.poll = false;
+  });
 
 // uncomment to get integrity="..." attributes on your script & link tags
 // requires WebpackEncoreBundle 1.4 or higher

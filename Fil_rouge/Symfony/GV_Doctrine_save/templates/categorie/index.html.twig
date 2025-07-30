@@ -3,9 +3,6 @@
 {% block title %}
 	{{ parent() }}Catégorie
 {% endblock %}
-{% block page_specific_stylesheets %}
-	{{ encore_entry_link_tags('index') }}
-{% endblock %}
 
 {% block body %}
 
@@ -29,7 +26,7 @@
 		<h1>Toutes nos Catégories</h1>
 	</div>
 
-	<section class="section-categorie">
+	<section class="flex flex-wrap items-center justify-center gap-5 max-w-[1400px] mx-auto">
 
 		{% for categorie in categorie %}
 			<a href="{{ path('app_sous-categorie', {'id': categorie.id}) }}" class="card-categorie-link">

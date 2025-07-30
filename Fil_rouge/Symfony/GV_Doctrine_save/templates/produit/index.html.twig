@@ -4,9 +4,6 @@
 	{{ parent() }}{{produit.libelleCourt}}
 {% endblock %}
 
-{% block page_specific_stylesheets %}
-	{{ encore_entry_link_tags('style-produit') }}
-{% endblock %}
 
 {% block body %}
 	<div class="fil-ariane">
@@ -51,33 +48,69 @@
 		</h1>
 	</div>
 
-	<section class="section-produit color-fond2">
-		<div class="section-produit-fiche">
-			<div class="section-produit-image">
-				<img src="/{{produit.image}}" alt="{{produit.libelleCourt}}">
-			</div>
-			<div class="section-produit-info">
-				<h1 class="font-title">{{produit.libelleCourt}}</h1>
-				<p>{{produit.libelleLong}}</p>
-				<div style="display: flex; flex-direction: column">
-					<p class="font-title" style="font-size: 14pt; margin: 0 auto;">
-						Prix TTC :
+<section class="flex flex-col justify-center w-full py-[50px] color-fond2">
+  <div class="flex flex-col items-center gap-[30px] max-w-[1200px] mx-auto lg:flex-row lg:items-stretch lg:gap-0">
+    
+    <div class="h-[200px] w-[200px] flex-shrink-0 sm:h-[250px] sm:w-[250px] md:h-[300px] md:w-[300px] lg:h-[400px] lg:w-[400px]">
+      <img 
+        src="/{{produit.image}}" 
+        alt="{{produit.libelleCourt}}" 
+        class="w-full h-full object-cover rounded-[8px] shadow-[0_2px_8px_rgba(0,0,0,0.1)]"
+      >
+    </div>
+    <div class="flex flex-col justify-between w-full max-w-[250px] sm:max-w-[300px] md:max-w-[400px] lg:max-w-none lg:px-[20px] lg:text-left text-center">
+      <h1 class="font-title mt-0 mb-[15px] text-[1.2em] sm:text-[1.3em] md:text-[1.5em] lg:text-inherit">{{produit.libelleCourt}}</h1>
+      <p class="mb-[10px] leading-[1.5] text-[0.9em] sm:text-[1em]">{{produit.libelleLong}}</p>
+      
+      <div class="flex flex-col">
+        <p class="font-title text-[14pt] mx-auto my-0">
+          Prix TTC :
+          {% if produit.promotion is not null and produit.promotion > 0 %}
+            {% if app.user %}
+              <span class="card-produit-promotion color-secondLien">
+                {{ produit.prixHt * app.user.coefficient | number_format(2, '.', ' ') }}</span>
+              {{ produit.prixHt * app.user.coefficient * (1 - produit.promotion) | number_format(2, '.', ' ') }}
+            {% else %}
+              <span class="card-produit-promotion color-secondLien">{{ produit.prixHt * 1.2 | number_format(2, '.', ' ') }}</span>
+              {{ produit.prixHt * 1.2 * (1 - produit.promotion) | number_format(2, '.', ' ') }}
+            {% endif %}
+            €
+          {% else %}
+            {% if app.user %}
+              {{ produit.prixHt * app.user.coefficient | number_format(2, '.', ' ') }}
+            {% else %}
+              {{ produit.prixHt * 1.2 | number_format(2, '.', ' ') }}
+            {% endif %}
+            €
+          {% endif %}
+        </p>
 
-						{% if app.user %}
-							{{produit.prixHt * app.user.coefficient}}
-						{% else %}
-							{{produit.prixHt * 1.2}}
-						{% endif %}€</p>
-					<form method="POST" action="{{ path('app_produit', { id: produit.id }) }}">
-						<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-						<input type="number" name="quantite" id="produit-number" value="1" min="1" max="10">
-						<button type="submit" class="card-produit-btn" style="font-size: 14pt;">Ajouter au panier</button>
-					</form>
-				</p>
-			</div>
-
-		</div>
-	</section>
+        <form method="POST" action="{{ path('app_produit', { id: produit.id }) }}" class="mt-[20px] flex flex-col justify-center">
+          <input 
+            type="hidden" 
+            name="_csrf_token" 
+            value="{{ csrf_token('authenticate') }}"
+          >
+          <input 
+            type="number" 
+            name="quantite" 
+            id="produit-number" 
+            value="1" 
+            min="1" 
+            max="10" 
+            class="mx-auto w-[55px] text-[14pt] py-[8px] px-[12px] rounded-[36px] border border-[#ccc] text-center outline-none transition duration-300 shadow-[inset_0_1px_3px_rgba(0,0,0,0.1)] bg-[#f9f9f9] focus:border-[#4caf50] focus:shadow-[0_0_5px_rgba(76,175,80,0.6)] focus:bg-white"
+          >
+          <button 
+            type="submit" 
+            class="card-produit-btn self-center mt-auto text-[14pt] border-none cursor-pointer"
+          >
+            Ajouter au panier
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
 
 	<div class="header-title color-fond2 font-title">
 		<h1>
@@ -85,7 +118,7 @@
 		</h1>
 	</div>
 
-	<section class="section-produit-similaire">
+	<section class="flex flex-wrap items-center justify-center gap-5 max-w-screen-2xl mx-auto">
 
 		{% for produit in produitSimilaire|slice(0, 4) %}
 
@@ -97,12 +130,30 @@
 				<h2 class="font-title">{{produit.libellecourt|e('html_attr')}}</h2>
 				<a class="color-secondLien" href="{{ path('app_sous_categorie', {'id': produit.sousCategorie.id}) }}">{{produit.souscategorie.nom|e('html_attr')}}</a>
 				<p>
-					{% if app.user %}
-						{{produit.prixHt * app.user.coefficient}}
+					{% if produit.promotion is not null and produit.promotion > 0 %}
+						{% if app.user %}
+							<span class="card-produit-promotion color-secondLien">
+								{{ produit.prixHt * app.user.coefficient | number_format(2, '.', ' ') }}</span>
+
+
+							{{ produit.prixHt * app.user.coefficient * (1 - produit.promotion) | number_format(2, '.', ' ') }}
+						{% else %}
+							<span class="card-produit-promotion color-secondLien">{{ produit.prixHt * 1.2 | number_format(2, '.', ' ') }}</span>
+							{{ produit.prixHt * 1.2 * (1 - produit.promotion) | number_format(2, '.', ' ') }}
+						{% endif %}
+						€
 					{% else %}
-						{{produit.prixHt * 1.2}}
-					{% endif %}€</p>
-				<a class="card-produit-btn" href="{{ path('app_produit', {'id': produit.id}) }}">Voir le produit</a>
+						{% if app.user %}
+							{{ produit.prixHt * app.user.coefficient | number_format(2, '.', ' ') }}
+						{% else %}
+							{{ produit.prixHt * 1.2 | number_format(2, '.', ' ') }}
+						{% endif %}
+						€
+					{% endif %}
+
+				</p>
+
+				<a class="card-produit-btn" href="{{ path('app_produit', {'id': produit.id}) }} ">Voir le produit</a>
 
 			</div>
 		{% else %}

@@ -4,9 +4,7 @@
 	{{ parent() }}Sous catégorie
 	{{souscat.nom}}
 {% endblock %}
-{% block page_specific_stylesheets %}
-	{{ encore_entry_link_tags('index') }}
-{% endblock %}
+
 
 {% block body %}
 	<div class="fil-ariane">
@@ -43,7 +41,7 @@
 	</h1>
 </div>
 
-<section class="section-produit">
+<section class="flex flex-wrap items-center justify-center gap-5 max-w-screen-2xl mx-auto">
 
 	{% for produit in produits %}
 
@@ -53,11 +51,37 @@
 				<img src="/{{ produit.image|e('html_attr') }}" alt="{{ produit.libellecourt|e('html_attr') }}">
 			</div>
 			<h2 class="font-title">{{produit.libellecourt|e('html_attr')}}</h2>
-			<a class="color-secondLien" href="">{{produit.souscategorie.nom|e('html_attr')}}</a>
-			<p>{{ produit.prixHt * 1.2 }}€</p>
-			<a class="card-produit-btn" href="/produit/{{produit.id|e('html_attr')}}">Voir le produit</a>
+			<a class="color-secondLien" href="{{ path('app_sous_categorie', {'id': produit.sousCategorie.id}) }}">{{produit.souscategorie.nom|e('html_attr')}}</a>
+			<p>
+				{% if produit.promotion is not null and produit.promotion > 0 %}
+					{% if app.user %}
+						<span class="card-produit-promotion color-secondLien">
+							{{ produit.prixHt * app.user.coefficient | number_format(2, '.', ' ') }}</span>
+
+
+						{{ produit.prixHt * app.user.coefficient * (1 - produit.promotion) | number_format(2, '.', ' ') }}
+					{% else %}
+						<span class="card-produit-promotion color-secondLien">{{ produit.prixHt * 1.2 | number_format(2, '.', ' ') }}</span>
+						{{ produit.prixHt * 1.2 * (1 - produit.promotion) | number_format(2, '.', ' ') }}
+					{% endif %}
+					€
+				{% else %}
+					{% if app.user %}
+						{{ produit.prixHt * app.user.coefficient | number_format(2, '.', ' ') }}
+					{% else %}
+						{{ produit.prixHt * 1.2 | number_format(2, '.', ' ') }}
+					{% endif %}
+					€
+				{% endif %}
+
+			</p>
+
+			<a class="card-produit-btn" href="{{ path('app_produit', {'id': produit.id}) }} ">Voir le produit</a>
 
 		</div>
+	{% else %}
+
+		<h1 class="color-erreur-text">Erreur dans le chargement des produits</h1>
 	{% endfor %}
 
 

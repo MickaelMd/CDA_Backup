@@ -23,8 +23,6 @@ class UpdateCommandeService
     ) {}
 
     /**
-     * 
-     *
      * @param int 
      * @param string 
      * @return array 
@@ -33,7 +31,6 @@ class UpdateCommandeService
      */
     public function updateCommandeStatus(int $commandeId, string $newStatus): array
     {
-        // Validation du statut
         if (!$this->isValidStatus($newStatus)) {
             throw new \InvalidArgumentException('Statut invalide fourni.');
         }
@@ -48,12 +45,10 @@ class UpdateCommandeService
           
             $this->updateDetailCommandeStatus($commande, $newStatus);
             
-           
             $commande->setStatu($newStatus);
             $this->entityManager->persist($commande);
             $this->entityManager->flush();
 
-            
             $emailSent = false;
             if ($newStatus === 'expédiée') {
                 $emailSent = $this->sendShippingEmail($commande);
@@ -96,7 +91,6 @@ class UpdateCommandeService
         $this->entityManager->flush();
     }
 
- 
     private function sendShippingEmail(Commande $commande): bool
     {
         try {

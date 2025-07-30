@@ -25,7 +25,7 @@ final class ProfilController extends AbstractController
     ): Response {
         if (!$this->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
             $this->addFlash('error', 'Vous devez être <a href="/connexion">connecté</a> pour accéder à votre Profil.');
-            return $this->redirectToRoute('app_accueil');
+            return $this->redirectToRoute('app_login');
         }
 
         /** @var \App\Entity\Utilisateur $user */
