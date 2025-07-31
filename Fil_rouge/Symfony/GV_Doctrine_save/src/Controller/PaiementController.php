@@ -172,7 +172,7 @@ final class PaiementController extends AbstractController
             return $this->redirectToRoute('app_paiement_valide');
 
         } catch (\Exception $e) {
-            $this->addFlash('error', 'Erreur détaillée: ' . $e->getMessage() . ' - Ligne: ' . $e->getLine() . ' - Fichier: ' . $e->getFile());
+            $this->addFlash('error', 'Une erreur c\'est produite veuillez réessayer');
             return $this->redirectToRoute('app_paiement');
         }
 

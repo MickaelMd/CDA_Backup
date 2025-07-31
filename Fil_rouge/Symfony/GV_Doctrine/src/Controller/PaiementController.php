@@ -19,9 +19,6 @@ use Dompdf\Options;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
-use Symfony\Component\Mime\Part\DataPart;
-use Symfony\Component\Mime\Part\File;
-
 
 
 final class PaiementController extends AbstractController
@@ -172,7 +169,7 @@ final class PaiementController extends AbstractController
             return $this->redirectToRoute('app_paiement_valide');
 
         } catch (\Exception $e) {
-            $this->addFlash('error', 'Erreur détaillée: ' . $e->getMessage() . ' - Ligne: ' . $e->getLine() . ' - Fichier: ' . $e->getFile());
+            $this->addFlash('error', 'Une erreur c\'est produite veuillez réessayer');
             return $this->redirectToRoute('app_paiement');
         }
 

@@ -1,0 +1,21 @@
+GET http://localhost:8000/api/produits
+Accept: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3NTM5NTM4NDAsImV4cCI6MTc1Mzk1NzQ0MCwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoidGVzdEB0ZXN0LmNvbSJ9.tlr2AtF4j0TzAoXMfhkMoBZe-Te5mtoTfv6olONNKOaL5V-cZp99lKqvO5Zd-YOkZLSA28jEEIopeMlPHaRfqre7KZjXyKSFDed-N94cRyT7U2SKfhKbzR6hzlOOG2ndK-7VZSKc9ERVYs5CMOPEvXFWAKdFRD9610uudluoKWuA_s2YPrVN6hW7WQHa5xlX_lGcYsU12gx217jkDMQFUOGYhlc3x3DYxod3PSCP_PYdsjnV9rSwz2L9u_7KD-fuokExYKHkSLZHyp8LUHLTOLHUBRLKqEQeQJWPPRJhUW9jO9VbFJyHSD-_vVmE4n0_7RuHFJCBIg1SqHOKQT1uFw
+
+###
+
+POST http://localhost:8000/api/login_check
+Content-Type: application/json
+Accept: application/json
+
+{
+    "email": "commercial@greenvillage.com",
+    "password": ""
+}
+
+###
+
+POST http://localhost:8000/api/token/refresh
+Content-Type: application/x-www-form-urlencoded
+
+refresh_token=9b914ff9d7e62ac431b07698c34925aeb84b1d7d4349d3c6dbfe632277a62e5b22f00474e7537443b91caaac078355e546efddb24210ad43c6afe3a6ca12941c

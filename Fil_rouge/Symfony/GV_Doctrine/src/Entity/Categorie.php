@@ -2,26 +2,42 @@
 
 namespace App\Entity;
 
-use App\Repository\CategorieRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use ApiPlatform\Metadata\Get;
+use App\Entity\SousCategorie;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use App\Repository\CategorieRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: CategorieRepository::class)]
+#[ApiResource(
+    operations: [
+        new Get(),  
+        new GetCollection(),
+    ],
+    normalizationContext: ['groups' => ['produit:read']]
+)]
 class Categorie
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+     #[Groups(['produit:read'])]
     private ?int $id = null;
 
     #[ORM\Column]
+     #[Groups(['produit:read'])]
     private ?bool $active = null;
 
     #[ORM\Column(length: 80)]
+     #[Groups(['produit:read'])]
     private ?string $nom = null;
 
     #[ORM\Column(length: 255)]
+     #[Groups(['produit:read'])]
     private ?string $image = null;
 
     /**

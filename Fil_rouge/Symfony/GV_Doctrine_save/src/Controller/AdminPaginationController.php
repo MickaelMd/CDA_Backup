@@ -64,7 +64,8 @@ final class AdminPaginationController extends AbstractController
         $commande = $commandeRepository->find($id);
         
         if (!$commande) {
-            throw $this->createNotFoundException('Commande non trouvée');
+            $this->addFlash('error', 'Commande introuvable.');
+            return $this->redirectToRoute('app_admin_pagination');
         }
         
         $commande->getDetailCommandes()->initialize();

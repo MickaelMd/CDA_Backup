@@ -63,6 +63,7 @@ class Produit
 
     #[ORM\ManyToOne(inversedBy: 'produits')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['produit:read'])]
     private ?SousCategorie $sousCategorie = null;
 
     /**

@@ -10,6 +10,8 @@ use Symfony\Component\Mime\Address;
 
 class UpdateDetComService
 {
+    private const VALID_STATUSES = ['en_attente', 'en_préparation', 'expédiée', 'livrée'];
+    
     private $entityManager;
     private $mailer;
 
@@ -19,41 +21,114 @@ class UpdateDetComService
         $this->mailer = $mailer;
     }
 
+    /**
+     * @param DetailCommande
+     * @param string 
+     * @return string 
+     * @throws \InvalidArgumentException 
+     * @throws \Exception 
+     */
     public function updateDetailCommande(
         DetailCommande $detCommande,
         string $nouveauStatut
     ): string {
+        // Validation du statut
+        if (!$this->isValidStatus($nouveauStatut)) {
+            throw new \InvalidArgumentException('Statut invalide fourni : ' . $nouveauStatut);
+        }
+
+        if (!$detCommande) {
+            throw new \InvalidArgumentException('Détail de commande invalide.');
+        }
+
         $commande = $detCommande->getCommande();
+        if (!$commande) {
+            throw new \Exception('Commande associée introuvable.');
+        }
 
-        $ancienStatutCommande = $commande->getStatu();
-        $detCommande->setStatut($nouveauStatut);
+        try {
+            $this->entityManager->beginTransaction();
 
+            $ancienStatutCommande = $commande->getStatu();
+            $detCommande->setStatut($nouveauStatut);
+
+            $nouveauStatutCommande = $this->calculateCommandeStatus($commande);
+            $commande->setStatu($nouveauStatutCommande);
+
+            $this->entityManager->persist($detCommande);
+            $this->entityManager->persist($commande);
+            $this->entityManager->flush();
+            $this->entityManager->commit();
+
+            if ($ancienStatutCommande !== 'expédiée' && $nouveauStatutCommande === 'expédiée') {
+                $this->sendShippingEmail($commande);
+                return 'expédiée';
+            }
+
+            return 'mise_a_jour';
+
+        } catch (\Exception $e) {
+            $this->entityManager->rollback();
+            throw new \Exception('Erreur lors de la mise à jour : ' . $e->getMessage());
+        }
+    }
+
+    /**
+     * @param string 
+     * @return bool 
+     */
+    private function isValidStatus(string $status): bool
+    {
+        return in_array($status, self::VALID_STATUSES, true);
+    }
+
+    /**
+     * @param \App\Entity\Commande 
+     * @return string 
+     */
+    private function calculateCommandeStatus($commande): string
+    {
         $allLivree = true;
         $hasExpediee = false;
+        $hasEnPreparation = false;
+
         foreach ($commande->getDetailCommandes() as $detail) {
-            if ($detail->getStatut() === 'expédiée') {
+            $statutDetail = $detail->getStatut();
+            
+            if ($statutDetail === 'expédiée') {
                 $hasExpediee = true;
             }
-            if ($detail->getStatut() !== 'livrée') {
+            if ($statutDetail === 'en_préparation') {
+                $hasEnPreparation = true;
+            }
+            if ($statutDetail !== 'livrée') {
                 $allLivree = false;
             }
         }
 
         if ($allLivree) {
-            $nouveauStatutCommande = 'livrée';
+            return 'livrée';
         } elseif ($hasExpediee) {
-            $nouveauStatutCommande = 'expédiée';
+            return 'expédiée';
+        } elseif ($hasEnPreparation) {
+            return 'en_préparation';
         } else {
-            $nouveauStatutCommande = 'en_attente';
+            return 'en_attente';
         }
+    }
 
-        $commande->setStatu($nouveauStatutCommande);
-
-        $this->entityManager->persist($detCommande);
-        $this->entityManager->flush();
-
-        if ($ancienStatutCommande !== 'expédiée' && $nouveauStatutCommande === 'expédiée') {
+    /**
+     * @param \App\Entity\Commande 
+     * @return bool
+     */
+    private function sendShippingEmail($commande): bool
+    {
+        try {
             $client = $commande->getClient();
+            
+            if (!$client || !$client->getEmail()) {
+                return false;
+            }
 
             $email = (new TemplatedEmail())
                 ->from(new Address('noreply@greenvillage.com', 'Green Village'))
@@ -66,10 +141,19 @@ class UpdateDetComService
                 ]);
 
             $this->mailer->send($email);
+            return true;
 
-            return 'expédiée';
+        } catch (\Exception $e) {
+           
+            return false;
         }
+    }
 
-        return 'mise_a_jour';
+    /**
+     * @return array 
+     */
+    public function getValidStatuses(): array
+    {
+        return self::VALID_STATUSES;
     }
 }

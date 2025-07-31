@@ -43,13 +43,13 @@ const Navbar = ({ panier }) => {
             { signal: controller.signal }
           );
           const data = await response.json();
-
-          const activeProducts = (data.member || []).filter(
+          const activeProducts = data.filter(
             (produit) => produit.active === true
           );
           setResults(activeProducts.slice(0, 5));
         } catch (error) {
           if (error.name !== "AbortError") {
+            console.error("Erreur fetch produits:", error);
           }
           setResults([]);
         }
@@ -112,8 +112,13 @@ const Navbar = ({ panier }) => {
 
           <div className="search-container" style={{ position: "relative" }}>
             <div className="search-bar">
+              <label htmlFor="recherche_produit" className="sr-only">
+                Rechercher un produit
+              </label>
+
               <input
                 type="text"
+                id="recherche_produit"
                 placeholder="Rechercher un produit..."
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
@@ -243,8 +248,12 @@ const Navbar = ({ panier }) => {
             transform: showSearchMobile ? "translateY(0)" : "translateY(-20px)",
           }}
         >
+          <label htmlFor="recherche_produit_mobile" className="sr-only">
+            Rechercher un produit
+          </label>
           <input
             type="text"
+            id="recherche_produit_mobile"
             placeholder="Rechercher un produit..."
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
