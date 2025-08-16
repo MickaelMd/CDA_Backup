@@ -1,5 +1,5 @@
 function CardCategorie() {
-  return <></>;
+  return <div></div>;
 }
 
 export default CardCategorie;

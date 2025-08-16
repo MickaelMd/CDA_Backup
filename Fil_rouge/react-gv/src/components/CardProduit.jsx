@@ -1,5 +1,5 @@
 function CardProduit() {
-  return <></>;
+  return <div></div>;
 }
 
 export default CardProduit;

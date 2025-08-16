@@ -1,13 +1,17 @@
-function App() {
+// App.jsx
+import { Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar";
+import Accueil from "./page/Accueil";
+import Categories from "./page/Categories";
+
+export default function App() {
   return (
     <>
-      <div className="flex items-center justify-center">
-        <h1 className="text-3xl font-bold text-orange-600">
-          Tailwind + React + SWC
-        </h1>
-      </div>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Accueil />} />
+        <Route path="/categories" element={<Categories />} />
+      </Routes>
     </>
   );
 }
-
-export default App;
