@@ -4,7 +4,7 @@ import CategorieCard from "../components/CardCategorie";
 import ProduitCard from "../components/CardProduit";
 
 function Accueil() {
-  const server = "https://gv.mickaelmd.fr/";
+  const server = "https://127.0.0.1:8000/";
 
   const [categories, setCategories] = useState([]);
   const [produits, setProduit] = useState([]);
@@ -45,14 +45,18 @@ function Accueil() {
       </div>
 
       <section className="flex mt-15 mx-10 justify-center flex-wrap gap-4">
-        {categories.map((categorie) => (
-          <CategorieCard
-            key={categorie.id}
-            nomCategorie={categorie.nom}
-            lienImg={server + categorie.image}
-            categorieId={categorie.id}
-          />
-        ))}
+        {categories.length > 0 ? (
+          categories.map((categorie) => (
+            <CategorieCard
+              key={categorie.id}
+              nomCategorie={categorie.nom}
+              lienImg={server + categorie.image}
+              categorieId={categorie.id}
+            />
+          ))
+        ) : (
+          <h1>Erreur de chargement</h1>
+        )}
       </section>
 
       <div className="flex justify-center mt-15 p-6 bg-white">
@@ -60,17 +64,21 @@ function Accueil() {
       </div>
 
       <section className="flex mt-15 mx-10 justify-center flex-wrap gap-4 mb-30">
-        {produits.map((produit) => (
-          <ProduitCard
-            key={produit.id}
-            produitId={produit.id}
-            nomProduit={produit.libelleCourt}
-            lienImg={server + produit.image}
-            nomCategorie={produit.sousCategorie.Categorie.nom}
-            lienCategorie={produit.sousCategorie.Categorie.id}
-            prix={produit.prixHt}
-          />
-        ))}
+        {produits.length > 0 ? (
+          produits.map((produit) => (
+            <ProduitCard
+              key={produit.id}
+              produitId={produit.id}
+              nomProduit={produit.libelleCourt}
+              lienImg={server + produit.image}
+              nomCategorie={produit.sousCategorie.Categorie.nom}
+              lienCategorie={produit.sousCategorie.Categorie.id}
+              prix={produit.prixHt}
+            />
+          ))
+        ) : (
+          <h1>Erreur de chargement</h1>
+        )}
       </section>
     </>
   );

@@ -24,7 +24,7 @@ function CardProduit({
       <p className="m-2">{prix} €</p>
       <a
         className="text-center m-2 bg-green-500 hover:bg-green-600 text-white rounded-2xl py-1 px-3 transition-colors duration-200"
-        href={"produit/" + produitId}
+        href={"/produit/" + produitId}
       >
         Page du produit
       </a>
