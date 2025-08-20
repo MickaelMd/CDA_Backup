@@ -1,13 +1,13 @@
 # Fil Rouge CDA - Projet E-commerce Green Village
 
-<img src="public/assets/img/brand/header_project.png" width="500">
+<img src="public/image/gv_readme.png" width="400">
 
 ## Conception et mise en place d'une base de données relationnelle
 
 ### Base de données :
 
 - [x] Élaboration du dictionnaire de données
-- [ ] Répertorisation des règles de gestion avec identifiants
+- [x] Répertorisation des règles de gestion avec identifiants
 - [x] Construction du schéma entité-association (validation formateur requise)
 - [x] Création du script de génération de la base de données
 
@@ -66,11 +66,10 @@
 
 ### Conteneurs Docker :
 
-- [ ] Fichier `compose.yaml` et Dockerfile
-- [ ] Conteneur PHP pour l'exécution du site
+- [x] Fichier `compose.yaml` et Dockerfile
+- [x] Conteneur PHP pour l'exécution du site
 - [x] Conteneur pour la base de données
 - [x] Conteneur pour la gestion des emails
-- [ ] Documentation des conteneurs de développement
 
 ## Développement des interfaces utilisateur
 
@@ -93,6 +92,8 @@
 - [x] Gestion des produits
 - [x] Gestion des commandes
 - [x] Gestion des fournisseurs
+- [x] Page de changement de mot de passe
+- [x] Page profil et historique de commande
 
 ### Scripts clients (JavaScript) :
 
@@ -121,8 +122,8 @@
 
 - [x] Mise en place de l'architecture MVC
 - [x] Organisation en couches
-- [ ] Mise en place d'une API sécurisée (JWT)
-- [ ] Configuration du module JWT (désactivé pour tests)
+- [x] Mise en place d'une API sécurisée (JWT)
+- [x] Configuration du module JWT (désactivé pour tests)
 
 ### Fonctionnalités métier spécifiques :
 
@@ -133,6 +134,7 @@
 - [x] Génération automatique des factures (une facture par commande, même expédiée partiellement)
 - [ ] Génération des bons de livraison (multiples possibles par commande)
 - [ ] Archivage des documents (conservation 3 ans minimum)
+- [x] Système de gestion des emails
 
 <!-- ## Application mobile
 
@@ -154,8 +156,7 @@
 ### Déploiement :
 
 - [ ] Documentation du déploiement
-- [ ] Diagramme de déploiement UML
-- [ ] Publication sur l'espace attribué (sans erreur)
+- [x] Publication du site sur un serveur
 - [ ] Application mobile sous forme de package
 
 ### DevOps :

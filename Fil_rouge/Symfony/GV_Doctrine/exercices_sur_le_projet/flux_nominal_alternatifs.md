@@ -1,7 +1,6 @@
-Flux nominal Green Village : 
+## Flux nominal Green Village :
 
-Flux Nominal - Commande d’un produit par un client sur Green Village
-
+##### Flux Nominal - Commande d’un produit par un client sur Green Village
 
     1.  Le client accède à la page d’accueil du site.
     2.  Il sélectionne une catégorie de produits (ex : guitares, claviers...).
@@ -21,9 +20,9 @@ Flux Nominal - Commande d’un produit par un client sur Green Village
 
 ---
 
-Flux alternatifs :
+## Flux alternatifs :
 
-Cas 1 : Le client est un professionnel
+##### Cas 1 : Le client est un professionnel
 
     1.  Le client se connecte à son compte professionnel.
     2.  Le client choisit ses articles.
@@ -35,7 +34,7 @@ Cas 1 : Le client est un professionnel
     8.  La commande est facturée.
     9.  La commande est expédiée au client.
 
-Cas 2 : Commande partiellement expédiée
+##### Cas 2 : Commande partiellement expédiée
 
     1.  Le client commande plusieurs articles.
     2.  La commande ne peut être envoyée en totalité.
@@ -43,13 +42,13 @@ Cas 2 : Commande partiellement expédiée
     4.  Plusieurs bons de livraison sont générés.
     5.  Une seule facture est émise pour la commande entière.
 
-Cas 3 : Le client annule une commande (avant envoi)
+##### Cas 3 : Le client annule une commande (avant envoi)
 
     1.  Le client consulte son historique de commande.
     2.  Le client contacte un commercial avec sa référence commande.
     3.  Le commercial vérifie et annule la commande.
 
-Cas 4 : Le client annule une commande (après envoi)
+##### Cas 4 : Le client annule une commande (après envoi)
 
     1.  Le client consulte son historique de commande.
     2.  Le client contacte un commercial avec sa référence de commande.
@@ -57,13 +56,13 @@ Cas 4 : Le client annule une commande (après envoi)
     4.  Le commercial vérifie le renvoi des articles.
     5.  Le commercial procède au remboursement.
 
-Cas 5 : Le client annule une commande avant validation du panier 
+##### Cas 5 : Le client annule une commande avant validation du panier
 
     1.  Le client accède à son panier.
     2.  Le client supprime les articles du panier.
     3.  Aucune commande n'est passée.
 
-Cas 6 : Echec du mode de paiement
+##### Cas 6 : Echec du mode de paiement
 
     1. Le client valide le panier.
     2. Choisis un mode de paiement.
