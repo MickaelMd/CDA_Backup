@@ -52,7 +52,7 @@ function Navbar() {
           </Link>
 
           <Link
-            to="/profile"
+            to="/profil"
             className="flex flex-col items-center justify-center p-2 rounded-xl transition-all duration-200 hover:bg-gray-100 active:scale-95 group"
           >
             <div className="w-8 h-8 bg-gradient-to-br from-gray-300 to-gray-400 rounded-full flex items-center justify-center group-hover:from-green-600 group-hover:to-green-600 transition-all duration-200">

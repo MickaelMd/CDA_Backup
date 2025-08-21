@@ -15,7 +15,7 @@
 
 - [x] Création de la base de données (contraintes, index, droits)
 - [x] Script d'insertion des données de test (données cohérentes)
-- [ ] Mise en place des procédures de sauvegarde-restauration
+- [x] Mise en place des procédures de sauvegarde-restauration
 - [x] Test de restauration
 
 ## Développement des composants d'accès aux données SQL et NoSQL
@@ -140,9 +140,9 @@
 
 ### Fonctionnalités :
 
-- [ ] Consultation du catalogue
-- [ ] Navigation dans les rubriques
-- [ ] Consultation des produits
+- [x] Consultation du catalogue
+- [x] Navigation dans les rubriques
+- [x] Consultation des produits
 - [ ] Connexion via API
 - [ ] Package distribuable de l'application -->
 
