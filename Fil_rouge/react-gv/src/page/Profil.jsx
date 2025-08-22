@@ -21,11 +21,42 @@ function Profil() {
       })
       .then((res) => {
         console.log("Données utilisateur :", res.data);
+
+        return (
+          <>
+            <div className="flex justify-center mt-15 p-6 bg-white">
+              <h1 className="text-2xl text-center">Profil</h1>
+            </div>
+
+            <section className="mt-15 flex flex-col items-center">
+              <h1 className="text-center text-xl">Informations personelles</h1>
+              <div className="mt-5">
+                <p>Nom : </p>
+                <p>Prénom : </p>
+                <p>Email : </p>
+              </div>
+
+              <button
+                type="submit"
+                className="w-auto mt-4 px-4 py-3 bg-red-600 text-white font-medium rounded-2xl hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors cursor-pointer
+"
+              >
+                Se déconnecter
+              </button>
+            </section>
+          </>
+        );
       })
       .catch((err) => {
         if (err.response?.status === 401) {
           console.error("Token invalide ou expiré");
           localStorage.removeItem("token");
+
+          return (
+            <>
+              <h1>test erreur token</h1>
+            </>
+          );
         } else {
           console.error(err.response?.data || err.message);
         }
@@ -112,7 +143,7 @@ function Profil() {
       </form>
 
       {/* --------- */}
-
+      {/* 
       <div className="flex justify-center mt-15 p-6 bg-white">
         <h1 className="text-2xl text-center">Profil</h1>
       </div>
@@ -132,7 +163,7 @@ function Profil() {
         >
           Se déconnecter
         </button>
-      </section>
+      </section> */}
       {/* --------- */}
     </>
   );
