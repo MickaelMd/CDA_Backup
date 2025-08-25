@@ -2,6 +2,16 @@
 
 <img src="public/image/gv_readme.png" width="400">
 
+Green Village est un projet fictif développé dans le cadre de ma formation CDA (Certification Développeur Web) avec Symfony et React, conçu pour gérer une boutique en ligne d’instruments de musique. L’interface responsive utilise Tailwind CSS, combinant des pages Symfony et des composants interactifs React.
+
+Le projet propose une gestion sécurisée des utilisateurs avec rôles (client, commercial, admin), offrant un accès à des pages d’administration pour gérer produits, fournisseurs, commandes et livraisons.
+
+Une API REST avec Api Platform expose les entités principales et fournit une documentation interactive via Swagger, facilitant l’intégration avec les composants React et d’autres systèmes.
+
+Les utilisateurs peuvent gérer leur profil, consulter l’historique des commandes et suivre l’état des livraisons.
+
+La sécurité est renforcée par la gestion des permissions, l’authentification JWT et la protection CSRF sur les formulaires.
+
 ## Conception et mise en place d'une base de données relationnelle
 
 ### Base de données :

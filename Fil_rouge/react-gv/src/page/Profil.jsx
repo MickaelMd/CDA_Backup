@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 
@@ -6,75 +6,45 @@ function Profil() {
   const server = "https://127.0.0.1:8000/";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  if (!localStorage.getItem("token")) {
-    console.log("pas token");
-  } else {
-    const decoded = jwtDecode(localStorage.getItem("token"));
-    console.log(decoded);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setLoading(false);
+      return;
+    }
 
-    axios
-      .get(server + "api/utilisateurs/" + decoded.id, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      })
-      .then((res) => {
-        console.log("Données utilisateur :", res.data);
+    try {
+      const decoded = jwtDecode(token);
+      axios
+        .get(server + "api/utilisateurs/" + decoded.id, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((res) => {
+          setUser(res.data);
+        })
+        .catch((err) => {
+          if (err.response?.status === 401) {
+            console.error("Token invalide ou expiré");
+            localStorage.removeItem("token");
+          }
+        })
+        .finally(() => setLoading(false));
+    } catch (e) {
+      console.error("Erreur décodage token", e);
+      setLoading(false);
+    }
+  }, []);
 
-        return (
-          <>
-            <div className="flex justify-center mt-15 p-6 bg-white">
-              <h1 className="text-2xl text-center">Profil</h1>
-            </div>
-
-            <section className="mt-15 flex flex-col items-center">
-              <h1 className="text-center text-xl">Informations personelles</h1>
-              <div className="mt-5">
-                <p>Nom : </p>
-                <p>Prénom : </p>
-                <p>Email : </p>
-              </div>
-
-              <button
-                type="submit"
-                className="w-auto mt-4 px-4 py-3 bg-red-600 text-white font-medium rounded-2xl hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors cursor-pointer
-"
-              >
-                Se déconnecter
-              </button>
-            </section>
-          </>
-        );
-      })
-      .catch((err) => {
-        if (err.response?.status === 401) {
-          console.error("Token invalide ou expiré");
-          localStorage.removeItem("token");
-
-          return (
-            <>
-              <h1>test erreur token</h1>
-            </>
-          );
-        } else {
-          console.error(err.response?.data || err.message);
-        }
-      });
-  }
-
-  const SeConnecer = (e) => {
+  const SeConnecter = (e) => {
     e.preventDefault();
-
-    console.log(email, password);
 
     axios
       .post(
         server + "api/login_check",
-        {
-          email: email,
-          password: password,
-        },
+        { email, password },
         {
           headers: {
             "Content-Type": "application/json",
@@ -83,21 +53,57 @@ function Profil() {
         }
       )
       .then((response) => {
-        console.log("Réponse :", response.data);
         localStorage.setItem("token", response.data.token);
+        window.location.reload();
       })
       .catch((error) => {
         console.error("Erreur :", error.response?.data || error.message);
       });
   };
 
+  const SeDeconnecter = () => {
+    localStorage.removeItem("token");
+    setUser(null);
+  };
+
+  if (loading) return <p>Chargement...</p>;
+
+  if (user) {
+    return (
+      <>
+        <div className="flex justify-center mt-15 p-6 bg-white">
+          <h1 className="text-2xl text-center">Profil</h1>
+        </div>
+
+        <section className="mt-15 flex flex-col items-center">
+          <h1 className="text-center text-xl">Informations personnelles</h1>
+          <div className="mt-5">
+            <p>Nom : {user.nom}</p>
+            <p>Prénom : {user.prenom}</p>
+            <p>Email : {user.email}</p>
+          </div>
+
+          <button
+            onClick={SeDeconnecter}
+            className="w-auto mt-4 px-4 py-3 bg-red-600 text-white font-medium rounded-2xl hover:bg-red-700 transition-colors cursor-pointer"
+          >
+            Se déconnecter
+          </button>
+        </section>
+      </>
+    );
+  }
+
   return (
     <>
       <div className="flex justify-center mt-15 p-6 bg-white">
-        <h1 className="text-2xl text-center">Connection</h1>
+        <h1 className="text-2xl text-center">Connexion</h1>
       </div>
 
-      <form className="flex flex-col items-center mt-15 gap-5" action="">
+      <form
+        className="flex flex-col items-center mt-15 gap-5"
+        onSubmit={SeConnecter}
+      >
         <div className="max-w-sm">
           <label
             htmlFor="email"
@@ -107,11 +113,10 @@ function Profil() {
           </label>
           <input
             type="email"
-            name="email"
             id="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-3 bg-white border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+            className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-green-500"
             placeholder="votre@email.com"
           />
         </div>
@@ -125,46 +130,21 @@ function Profil() {
           </label>
           <input
             type="password"
-            name="password"
             id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-3 bg-white border border-gray-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-colors"
+            className="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-green-500"
             placeholder="Votre mot de passe"
           />
         </div>
+
         <button
-          onClick={SeConnecer}
           type="submit"
-          className="w-auto mt-4 px-4 py-3 bg-green-600 text-white font-medium rounded-2xl hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-colors cursor-pointer"
+          className="w-auto mt-4 px-4 py-3 bg-green-600 text-white font-medium rounded-2xl hover:bg-green-700 transition-colors cursor-pointer"
         >
           Se connecter
         </button>
       </form>
-
-      {/* --------- */}
-      {/* 
-      <div className="flex justify-center mt-15 p-6 bg-white">
-        <h1 className="text-2xl text-center">Profil</h1>
-      </div>
-
-      <section className="mt-15 flex flex-col items-center">
-        <h1 className="text-center text-xl">Informations personelles</h1>
-        <div className="mt-5">
-          <p>Nom : </p>
-          <p>Prénom : </p>
-          <p>Email : </p>
-        </div>
-
-        <button
-          type="submit"
-          className="w-auto mt-4 px-4 py-3 bg-red-600 text-white font-medium rounded-2xl hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-colors cursor-pointer
-"
-        >
-          Se déconnecter
-        </button>
-      </section> */}
-      {/* --------- */}
     </>
   );
 }
