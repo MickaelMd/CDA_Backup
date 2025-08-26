@@ -4,7 +4,7 @@
   <img src="en_image/diag_utilisation.png" alt="Diagramme de cas d’utilisation">
 </p>
 
-***
+---
 
 ### UML - Diagramme de séquence
 
@@ -12,7 +12,7 @@
   <img src="en_image/diag_sequance.png" alt="Diagramme de séquence">
 </p>
 
-***
+---
 
 ### UML - Diagramme d’activité
 
@@ -20,7 +20,7 @@
   <img src="en_image/diag_activite.png" alt="Diagramme d’activité">
 </p>
 
-***
+---
 
 ### UML - Diagramme des classes entités
 

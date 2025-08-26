@@ -1,0 +1,29 @@
+@startuml GreenVillageDeployment
+
+node "Client" {
+  artifact "Navigateur Web" as navigateur
+}
+
+node "Serveur" {
+  
+  node "Nginx" {
+    artifact "Configuration Nginx" as nginxconf
+  }
+
+  node "Symfony - GreenVillage" {
+    component "Application Symfony" as symfony
+    artifact "Code source PHP + React" as codephp
+  }
+
+  node "MariaDB" {
+    component "Base de données" as mariadb
+    artifact "Base : green_village" as db
+  }
+}
+
+
+navigateur --> nginxconf : HTTP/HTTPS
+nginxconf --> symfony : Requête HTTP
+symfony --> mariadb : Requêtes SQL
+
+@enduml
