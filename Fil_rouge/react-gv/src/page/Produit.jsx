@@ -4,7 +4,7 @@ import axios from "axios";
 
 function Produit() {
   const { id } = useParams();
-  const server = "https://127.0.0.1:8000/";
+  const server = import.meta.env.VITE_SERVER_IP;
 
   const [produit, setProduit] = useState([]);
 

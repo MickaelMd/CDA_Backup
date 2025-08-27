@@ -4,7 +4,7 @@ import CategorieCard from "../components/CardCategorie";
 import ProduitCard from "../components/CardProduit";
 
 function Accueil() {
-  const server = "https://127.0.0.1:8000/";
+  const server = import.meta.env.VITE_SERVER_IP;
 
   const [categories, setCategories] = useState([]);
   const [produits, setProduit] = useState([]);
@@ -18,7 +18,7 @@ function Accueil() {
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  }, [server]);
 
   useEffect(() => {
     axios
@@ -29,7 +29,7 @@ function Accueil() {
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  }, [server]);
 
   return (
     <>

@@ -3,7 +3,7 @@ import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 
 function Profil() {
-  const server = "https://127.0.0.1:8000/";
+  const server = import.meta.env.VITE_SERVER_IP;
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
@@ -36,7 +36,7 @@ function Profil() {
       console.error("Erreur décodage token", e);
       setLoading(false);
     }
-  }, []);
+  }, [server]);
 
   const SeConnecter = (e) => {
     e.preventDefault();
@@ -66,7 +66,7 @@ function Profil() {
     setUser(null);
   };
 
-  if (loading) return <p>Chargement...</p>;
+  if (loading) return <p className="text-center mt-25">Chargement...</p>;
 
   if (user) {
     return (

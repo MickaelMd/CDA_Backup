@@ -3,7 +3,7 @@ import axios from "axios";
 import CategorieCard from "../components/CardCategorie";
 
 function Categories() {
-  const server = "https://127.0.0.1:8000/";
+  const server = import.meta.env.VITE_SERVER_IP;
 
   const [categories, setCategories] = useState([]);
 
@@ -16,7 +16,7 @@ function Categories() {
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  }, [server]);
 
   return (
     <div>

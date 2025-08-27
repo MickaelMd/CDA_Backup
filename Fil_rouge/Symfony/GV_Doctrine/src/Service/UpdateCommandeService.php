@@ -52,6 +52,9 @@ class UpdateCommandeService
             $emailSent = false;
             if ($newStatus === 'expédiée') {
                 $emailSent = $this->sendShippingEmail($commande);
+
+                
+
             }
 
             $message = $emailSent 

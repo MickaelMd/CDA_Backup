@@ -5,7 +5,7 @@ import ProduitCard from "../components/CardProduit";
 
 function CategorieProduit() {
   const { id } = useParams();
-  const server = "https://127.0.0.1:8000/";
+  const server = import.meta.env.VITE_SERVER_IP;
 
   const [produits, setProduits] = useState([]);
 
@@ -21,7 +21,7 @@ function CategorieProduit() {
       .catch((error) => {
         console.error(error);
       });
-  }, [id]);
+  }, [id, server]);
 
   return (
     <div>
