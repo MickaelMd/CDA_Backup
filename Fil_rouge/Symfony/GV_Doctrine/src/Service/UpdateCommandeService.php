@@ -43,18 +43,30 @@ class UpdateCommandeService
 
         try {
           
-            $this->updateDetailCommandeStatus($commande, $newStatus);
+            $commande = $this->commandeRepository->find($commandeId);
+            if (!$commande) {
+                throw new \Exception('Commande introuvable.');
+            }
+
             
+            if ($commande->getStatu() === $newStatus) {
+                return [
+                    'success' => false,
+                    'message' => 'Une erreur s\'est produite  : Statut identique'
+                ];
+            }
+
+        
+            $this->updateDetailCommandeStatus($commande, $newStatus);
+
             $commande->setStatu($newStatus);
             $this->entityManager->persist($commande);
             $this->entityManager->flush();
 
+            
             $emailSent = false;
             if ($newStatus === 'expédiée') {
                 $emailSent = $this->sendShippingEmail($commande);
-
-                
-
             }
 
             $message = $emailSent 
