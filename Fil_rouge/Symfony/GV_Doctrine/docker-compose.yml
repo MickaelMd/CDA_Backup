@@ -43,6 +43,19 @@ services:
     networks:
       - mariadb_network
 
+  symfony:
+    build: .
+    container_name: symfony_container
+    restart: unless-stopped
+    volumes:
+      - .:/var/www
+    ports:
+      - "8000:8000"
+    depends_on:
+      - mariadb
+    networks:
+      - mariadb_network
+
 volumes:
   mariadb_data:
     driver: local
