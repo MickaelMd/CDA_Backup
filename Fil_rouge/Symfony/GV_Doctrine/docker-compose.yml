@@ -48,7 +48,9 @@ services:
     container_name: symfony_container
     restart: unless-stopped
     volumes:
-      - .:/var/www
+      - .:/var/www:cached
+      - /var/www/vendor
+      - /var/www/var
     ports:
       - "8000:8000"
     depends_on:
