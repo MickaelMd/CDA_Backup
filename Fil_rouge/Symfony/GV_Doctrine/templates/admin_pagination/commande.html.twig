@@ -97,6 +97,7 @@
 						<td class="border border-slate-400 px-4 py-2">
 							<form action="{{path('app_admin_commande_update_det')}}" method="post">
 								<input type="hidden" name="update_detail_commande" value="{{ csrf_token('update_detail_commande') }}">
+								<input type="hidden" name="com_id" value="{{ commande.id }}">
 								<input type="hidden" value="{{ detail.id }}" name="com-commande-produit-id" class="produit-id-hidden">
 								<select name="statut-produit" class="produit-statut-select rounded-[16px] text-center border-none text-[12pt] w-full max-w-[200px] h-[30px] cursor-pointer bg-[#62626269] backdrop-blur-[2.2px] font-title">
 									<option value="en_attente" {{ detail.statut == 'en_attente' ? 'selected' : '' }}>En attente</option>

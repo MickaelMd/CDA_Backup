@@ -422,8 +422,11 @@ public function updateProduit(
     // --------------------
 
 #[Route('/admin-update-det_com', name: 'app_admin_update_det_com', methods: ['POST'])]
-public function adminUpdateDetCom(CsrfTokenManagerInterface $csrfTokenManager, Request $request, DetailCommandeRepository $detailComRepo, UpdateDetComService $commandeService): Response
-{
+public function adminUpdateDetCom(
+    CsrfTokenManagerInterface $csrfTokenManager, 
+    Request $request, 
+    UpdateDetComService $updateDetComService
+): Response {
     if (!$this->isGranted('ROLE_COMMERCIAL') && !$this->isGranted('ROLE_ADMIN')) {
         $this->addFlash('error', 'Vous n\'avez pas les droits pour accéder à cette page.');
         return $this->redirectToRoute('app_accueil');
@@ -431,31 +434,26 @@ public function adminUpdateDetCom(CsrfTokenManagerInterface $csrfTokenManager, R
     
     $token = new CsrfToken('update_detail_commande', $request->request->get('update_detail_commande'));
     if (!$csrfTokenManager->isTokenValid($token)) {
-        throw new \Exception('Jeton CSRF invalide.');
-    }
-
-
-    $id = $request->request->get('com-commande-produit-id');
-    $select = $request->request->get('statut-produit');
-    $detCommande = $detailComRepo->find($id);
-
-    if (!$detCommande) {
-        $this->addFlash('error', 'Commande introuvable.');
+        $this->addFlash('error', 'Jeton CSRF invalide.');
         return $this->redirectToRoute('app_admin');
     }
 
-    try {
-        $result = $commandeService->updateDetailCommande($detCommande, $select);
+    $detailCommandeId = $request->request->get('com-commande-produit-id');
+    $nouveauStatut = $request->request->get('statut-produit');
 
-        if ($result === 'expédiée') {
-            $this->addFlash('success', 'Statut mis à jour et email d\'expédition envoyé.');
+    try {
+        
+        $result = $updateDetComService->updateDetailCommandeById($detailCommandeId, $nouveauStatut);
+        
+        
+        if ($result['success']) {
+            $this->addFlash('success', $result['message']);
         } else {
-            $this->addFlash('success', 'Statut mis à jour avec succès.');
+            $this->addFlash('error', $result['message']);
         }
 
     } catch (\Exception $e) {
-        $this->addFlash('error', 'Erreur lors de la mise à jour : ' . $e->getMessage());
-        return $this->redirectToRoute('app_admin');
+        $this->addFlash('error', 'Une erreur inattendue s\'est produite.');
     }
 
     return $this->redirectToRoute('app_admin');

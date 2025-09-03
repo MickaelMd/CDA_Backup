@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Entity\DetailCommande;
+use App\Repository\DetailCommandeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -12,38 +13,89 @@ class UpdateDetComService
 {
     private const VALID_STATUSES = ['en_attente', 'en_préparation', 'expédiée', 'livrée'];
     
-    private $entityManager;
-    private $mailer;
+    public function __construct(
+        private EntityManagerInterface $entityManager,
+        private MailerInterface $mailer,
+        private DetailCommandeRepository $detailCommandeRepository
+    ) {}
 
-    public function __construct(EntityManagerInterface $entityManager, MailerInterface $mailer)
+    /**
+     * @param int|string $detailCommandeId
+     * @param string $nouveauStatut
+     * @return array
+     */
+    public function updateDetailCommandeById($detailCommandeId, string $nouveauStatut): array
     {
-        $this->entityManager = $entityManager;
-        $this->mailer = $mailer;
+        if (!$detailCommandeId) {
+            return [
+                'success' => false,
+                'message' => 'ID du détail de commande manquant.'
+            ];
+        }
+
+        if (!$nouveauStatut) {
+            return [
+                'success' => false,
+                'message' => 'Statut manquant.'
+            ];
+        }
+
+        if (!$this->isValidStatus($nouveauStatut)) {
+            return [
+                'success' => false,
+                'message' => 'Statut invalide fourni.'
+            ];
+        }
+
+        $detCommande = $this->detailCommandeRepository->find($detailCommandeId);
+        if (!$detCommande) {
+            return [
+                'success' => false,
+                'message' => 'Détail de commande introuvable.'
+            ];
+        }
+
+        return $this->updateDetailCommande($detCommande, $nouveauStatut);
     }
 
     /**
-     * @param DetailCommande
-     * @param string 
-     * @return string 
-     * @throws \InvalidArgumentException 
-     * @throws \Exception 
+     * @param DetailCommande $detCommande
+     * @param string $nouveauStatut
+     * @return array
      */
     public function updateDetailCommande(
         DetailCommande $detCommande,
         string $nouveauStatut
-    ): string {
-        // Validation du statut
+    ): array {
+        
         if (!$this->isValidStatus($nouveauStatut)) {
-            throw new \InvalidArgumentException('Statut invalide fourni : ' . $nouveauStatut);
+            return [
+                'success' => false,
+                'message' => 'Statut invalide fourni.'
+            ];
         }
 
         if (!$detCommande) {
-            throw new \InvalidArgumentException('Détail de commande invalide.');
+            return [
+                'success' => false,
+                'message' => 'Détail de commande invalide.'
+            ];
         }
 
         $commande = $detCommande->getCommande();
         if (!$commande) {
-            throw new \Exception('Commande associée introuvable.');
+            return [
+                'success' => false,
+                'message' => 'Commande associée introuvable.'
+            ];
+        }
+
+        
+        if ($detCommande->getStatut() === $nouveauStatut) {
+            return [
+                'success' => false,
+                'message' => 'Une erreur s\'est produite : Statut identique'
+            ];
         }
 
         try {
@@ -60,32 +112,37 @@ class UpdateDetComService
             $this->entityManager->flush();
             $this->entityManager->commit();
 
+            $emailSent = false;
             if ($ancienStatutCommande !== 'expédiée' && $nouveauStatutCommande === 'expédiée') {
-                $this->sendShippingEmail($commande);
-                return 'expédiée';
+                $emailSent = $this->sendShippingEmail($commande);
             }
 
-            return 'mise_a_jour';
+            $message = $emailSent 
+                ? 'Statut mis à jour et email d\'expédition envoyé.'
+                : 'Statut mis à jour avec succès.';
+
+            return [
+                'success' => true,
+                'message' => $message
+            ];
 
         } catch (\Exception $e) {
             $this->entityManager->rollback();
-            throw new \Exception('Erreur lors de la mise à jour : ' . $e->getMessage());
+            
+            return [
+                'success' => false,
+                'message' => 'Une erreur s\'est produite lors de la mise à jour : ' . $e->getMessage()
+            ];
         }
     }
 
-    /**
-     * @param string 
-     * @return bool 
-     */
+
     private function isValidStatus(string $status): bool
     {
         return in_array($status, self::VALID_STATUSES, true);
     }
 
-    /**
-     * @param \App\Entity\Commande 
-     * @return string 
-     */
+
     private function calculateCommandeStatus($commande): string
     {
         $allLivree = true;
@@ -117,10 +174,7 @@ class UpdateDetComService
         }
     }
 
-    /**
-     * @param \App\Entity\Commande 
-     * @return bool
-     */
+
     private function sendShippingEmail($commande): bool
     {
         try {
@@ -144,14 +198,11 @@ class UpdateDetComService
             return true;
 
         } catch (\Exception $e) {
-           
             return false;
         }
     }
 
-    /**
-     * @return array 
-     */
+
     public function getValidStatuses(): array
     {
         return self::VALID_STATUSES;
